@@ -2,127 +2,185 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FileText, Image, Code, ArrowRight, CheckCircle2, Lightbulb,
-  Zap, Shield, RefreshCw, ChevronRight, Terminal, TestTube2,
-  GitBranch, AlertTriangle, BarChart3, Brain
+  Zap, Shield, RefreshCw, ChevronRight, Terminal, Brain,
+  MessageSquare, GitCompare, TestTube2, Wand2, ArrowDownUp
 } from "lucide-react";
 
 type InputType = "text" | "image" | "code";
 type LayerIndex = 0 | 1 | 2 | 3;
 
 const INPUT_TYPES = [
-  { id: "text" as InputType, label: "Text", icon: FileText, example: "\"As a user, I want to reset my password…\"" },
-  { id: "image" as InputType, label: "Image", icon: Image, example: "Wireframe / UI screenshot uploaded" },
-  { id: "code" as InputType, label: "Code", icon: Code, example: "function resetPassword(email) { ... }" },
+  { id: "text" as InputType, label: "Text", icon: FileText, example: "\"As a user, I want to reset my password…\"", desc: "Natural language requirement or idea" },
+  { id: "image" as InputType, label: "Image", icon: Image, example: "Wireframe / UI screenshot uploaded", desc: "Wireframe, mockup, or UI screenshot" },
+  { id: "code" as InputType, label: "Code", icon: Code, example: "function resetPassword(email) { ... }", desc: "Source code via VS Code Extension" },
 ];
 
-const LAYERS = [
-  {
-    id: 0 as LayerIndex,
-    title: "Intent Intelligence",
-    subtitle: "StoryCraft AI",
-    description: "Converts raw input into structured, project-aware requirements",
-    color: "intent",
-    icon: Lightbulb,
-    outputs: [
-      "Structured User Story",
-      "Acceptance Criteria",
-      "Edge Cases",
-      "Test Cases",
-      "Requirement Artifacts",
-    ],
-    detail: "Project-aware — understands your backlog, architecture, dependencies, and sprint goals.",
-  },
-  {
-    id: 1 as LayerIndex,
-    title: "Execution Intelligence",
-    subtitle: "Implementation Artifacts",
-    description: "Turns structured requirements into developer-ready artifacts",
-    color: "execution",
-    icon: Zap,
-    outputs: [
-      "Copilot-Ready Prompts",
-      "Unit Test Scripts",
-      "Integration Test Scripts",
-      "Framework-Compatible Code",
-    ],
-    detail: "Bridges the gap between requirements and developer action — accelerating implementation.",
-  },
-  {
-    id: 2 as LayerIndex,
-    title: "Code Validation",
-    subtitle: "Hybrid Validation Engine",
-    description: "Validates code implementation against original intent",
-    color: "validation",
-    icon: Shield,
-    outputs: [
-      "Acceptance Coverage Map",
-      "Semantic Analysis Report",
-      "Static Check Results",
-      "Scope Drift Detection",
-    ],
-    detail: "AST analysis + LLM semantic comparison — ensures code fulfills the story, not just compiles.",
-  },
-  {
-    id: 3 as LayerIndex,
-    title: "Continuous Feedback",
-    subtitle: "Closed-Loop Intelligence",
-    description: "Feeds insights back for self-correcting execution",
-    color: "feedback",
-    icon: RefreshCw,
-    outputs: [
-      "Story Refinement",
-      "Risk Alerts",
-      "Coverage Gap Analysis",
-      "Code Feedback",
-      "Predictive Delivery Signals",
-    ],
-    detail: "Silverile is not linear — it's cyclical intelligence that self-corrects across every sprint.",
-  },
-];
+interface LayerData {
+  title: string;
+  subtitle: string;
+  description: string;
+  color: string;
+  icon: typeof Lightbulb;
+  outputs: { label: string; desc?: string }[];
+  detail: string;
+  badge?: string;
+}
+
+const getLayersForInput = (input: InputType): LayerData[] => {
+  if (input === "code") {
+    return [
+      {
+        title: "Intent Intelligence",
+        subtitle: "StoryCraft AI — VS Code Extension",
+        description: "Silverile reads your code and reverse-engineers it into structured intent. No manual story writing needed.",
+        color: "intent",
+        icon: Lightbulb,
+        badge: "VS Code Extension",
+        outputs: [
+          { label: "Story from Code", desc: "Reverse-engineers code into a well-formulated user story" },
+          { label: "Acceptance Criteria", desc: "Derived from code behavior and logic paths" },
+          { label: "Edge Cases", desc: "Identified from code branching and error handling" },
+          { label: "Test Cases", desc: "Generated from code structure and acceptance criteria" },
+        ],
+        detail: "Developers don't write stories — they write code. Silverile understands the code and creates the story for them.",
+      },
+      {
+        title: "Execution Intelligence",
+        subtitle: "4 Code Intelligence Modes",
+        description: "Once code is connected to Silverile, four powerful capabilities unlock — from feedback to test generation.",
+        color: "execution",
+        icon: Zap,
+        outputs: [
+          { label: "Code Feedback", desc: "Attach code to an existing story → validates relevance against acceptance criteria" },
+          { label: "Unit Test Scripts", desc: "Pair a story to your code → auto-generate framework-compatible unit tests" },
+          { label: "Integration Test Scripts", desc: "Generate integration tests from story + code pairing" },
+          { label: "Copilot Prompts", desc: "From any story, generate precise prompts to accelerate code generation" },
+        ],
+        detail: "Silverile bridges requirements ↔ code bidirectionally. It doesn't just define work — it validates and accelerates implementation.",
+      },
+      {
+        title: "Code Validation",
+        subtitle: "Hybrid Validation Engine",
+        description: "Validates whether your code actually fulfills the story — structurally and semantically.",
+        color: "validation",
+        icon: Shield,
+        outputs: [
+          { label: "Acceptance Coverage Map", desc: "Which criteria are fulfilled, which are missing" },
+          { label: "Semantic Analysis", desc: "LLM-based comparison of code intent vs story intent" },
+          { label: "Static Checks", desc: "AST-level structural validation" },
+          { label: "Scope Drift Detection", desc: "Detects if code goes beyond or deviates from the story" },
+        ],
+        detail: "We don't ask 'Did you push code?' — We ask 'Did you build what you promised?'",
+      },
+      {
+        title: "Continuous Feedback",
+        subtitle: "Closed-Loop Intelligence",
+        description: "Insights feed back into stories and project — detecting risk, gaps, and alignment issues.",
+        color: "feedback",
+        icon: RefreshCw,
+        outputs: [
+          { label: "Story Refinement", desc: "Auto-updates stories based on implementation learnings" },
+          { label: "Risk Alerts", desc: "Flags delivery risks based on code-story misalignment" },
+          { label: "Coverage Gap Analysis", desc: "Identifies untested or unimplemented acceptance criteria" },
+          { label: "Code Feedback Loop", desc: "Continuous quality signals back to the developer" },
+        ],
+        detail: "Silverile is a self-correcting system. Every code change feeds intelligence back into the next sprint.",
+      },
+    ];
+  }
+
+  // Text and Image share the same flow
+  return [
+    {
+      title: "Intent Intelligence",
+      subtitle: "StoryCraft AI",
+      description: input === "image"
+        ? "Upload a wireframe, mockup, or screenshot — Silverile's UI recognition structures it into executable requirements."
+        : "Describe your requirement in plain language — Silverile transforms ambiguity into structured, project-aware specifications.",
+      color: "intent",
+      icon: Lightbulb,
+      badge: input === "image" ? "UI Recognition" : undefined,
+      outputs: [
+        { label: "Structured User Story", desc: "Well-formulated, project-context-aware story" },
+        { label: "Acceptance Criteria", desc: "Clear, testable criteria for done" },
+        { label: "Edge Cases", desc: "Scenarios most teams miss until production" },
+        { label: "Test Cases", desc: "Ready-to-implement test scenarios" },
+        { label: "Requirement Artifacts", desc: "Structured documentation for the team" },
+      ],
+      detail: "Project-aware — understands your backlog, architecture, dependencies, and sprint goals. Not generic — contextual.",
+    },
+    {
+      title: "Execution Intelligence",
+      subtitle: "Implementation Artifacts",
+      description: "Turns structured requirements into developer-ready artifacts — so developers move faster with clarity.",
+      color: "execution",
+      icon: Zap,
+      outputs: [
+        { label: "Copilot-Ready Prompts", desc: "Precise prompts to generate code from stories" },
+        { label: "Unit Test Scripts", desc: "Framework-compatible, ready to run" },
+        { label: "Integration Test Scripts", desc: "End-to-end validation scripts" },
+      ],
+      detail: "Bridges the gap between requirement definition and developer action — accelerating implementation with clarity.",
+    },
+    {
+      title: "Code Validation",
+      subtitle: "Hybrid Validation Engine",
+      description: "Once developers write code, Silverile validates it against the original intent — structurally and semantically.",
+      color: "validation",
+      icon: Shield,
+      outputs: [
+        { label: "Acceptance Coverage Map", desc: "Which criteria are fulfilled, which are missing" },
+        { label: "Semantic Analysis Report", desc: "LLM-based code vs. story comparison" },
+        { label: "Static Check Results", desc: "AST-level structural validation" },
+        { label: "Scope Drift Detection", desc: "Detects deviation from original intent" },
+      ],
+      detail: "AST analysis + LLM semantic comparison — ensures code fulfills the story, not just compiles.",
+    },
+    {
+      title: "Continuous Feedback",
+      subtitle: "Closed-Loop Intelligence",
+      description: "The system feeds insights back — refining stories, detecting risk, and ensuring alignment across sprints.",
+      color: "feedback",
+      icon: RefreshCw,
+      outputs: [
+        { label: "Story Refinement", desc: "Auto-improves stories based on execution data" },
+        { label: "Risk Alerts", desc: "Flags delivery risks before they escalate" },
+        { label: "Coverage Gap Analysis", desc: "Identifies gaps in acceptance criteria coverage" },
+        { label: "Predictive Delivery Signals", desc: "Forecasts based on velocity and patterns" },
+      ],
+      detail: "Silverile is not linear — it's cyclical intelligence that self-corrects across every sprint.",
+    },
+  ];
+};
 
 const colorClasses: Record<string, { bg: string; border: string; text: string; glow: string; muted: string }> = {
-  intent: {
-    bg: "bg-intent",
-    border: "border-intent/30",
-    text: "text-intent-foreground",
-    glow: "glow-intent",
-    muted: "bg-intent-muted",
-  },
-  execution: {
-    bg: "bg-execution",
-    border: "border-execution/30",
-    text: "text-execution-foreground",
-    glow: "glow-execution",
-    muted: "bg-execution-muted",
-  },
-  validation: {
-    bg: "bg-validation",
-    border: "border-validation/30",
-    text: "text-validation-foreground",
-    glow: "glow-validation",
-    muted: "bg-validation-muted",
-  },
-  feedback: {
-    bg: "bg-feedback",
-    border: "border-feedback/30",
-    text: "text-feedback-foreground",
-    glow: "glow-feedback",
-    muted: "bg-feedback-muted",
-  },
+  intent: { bg: "bg-intent", border: "border-intent/30", text: "text-intent-foreground", glow: "glow-intent", muted: "bg-intent-muted" },
+  execution: { bg: "bg-execution", border: "border-execution/30", text: "text-execution-foreground", glow: "glow-execution", muted: "bg-execution-muted" },
+  validation: { bg: "bg-validation", border: "border-validation/30", text: "text-validation-foreground", glow: "glow-validation", muted: "bg-validation-muted" },
+  feedback: { bg: "bg-feedback", border: "border-feedback/30", text: "text-feedback-foreground", glow: "glow-feedback", muted: "bg-feedback-muted" },
 };
+
+const CODE_MODES = [
+  { icon: MessageSquare, title: "Story from Code", desc: "Reverse-engineer intent" },
+  { icon: GitCompare, title: "Code Feedback", desc: "Validate against story" },
+  { icon: TestTube2, title: "Test Generation", desc: "Unit & integration tests" },
+  { icon: Wand2, title: "Copilot Prompts", desc: "Accelerate development" },
+];
 
 const HeroFlow = () => {
   const [selectedInput, setSelectedInput] = useState<InputType>("text");
   const [activeLayer, setActiveLayer] = useState<LayerIndex>(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
+  const layers = getLayersForInput(selectedInput);
+
   useEffect(() => {
     if (!isAutoPlaying) return;
     const interval = setInterval(() => {
       setActiveLayer((prev) => ((prev + 1) % 4) as LayerIndex);
-    }, 4000);
+    }, 4500);
     return () => clearInterval(interval);
-  }, [isAutoPlaying]);
+  }, [isAutoPlaying, selectedInput]);
 
   const handleLayerClick = (index: LayerIndex) => {
     setIsAutoPlaying(false);
@@ -135,7 +193,7 @@ const HeroFlow = () => {
     setIsAutoPlaying(true);
   };
 
-  const currentLayer = LAYERS[activeLayer];
+  const currentLayer = layers[activeLayer];
   const cc = colorClasses[currentLayer.color];
 
   return (
@@ -143,10 +201,10 @@ const HeroFlow = () => {
       {/* Background */}
       <div className="absolute inset-0 bg-grid opacity-30" />
       <div className="absolute inset-0" style={{ background: "var(--gradient-hero)" }} />
-      
+
       {/* Ambient glow */}
       <motion.div
-        key={activeLayer}
+        key={`${selectedInput}-${activeLayer}`}
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.15 }}
         transition={{ duration: 1 }}
@@ -176,7 +234,7 @@ const HeroFlow = () => {
             <span className="text-gradient-hero">Verified Execution</span>
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-base text-muted-foreground md:text-lg">
-            Silverile doesn't just track tasks — it understands, structures, and validates 
+            Silverile doesn't just track tasks — it understands, structures, and validates
             your entire software delivery lifecycle. Watch the intelligence flow.
           </p>
         </motion.div>
@@ -203,10 +261,10 @@ const HeroFlow = () => {
                     onClick={() => handleInputClick(input.id)}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    className={`flex items-center gap-2 rounded-lg border px-5 py-3 text-sm font-medium transition-all ${
+                    className={`flex flex-col items-center gap-1 rounded-lg border px-5 py-3 text-sm font-medium transition-all sm:flex-row sm:gap-2 ${
                       isActive
                         ? "border-primary/50 bg-primary/10 text-foreground glow-intent"
-                        : "border-border bg-secondary/30 text-muted-foreground hover:border-border hover:bg-secondary/60"
+                        : "border-border bg-secondary/30 text-muted-foreground hover:bg-secondary/60"
                     }`}
                   >
                     <Icon className="h-4 w-4" />
@@ -221,34 +279,77 @@ const HeroFlow = () => {
                 initial={{ opacity: 0, y: 5 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -5 }}
-                className="rounded-md border border-border bg-secondary/40 px-4 py-2 font-mono text-xs text-muted-foreground"
+                className="flex flex-col items-center gap-1"
               >
-                {INPUT_TYPES.find(i => i.id === selectedInput)?.example}
+                <span className="rounded-md border border-border bg-secondary/40 px-4 py-2 font-mono text-xs text-muted-foreground">
+                  {INPUT_TYPES.find(i => i.id === selectedInput)?.example}
+                </span>
+                {selectedInput === "code" && (
+                  <motion.span
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="mt-1 flex items-center gap-1.5 text-xs text-primary"
+                  >
+                    <Terminal className="h-3 w-3" />
+                    Via Silverile VS Code Extension
+                  </motion.span>
+                )}
               </motion.div>
             </AnimatePresence>
           </div>
 
+          {/* Code-specific: 4 Modes preview */}
+          {selectedInput === "code" && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="mb-6"
+            >
+              <div className="grid grid-cols-2 gap-2 md:grid-cols-4">
+                {CODE_MODES.map((mode, i) => {
+                  const MIcon = mode.icon;
+                  return (
+                    <motion.div
+                      key={mode.title}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.08 }}
+                      className="flex items-center gap-2.5 rounded-lg border border-primary/15 bg-primary/5 px-3 py-2.5"
+                    >
+                      <MIcon className="h-4 w-4 shrink-0 text-primary" />
+                      <div>
+                        <div className="text-xs font-semibold text-foreground">{mode.title}</div>
+                        <div className="text-[10px] text-muted-foreground">{mode.desc}</div>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </motion.div>
+          )}
+
           {/* Flow Pipeline */}
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-4">
-            {LAYERS.map((layer, index) => {
+            {layers.map((layer, index) => {
               const Icon = layer.icon;
               const isActive = activeLayer === index;
               const lc = colorClasses[layer.color];
 
               return (
                 <motion.div
-                  key={layer.id}
+                  key={`${selectedInput}-${index}`}
                   onClick={() => handleLayerClick(index as LayerIndex)}
                   whileHover={{ scale: 1.02 }}
+                  layout
                   className={`group relative cursor-pointer rounded-xl border p-5 transition-all duration-500 ${
                     isActive
                       ? `${lc.border} ${lc.muted} ${lc.glow}`
-                      : "border-border bg-card/40 hover:border-border hover:bg-card/70"
+                      : "border-border bg-card/40 hover:bg-card/70"
                   }`}
                 >
-                  {/* Step indicator */}
                   <div className="mb-3 flex items-center justify-between">
-                    <div className={`flex items-center gap-2`}>
+                    <div className="flex items-center gap-2">
                       <div className={`flex h-8 w-8 items-center justify-center rounded-lg ${
                         isActive ? `${lc.bg}/20` : "bg-secondary"
                       }`}>
@@ -279,15 +380,24 @@ const HeroFlow = () => {
                     {layer.subtitle}
                   </p>
 
-                  {/* Progress bar */}
+                  {layer.badge && isActive && (
+                    <motion.span
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className={`mt-2 inline-block rounded-md ${lc.bg}/20 px-2 py-0.5 text-[10px] font-bold uppercase ${lc.text}`}
+                    >
+                      {layer.badge}
+                    </motion.span>
+                  )}
+
                   {isActive && isAutoPlaying && (
                     <motion.div
                       className="absolute bottom-0 left-0 h-0.5 rounded-b-xl"
                       style={{ background: `hsl(var(--${layer.color}))` }}
                       initial={{ width: "0%" }}
                       animate={{ width: "100%" }}
-                      transition={{ duration: 4, ease: "linear" }}
-                      key={`progress-${activeLayer}-${Date.now()}`}
+                      transition={{ duration: 4.5, ease: "linear" }}
+                      key={`progress-${selectedInput}-${activeLayer}`}
                     />
                   )}
                 </motion.div>
@@ -298,7 +408,7 @@ const HeroFlow = () => {
           {/* Active Layer Detail Panel */}
           <AnimatePresence mode="wait">
             <motion.div
-              key={activeLayer}
+              key={`${selectedInput}-${activeLayer}`}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
@@ -311,25 +421,32 @@ const HeroFlow = () => {
                   <div className="mb-3 flex items-center gap-2">
                     <currentLayer.icon className={`h-5 w-5 ${cc.text}`} />
                     <h3 className="text-lg font-bold text-foreground">{currentLayer.title}</h3>
+                    {currentLayer.badge && (
+                      <span className={`rounded-md ${cc.bg}/20 px-2 py-0.5 text-[10px] font-bold uppercase ${cc.text}`}>
+                        {currentLayer.badge}
+                      </span>
+                    )}
                   </div>
-                  <p className="mb-4 text-sm text-muted-foreground">{currentLayer.description}</p>
+                  <p className="mb-4 text-sm leading-relaxed text-muted-foreground">{currentLayer.description}</p>
                   <div className={`rounded-lg border ${cc.border} bg-background/30 p-4`}>
-                    <p className={`text-xs font-medium ${cc.text}`}>
-                      <span className="font-bold">Key Insight:</span> {currentLayer.detail}
+                    <p className={`text-xs leading-relaxed font-medium ${cc.text}`}>
+                      <span className="font-bold">💡 Key Insight:</span> {currentLayer.detail}
                     </p>
                   </div>
 
-                  {/* Code-specific extras */}
-                  {selectedInput === "code" && activeLayer === 0 && (
+                  {/* Input-specific context callout */}
+                  {selectedInput === "code" && activeLayer === 1 && (
                     <motion.div
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      className="mt-4 flex items-center gap-2 rounded-lg border border-primary/20 bg-primary/5 px-3 py-2"
+                      className="mt-4 rounded-lg border border-execution/20 bg-execution-muted p-3"
                     >
-                      <Terminal className="h-4 w-4 text-primary" />
-                      <span className="text-xs text-muted-foreground">
-                        <strong className="text-foreground">VS Code Extension:</strong> Silverile reads your code and reverse-engineers intent
-                      </span>
+                      <p className="flex items-start gap-2 text-xs text-execution-foreground">
+                        <ArrowDownUp className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+                        <span>
+                          <strong>Bidirectional:</strong> Attach code to a story for feedback, or start from a story to generate code — Silverile works both ways.
+                        </span>
+                      </p>
                     </motion.div>
                   )}
                 </div>
@@ -337,23 +454,28 @@ const HeroFlow = () => {
                 {/* Right: Outputs */}
                 <div>
                   <span className="mb-3 block text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                    Generated Outputs
+                    {selectedInput === "code" && activeLayer === 1 ? "Code Intelligence Capabilities" : "Generated Outputs"}
                   </span>
                   <div className="space-y-2">
                     {currentLayer.outputs.map((output, i) => (
                       <motion.div
-                        key={output}
+                        key={output.label}
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: i * 0.1 }}
-                        className={`flex items-center gap-3 rounded-lg border ${cc.border} bg-background/20 px-4 py-2.5`}
+                        transition={{ delay: i * 0.08 }}
+                        className={`rounded-lg border ${cc.border} bg-background/20 px-4 py-2.5`}
                       >
-                        <CheckCircle2 className={`h-4 w-4 shrink-0 ${cc.text}`} />
-                        <span className="text-sm text-foreground">{output}</span>
-                        {i === 0 && (
-                          <span className={`ml-auto rounded-md px-2 py-0.5 text-[10px] font-bold uppercase ${cc.bg}/20 ${cc.text}`}>
-                            Primary
-                          </span>
+                        <div className="flex items-center gap-3">
+                          <CheckCircle2 className={`h-4 w-4 shrink-0 ${cc.text}`} />
+                          <span className="text-sm font-medium text-foreground">{output.label}</span>
+                          {i === 0 && (
+                            <span className={`ml-auto rounded-md px-2 py-0.5 text-[10px] font-bold uppercase ${cc.bg}/20 ${cc.text}`}>
+                              Primary
+                            </span>
+                          )}
+                        </div>
+                        {output.desc && (
+                          <p className="ml-7 mt-1 text-xs text-muted-foreground">{output.desc}</p>
                         )}
                       </motion.div>
                     ))}
@@ -361,7 +483,7 @@ const HeroFlow = () => {
                 </div>
               </div>
 
-              {/* Flow arrow */}
+              {/* Flow navigation */}
               {activeLayer < 3 && (
                 <div className="mt-6 flex items-center justify-center gap-2">
                   <div className={`h-px flex-1 ${cc.bg}/30`} />
@@ -369,7 +491,7 @@ const HeroFlow = () => {
                     onClick={() => handleLayerClick((activeLayer + 1) as LayerIndex)}
                     className={`flex items-center gap-1.5 rounded-full border ${cc.border} bg-background/50 px-4 py-1.5 text-xs font-medium ${cc.text} transition-all hover:bg-background/80`}
                   >
-                    Next: {LAYERS[activeLayer + 1].title}
+                    Next: {layers[activeLayer + 1].title}
                     <ArrowRight className="h-3 w-3" />
                   </button>
                   <div className={`h-px flex-1 ${cc.bg}/30`} />
@@ -399,8 +521,8 @@ const HeroFlow = () => {
             className="mt-8 pb-16 text-center"
           >
             <p className="text-sm text-muted-foreground">
-              Most AI tools <span className="font-semibold text-foreground">generate</span>. 
-              Silverile <span className="text-gradient-hero font-bold">verifies</span>. 
+              Most AI tools <span className="font-semibold text-foreground">generate</span>.
+              Silverile <span className="text-gradient-hero font-bold">verifies</span>.
               That's the moat.
             </p>
           </motion.div>
