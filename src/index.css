@@ -73,6 +73,73 @@
     --sidebar-border: 230 18% 18%;
     --sidebar-ring: 258 65% 58%;
   }
+
+  .light {
+    --background: 0 0% 98%;
+    --foreground: 222 20% 18%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 20% 18%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 20% 18%;
+
+    --primary: 213 55% 33%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 14% 93%;
+    --secondary-foreground: 222 20% 28%;
+
+    --muted: 220 14% 95%;
+    --muted-foreground: 220 10% 46%;
+
+    --accent: 213 40% 90%;
+    --accent-foreground: 213 55% 30%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 13% 87%;
+    --input: 220 13% 87%;
+    --ring: 213 55% 33%;
+
+    /* Silverile custom tokens – light */
+    --intent: 213 55% 33%;
+    --intent-foreground: 213 60% 25%;
+    --intent-muted: 213 30% 92%;
+
+    --execution: 210 60% 42%;
+    --execution-foreground: 210 65% 28%;
+    --execution-muted: 210 30% 92%;
+
+    --validation: 160 45% 38%;
+    --validation-foreground: 160 50% 25%;
+    --validation-muted: 160 25% 92%;
+
+    --feedback: 38 65% 48%;
+    --feedback-foreground: 38 70% 30%;
+    --feedback-muted: 38 30% 93%;
+
+    --glow-intent: 213 55% 45%;
+    --glow-execution: 210 60% 50%;
+    --glow-validation: 160 45% 45%;
+    --glow-feedback: 38 65% 55%;
+
+    --gradient-hero: linear-gradient(135deg, hsl(213 30% 95%), hsl(0 0% 98%) 50%, hsl(210 20% 96%));
+    --gradient-intent: linear-gradient(135deg, hsl(213 55% 33%), hsl(230 50% 40%));
+    --gradient-execution: linear-gradient(135deg, hsl(210 60% 42%), hsl(220 55% 48%));
+    --gradient-validation: linear-gradient(135deg, hsl(160 45% 38%), hsl(170 40% 36%));
+    --gradient-feedback: linear-gradient(135deg, hsl(38 65% 48%), hsl(28 60% 44%));
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 222 20% 28%;
+    --sidebar-primary: 213 55% 33%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 213 40% 90%;
+    --sidebar-accent-foreground: 213 55% 30%;
+    --sidebar-border: 220 13% 87%;
+    --sidebar-ring: 213 55% 33%;
+  }
 }
 
 @layer base {
@@ -103,7 +170,7 @@
   }
 
   .text-gradient-hero {
-    background: linear-gradient(135deg, hsl(258 80% 75%), hsl(210 80% 75%), hsl(160 70% 65%));
+    background: linear-gradient(135deg, hsl(var(--intent)), hsl(var(--execution)), hsl(var(--validation)));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -127,8 +194,8 @@
 
   .bg-grid {
     background-image:
-      linear-gradient(hsl(230 18% 18% / 0.5) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(230 18% 18% / 0.5) 1px, transparent 1px);
+      linear-gradient(hsl(var(--border) / 0.5) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(var(--border) / 0.5) 1px, transparent 1px);
     background-size: 60px 60px;
   }
 }

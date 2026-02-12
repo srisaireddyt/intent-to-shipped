@@ -1,5 +1,6 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useTheme } from "./ThemeProvider";
 import {
   FileText, Image, Code, CheckCircle2, Lightbulb,
   Zap, Shield, RefreshCw, Terminal, Brain,
@@ -148,14 +149,30 @@ const getFlowForInput = (input: InputType): LayerVisual[] => {
   ];
 };
 
-const LAYER_COLORS: Record<string, { hsl: string; hslLight: string }> = {
+const LAYER_COLORS_DARK: Record<string, { hsl: string; hslLight: string }> = {
   intent: { hsl: "258 65% 58%", hslLight: "258 80% 75%" },
   execution: { hsl: "210 70% 52%", hslLight: "210 80% 70%" },
   validation: { hsl: "160 55% 42%", hslLight: "160 70% 60%" },
   feedback: { hsl: "38 75% 55%", hslLight: "38 80% 68%" },
 };
 
+const LAYER_COLORS_LIGHT: Record<string, { hsl: string; hslLight: string }> = {
+  intent: { hsl: "213 55% 33%", hslLight: "213 55% 33%" },
+  execution: { hsl: "210 60% 42%", hslLight: "210 60% 42%" },
+  validation: { hsl: "160 45% 38%", hslLight: "160 45% 38%" },
+  feedback: { hsl: "38 65% 48%", hslLight: "38 65% 48%" },
+};
+
 const HeroFlow = () => {
+  const { theme } = useTheme();
+  const LAYER_COLORS = theme === "light" ? LAYER_COLORS_LIGHT : LAYER_COLORS_DARK;
+  const isLight = theme === "light";
+  const inactiveText = isLight ? "hsl(220 10% 46%)" : "hsl(225 12% 42%)";
+  const inactiveTextDim = isLight ? "hsl(220 10% 52%)" : "hsl(225 12% 38%)";
+  const inactiveTextMid = isLight ? "hsl(220 10% 42%)" : "hsl(225 12% 45%)";
+  const inactiveBg = isLight ? "hsl(220 14% 93%)" : "hsl(230 18% 16%)";
+  const cardBg = isLight ? "hsl(0 0% 100% / 0.85)" : "hsl(230 22% 11% / 0.7)";
+  const inactiveBorder = isLight ? "hsl(220 13% 87%)" : "hsl(230 18% 18%)";
   const [selectedInput, setSelectedInput] = useState<InputType>("text");
   const [activeLayer, setActiveLayer] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
@@ -282,7 +299,7 @@ const HeroFlow = () => {
                     y1="50%"
                     x2={`${12.5 + (i + 1) * 25 - 10}%`}
                     y2="50%"
-                    stroke={isActive ? `hsl(${toColor})` : "hsl(230 18% 22%)"}
+                    stroke={isActive ? `hsl(${toColor})` : inactiveBorder}
                     strokeWidth="2"
                     strokeDasharray="6 4"
                     initial={{ pathLength: 0 }}
@@ -311,8 +328,8 @@ const HeroFlow = () => {
                   >
                     <motion.div
                       animate={{
-                        borderColor: isActive ? `hsl(${lc.hsl} / 0.5)` : isPast ? `hsl(${lc.hsl} / 0.2)` : "hsl(230 18% 18%)",
-                        backgroundColor: isActive ? `hsl(${lc.hsl} / 0.08)` : "hsl(230 22% 11% / 0.7)",
+                        borderColor: isActive ? `hsl(${lc.hsl} / 0.5)` : isPast ? `hsl(${lc.hsl} / 0.2)` : inactiveBorder,
+                        backgroundColor: isActive ? `hsl(${lc.hsl} / 0.08)` : cardBg,
                       }}
                       transition={{ duration: 0.4 }}
                       className="relative rounded-2xl border p-4 backdrop-blur-sm md:p-5"
@@ -340,19 +357,19 @@ const HeroFlow = () => {
                               ? `hsl(${lc.hsl} / 0.2)`
                               : isPast
                               ? `hsl(${lc.hsl} / 0.1)`
-                              : "hsl(230 18% 16%)",
+                              : inactiveBg,
                           }}
                           className="flex h-10 w-10 items-center justify-center rounded-xl"
                         >
                           <Icon
                             className="h-5 w-5"
-                            style={{ color: isActive || isPast ? `hsl(${lc.hslLight})` : "hsl(225 12% 42%)" }}
+                            style={{ color: isActive || isPast ? `hsl(${lc.hslLight})` : inactiveText }}
                           />
                         </motion.div>
                         <div>
                           <div
                             className="text-[10px] font-bold uppercase tracking-widest"
-                            style={{ color: isActive || isPast ? `hsl(${lc.hslLight})` : "hsl(225 12% 42%)" }}
+                            style={{ color: isActive || isPast ? `hsl(${lc.hslLight})` : inactiveText }}
                           >
                             {layer.title}
                           </div>
@@ -430,11 +447,11 @@ const HeroFlow = () => {
                               >
                                 <NIcon
                                   className="h-3 w-3 shrink-0"
-                                  style={{ color: isActive ? `hsl(${lc.hslLight})` : "hsl(225 12% 38%)" }}
+                                  style={{ color: isActive ? `hsl(${lc.hslLight})` : inactiveTextDim }}
                                 />
                                 <span
                                   className="text-[10px] font-medium leading-tight md:text-[11px]"
-                                  style={{ color: isActive ? `hsl(${lc.hslLight})` : "hsl(225 12% 45%)" }}
+                                  style={{ color: isActive ? `hsl(${lc.hslLight})` : inactiveTextMid }}
                                 >
                                   {node.label}
                                 </span>

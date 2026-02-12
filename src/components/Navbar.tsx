@@ -1,7 +1,10 @@
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Sun, Moon } from "lucide-react";
+import { useTheme } from "./ThemeProvider";
 
 const Navbar = () => {
+  const { theme, toggleTheme } = useTheme();
+
   return (
     <motion.nav
       initial={{ y: -20, opacity: 0 }}
@@ -36,6 +39,13 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-3">
+          <button
+            onClick={toggleTheme}
+            className="flex h-9 w-9 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground"
+            aria-label="Toggle theme"
+          >
+            {theme === "dark" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+          </button>
           <button className="rounded-lg border border-border px-4 py-2 text-sm text-muted-foreground transition-colors hover:border-primary/50 hover:text-foreground">
             Sign In
           </button>
