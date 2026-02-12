@@ -22,12 +22,19 @@ interface NodeItem {
   label: string;
 }
 
+interface PairingVisual {
+  inputs: string[];
+  output: string;
+  desc: string;
+}
+
 interface LayerVisual {
   title: string;
   color: string;
   icon: typeof Lightbulb;
   nodes: NodeItem[];
   tagline: string;
+  pairings?: PairingVisual[];
 }
 
 const getFlowForInput = (input: InputType): LayerVisual[] => {
@@ -49,12 +56,17 @@ const getFlowForInput = (input: InputType): LayerVisual[] => {
         title: "Execution",
         color: "execution",
         icon: Zap,
-        tagline: "4 Intelligence Modes",
+        tagline: "Code + Story Pairing",
         nodes: [
-          { icon: GitCompare, label: "Code Feedback" },
+          { icon: GitCompare, label: "Code Relevance" },
           { icon: TestTube2, label: "Unit Tests" },
           { icon: Layers, label: "Integration Tests" },
           { icon: Wand2, label: "Copilot Prompts" },
+        ],
+        pairings: [
+          { inputs: ["Code", "Story"], output: "Code Relevance", desc: "Validates code against acceptance criteria" },
+          { inputs: ["Code", "Story"], output: "Test Scripts", desc: "Generates unit & integration tests" },
+          { inputs: ["Story"], output: "Copilot Prompt", desc: "Generates code via AI copilot" },
         ],
       },
       {
@@ -359,38 +371,78 @@ const HeroFlow = () => {
                         </div>
                       </div>
 
-                      {/* Node Grid */}
-                      <div className="grid grid-cols-2 gap-1.5">
-                        {layer.nodes.map((node, ni) => {
-                          const NIcon = node.icon;
-                          return (
+                      {/* Pairings visual (Code input, Execution layer) */}
+                      {isActive && layer.pairings ? (
+                        <div className="flex flex-col gap-1.5">
+                          {layer.pairings.map((p, pi) => (
                             <motion.div
-                              key={node.label}
-                              initial={false}
-                              animate={{
-                                opacity: isActive ? 1 : isPast ? 0.6 : 0.3,
-                                scale: isActive ? 1 : 0.95,
-                              }}
-                              transition={{ delay: isActive ? ni * 0.06 : 0, duration: 0.3 }}
+                              key={p.output}
+                              initial={{ opacity: 0, x: -8 }}
+                              animate={{ opacity: 1, x: 0 }}
+                              transition={{ delay: pi * 0.1, duration: 0.3 }}
                               className="flex items-center gap-1.5 rounded-lg px-2 py-1.5"
-                              style={{
-                                background: isActive ? `hsl(${lc.hsl} / 0.1)` : "transparent",
-                              }}
+                              style={{ background: `hsl(${lc.hsl} / 0.1)` }}
                             >
-                              <NIcon
-                                className="h-3 w-3 shrink-0"
-                                style={{ color: isActive ? `hsl(${lc.hslLight})` : "hsl(225 12% 38%)" }}
-                              />
+                              <div className="flex items-center gap-1">
+                                {p.inputs.map((inp, ii) => (
+                                  <span key={ii}>
+                                    {ii > 0 && <span className="mx-0.5 text-[9px] text-muted-foreground">+</span>}
+                                    <span
+                                      className="inline-block rounded border px-1.5 py-0.5 text-[9px] font-semibold"
+                                      style={{
+                                        borderColor: `hsl(${lc.hsl} / 0.3)`,
+                                        color: `hsl(${lc.hslLight})`,
+                                      }}
+                                    >
+                                      {inp}
+                                    </span>
+                                  </span>
+                                ))}
+                              </div>
+                              <ArrowRight className="h-2.5 w-2.5 shrink-0" style={{ color: `hsl(${lc.hslLight})` }} />
                               <span
-                                className="text-[10px] font-medium leading-tight md:text-[11px]"
-                                style={{ color: isActive ? `hsl(${lc.hslLight})` : "hsl(225 12% 45%)" }}
+                                className="text-[10px] font-semibold md:text-[11px]"
+                                style={{ color: `hsl(${lc.hslLight})` }}
                               >
-                                {node.label}
+                                {p.output}
                               </span>
                             </motion.div>
-                          );
-                        })}
-                      </div>
+                          ))}
+                        </div>
+                      ) : (
+                        /* Node Grid */
+                        <div className="grid grid-cols-2 gap-1.5">
+                          {layer.nodes.map((node, ni) => {
+                            const NIcon = node.icon;
+                            return (
+                              <motion.div
+                                key={node.label}
+                                initial={false}
+                                animate={{
+                                  opacity: isActive ? 1 : isPast ? 0.6 : 0.3,
+                                  scale: isActive ? 1 : 0.95,
+                                }}
+                                transition={{ delay: isActive ? ni * 0.06 : 0, duration: 0.3 }}
+                                className="flex items-center gap-1.5 rounded-lg px-2 py-1.5"
+                                style={{
+                                  background: isActive ? `hsl(${lc.hsl} / 0.1)` : "transparent",
+                                }}
+                              >
+                                <NIcon
+                                  className="h-3 w-3 shrink-0"
+                                  style={{ color: isActive ? `hsl(${lc.hslLight})` : "hsl(225 12% 38%)" }}
+                                />
+                                <span
+                                  className="text-[10px] font-medium leading-tight md:text-[11px]"
+                                  style={{ color: isActive ? `hsl(${lc.hslLight})` : "hsl(225 12% 45%)" }}
+                                >
+                                  {node.label}
+                                </span>
+                              </motion.div>
+                            );
+                          })}
+                        </div>
+                      )}
 
                       {/* Active check */}
                       {isPast && (
