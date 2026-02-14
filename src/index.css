@@ -6,138 +6,138 @@
 
 @layer base {
   :root {
-    --background: 230 25% 7%;
-    --foreground: 220 20% 92%;
+    --background: 220 20% 7%;
+    --foreground: 215 20% 92%;
 
-    --card: 230 22% 11%;
-    --card-foreground: 220 20% 92%;
+    --card: 220 18% 11%;
+    --card-foreground: 215 20% 92%;
 
-    --popover: 230 22% 11%;
-    --popover-foreground: 220 20% 92%;
+    --popover: 220 18% 11%;
+    --popover-foreground: 215 20% 92%;
 
-    --primary: 258 65% 58%;
+    --primary: 213 55% 38%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 230 20% 16%;
-    --secondary-foreground: 220 20% 85%;
+    --secondary: 220 16% 16%;
+    --secondary-foreground: 215 18% 85%;
 
-    --muted: 230 18% 14%;
-    --muted-foreground: 225 12% 52%;
+    --muted: 220 14% 14%;
+    --muted-foreground: 215 12% 50%;
 
-    --accent: 258 45% 22%;
-    --accent-foreground: 258 80% 80%;
+    --accent: 213 40% 22%;
+    --accent-foreground: 213 70% 78%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 72% 55%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 230 18% 18%;
-    --input: 230 18% 18%;
-    --ring: 258 65% 58%;
+    --border: 220 14% 18%;
+    --input: 220 14% 18%;
+    --ring: 213 55% 38%;
 
     --radius: 0.75rem;
 
-    /* Silverile custom tokens */
-    --intent: 258 65% 58%;
-    --intent-foreground: 258 90% 88%;
-    --intent-muted: 258 40% 18%;
+    /* Silverile brand tokens */
+    --intent: 213 55% 48%;
+    --intent-foreground: 213 80% 85%;
+    --intent-muted: 213 35% 16%;
 
-    --execution: 210 70% 52%;
-    --execution-foreground: 210 90% 88%;
-    --execution-muted: 210 40% 16%;
+    --execution: 200 60% 44%;
+    --execution-foreground: 200 75% 85%;
+    --execution-muted: 200 30% 14%;
 
-    --validation: 160 55% 42%;
-    --validation-foreground: 160 80% 80%;
-    --validation-muted: 160 35% 14%;
+    --validation: 152 50% 40%;
+    --validation-foreground: 152 65% 78%;
+    --validation-muted: 152 30% 13%;
 
-    --feedback: 38 75% 55%;
-    --feedback-foreground: 38 90% 88%;
-    --feedback-muted: 38 35% 14%;
+    --feedback: 35 70% 50%;
+    --feedback-foreground: 35 80% 85%;
+    --feedback-muted: 35 30% 14%;
 
-    --glow-intent: 258 80% 65%;
-    --glow-execution: 210 80% 60%;
-    --glow-validation: 160 70% 50%;
-    --glow-feedback: 38 80% 60%;
+    --glow-intent: 213 65% 55%;
+    --glow-execution: 200 65% 52%;
+    --glow-validation: 152 55% 48%;
+    --glow-feedback: 35 75% 55%;
 
-    --gradient-hero: linear-gradient(135deg, hsl(258 65% 12%), hsl(230 25% 7%) 50%, hsl(210 40% 10%));
-    --gradient-intent: linear-gradient(135deg, hsl(258 65% 58%), hsl(280 60% 50%));
-    --gradient-execution: linear-gradient(135deg, hsl(210 70% 52%), hsl(230 65% 55%));
-    --gradient-validation: linear-gradient(135deg, hsl(160 55% 42%), hsl(180 50% 40%));
-    --gradient-feedback: linear-gradient(135deg, hsl(38 75% 55%), hsl(25 70% 50%));
+    --gradient-hero: linear-gradient(135deg, hsl(213 40% 10%), hsl(220 20% 7%) 50%, hsl(200 30% 9%));
+    --gradient-intent: linear-gradient(135deg, hsl(213 55% 48%), hsl(225 50% 45%));
+    --gradient-execution: linear-gradient(135deg, hsl(200 60% 44%), hsl(215 55% 48%));
+    --gradient-validation: linear-gradient(135deg, hsl(152 50% 40%), hsl(165 45% 38%));
+    --gradient-feedback: linear-gradient(135deg, hsl(35 70% 50%), hsl(25 65% 46%));
 
-    --sidebar-background: 230 22% 11%;
-    --sidebar-foreground: 220 20% 85%;
-    --sidebar-primary: 258 65% 58%;
+    --sidebar-background: 220 18% 11%;
+    --sidebar-foreground: 215 18% 85%;
+    --sidebar-primary: 213 55% 38%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 258 45% 22%;
-    --sidebar-accent-foreground: 258 80% 80%;
-    --sidebar-border: 230 18% 18%;
-    --sidebar-ring: 258 65% 58%;
+    --sidebar-accent: 213 40% 22%;
+    --sidebar-accent-foreground: 213 70% 78%;
+    --sidebar-border: 220 14% 18%;
+    --sidebar-ring: 213 55% 38%;
   }
 
   .light {
     --background: 0 0% 98%;
-    --foreground: 222 20% 18%;
+    --foreground: 215 25% 16%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222 20% 18%;
+    --card-foreground: 215 25% 16%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222 20% 18%;
+    --popover-foreground: 215 25% 16%;
 
     --primary: 213 55% 33%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 14% 93%;
-    --secondary-foreground: 222 20% 28%;
+    --secondary: 215 14% 93%;
+    --secondary-foreground: 215 20% 28%;
 
-    --muted: 220 14% 95%;
-    --muted-foreground: 220 10% 46%;
+    --muted: 215 14% 95%;
+    --muted-foreground: 215 10% 44%;
 
-    --accent: 213 40% 90%;
-    --accent-foreground: 213 55% 30%;
+    --accent: 213 35% 90%;
+    --accent-foreground: 213 55% 28%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 13% 87%;
-    --input: 220 13% 87%;
+    --border: 215 13% 87%;
+    --input: 215 13% 87%;
     --ring: 213 55% 33%;
 
-    /* Silverile custom tokens – light */
+    /* Silverile brand tokens – light */
     --intent: 213 55% 33%;
-    --intent-foreground: 213 60% 25%;
-    --intent-muted: 213 30% 92%;
+    --intent-foreground: 213 60% 22%;
+    --intent-muted: 213 25% 93%;
 
-    --execution: 210 60% 42%;
-    --execution-foreground: 210 65% 28%;
-    --execution-muted: 210 30% 92%;
+    --execution: 200 50% 38%;
+    --execution-foreground: 200 55% 25%;
+    --execution-muted: 200 25% 93%;
 
-    --validation: 160 45% 38%;
-    --validation-foreground: 160 50% 25%;
-    --validation-muted: 160 25% 92%;
+    --validation: 152 42% 35%;
+    --validation-foreground: 152 48% 22%;
+    --validation-muted: 152 22% 93%;
 
-    --feedback: 38 65% 48%;
-    --feedback-foreground: 38 70% 30%;
-    --feedback-muted: 38 30% 93%;
+    --feedback: 35 60% 45%;
+    --feedback-foreground: 35 65% 28%;
+    --feedback-muted: 35 25% 93%;
 
-    --glow-intent: 213 55% 45%;
-    --glow-execution: 210 60% 50%;
-    --glow-validation: 160 45% 45%;
-    --glow-feedback: 38 65% 55%;
+    --glow-intent: 213 55% 42%;
+    --glow-execution: 200 50% 45%;
+    --glow-validation: 152 42% 42%;
+    --glow-feedback: 35 60% 52%;
 
-    --gradient-hero: linear-gradient(135deg, hsl(213 30% 95%), hsl(0 0% 98%) 50%, hsl(210 20% 96%));
-    --gradient-intent: linear-gradient(135deg, hsl(213 55% 33%), hsl(230 50% 40%));
-    --gradient-execution: linear-gradient(135deg, hsl(210 60% 42%), hsl(220 55% 48%));
-    --gradient-validation: linear-gradient(135deg, hsl(160 45% 38%), hsl(170 40% 36%));
-    --gradient-feedback: linear-gradient(135deg, hsl(38 65% 48%), hsl(28 60% 44%));
+    --gradient-hero: linear-gradient(135deg, hsl(213 25% 95%), hsl(0 0% 98%) 50%, hsl(200 18% 96%));
+    --gradient-intent: linear-gradient(135deg, hsl(213 55% 33%), hsl(225 48% 38%));
+    --gradient-execution: linear-gradient(135deg, hsl(200 50% 38%), hsl(215 48% 42%));
+    --gradient-validation: linear-gradient(135deg, hsl(152 42% 35%), hsl(165 38% 33%));
+    --gradient-feedback: linear-gradient(135deg, hsl(35 60% 45%), hsl(25 55% 42%));
 
     --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 222 20% 28%;
+    --sidebar-foreground: 215 20% 28%;
     --sidebar-primary: 213 55% 33%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 213 40% 90%;
-    --sidebar-accent-foreground: 213 55% 30%;
-    --sidebar-border: 220 13% 87%;
+    --sidebar-accent: 213 35% 90%;
+    --sidebar-accent-foreground: 213 55% 28%;
+    --sidebar-border: 215 13% 87%;
     --sidebar-ring: 213 55% 33%;
   }
 }
@@ -177,19 +177,19 @@
   }
 
   .glow-intent {
-    box-shadow: 0 0 30px -5px hsl(258 80% 65% / 0.35);
+    box-shadow: 0 0 30px -5px hsl(213 65% 55% / 0.35);
   }
 
   .glow-execution {
-    box-shadow: 0 0 30px -5px hsl(210 80% 60% / 0.35);
+    box-shadow: 0 0 30px -5px hsl(200 65% 52% / 0.35);
   }
 
   .glow-validation {
-    box-shadow: 0 0 30px -5px hsl(160 70% 50% / 0.35);
+    box-shadow: 0 0 30px -5px hsl(152 55% 48% / 0.35);
   }
 
   .glow-feedback {
-    box-shadow: 0 0 30px -5px hsl(38 80% 60% / 0.35);
+    box-shadow: 0 0 30px -5px hsl(35 75% 55% / 0.35);
   }
 
   .bg-grid {
