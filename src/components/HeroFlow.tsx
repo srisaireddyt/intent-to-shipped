@@ -52,21 +52,31 @@ const TRANSFORMATIONS: Transformation[] = [
     color: "intent",
     number: "01",
     input: {
-      label: "Text Input",
+      label: "Requirement → Story",
       icon: FileText,
       content: (
         <div className="rounded-xl border border-border bg-muted/30 p-5">
+          <div className="mb-3 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/50">
+            <span className="inline-flex h-5 items-center rounded-md border border-border bg-muted/50 px-2 font-mono">SPRINT-24</span>
+            <span>•</span>
+            <span>Backlog Item</span>
+          </div>
           <p className="font-mono text-xs leading-relaxed text-foreground/80 sm:text-sm">
-            "As a customer, I want to request a refund for a failed payment so that I can recover my funds within 48 hours."
+            "Implement refund workflow — customer-initiated, auto-validate payment status, enforce 48hr SLA, notify via email + webhook."
           </p>
+          <div className="mt-3 flex flex-wrap gap-1.5">
+            <span className="rounded-md border border-border bg-muted/40 px-2 py-0.5 text-[9px] font-medium text-muted-foreground">Payments</span>
+            <span className="rounded-md border border-border bg-muted/40 px-2 py-0.5 text-[9px] font-medium text-muted-foreground">Priority: High</span>
+            <span className="rounded-md border border-border bg-muted/40 px-2 py-0.5 text-[9px] font-medium text-muted-foreground">Epic: Billing v2</span>
+          </div>
         </div>
       ),
     },
     process: [
       "StoryCraft AI parsing business intent",
-      "Structuring into verifiable requirements",
+      "Cross-referencing sprint backlog & velocity",
       "Generating acceptance criteria & edge cases",
-      "Cross-referencing backlog & sprint context",
+      "Linking dependencies across epics",
     ],
     output: {
       label: "Verified Requirement Artifact",
@@ -85,49 +95,64 @@ const TRANSFORMATIONS: Transformation[] = [
     color: "execution",
     number: "02",
     input: {
-      label: "Design Input",
+      label: "Design → Requirements",
       icon: Image,
       content: (
         <div className="rounded-xl border border-border bg-muted/30 p-5">
-          {/* Fake wireframe — refund flow */}
+          <div className="mb-3 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/50">
+            <span className="inline-flex h-5 items-center rounded-md border border-border bg-muted/50 px-2 font-mono">FIGMA</span>
+            <span>•</span>
+            <span>Refund Flow Screen</span>
+          </div>
+          {/* Wireframe: refund flow UI */}
           <div className="flex flex-col gap-2">
-            <div className="h-3 w-28 rounded bg-muted-foreground/15" />
+            <div className="flex items-center gap-2">
+              <div className="h-2.5 w-3 rounded-sm bg-muted-foreground/20" />
+              <div className="h-2.5 w-20 rounded bg-muted-foreground/12" />
+              <div className="ml-auto h-2.5 w-12 rounded bg-muted-foreground/12" />
+            </div>
             <div className="flex gap-2">
-              <div className="h-20 w-1/2 rounded-lg border border-border bg-muted/50 flex items-center justify-center">
-                <Layers className="h-6 w-6 text-muted-foreground/30" />
+              <div className="flex h-16 w-1/3 flex-col items-center justify-center rounded-lg border border-border bg-muted/50 gap-1">
+                <div className="h-5 w-5 rounded-full border border-muted-foreground/20" />
+                <div className="h-1.5 w-10 rounded bg-muted-foreground/15" />
               </div>
-              <div className="flex w-1/2 flex-col gap-1.5">
-                <div className="h-2.5 w-full rounded bg-muted-foreground/12" />
-                <div className="h-2.5 w-3/4 rounded bg-muted-foreground/12" />
-                <div className="h-2.5 w-5/6 rounded bg-muted-foreground/12" />
-                <div className="mt-auto h-6 w-20 rounded-md bg-muted-foreground/15" />
+              <div className="flex h-16 w-1/3 flex-col items-center justify-center rounded-lg border border-border bg-muted/50 gap-1">
+                <Layers className="h-4 w-4 text-muted-foreground/20" />
+                <div className="h-1.5 w-10 rounded bg-muted-foreground/15" />
+              </div>
+              <div className="flex h-16 w-1/3 flex-col items-center justify-center rounded-lg border border-border bg-muted/50 gap-1">
+                <CheckCircle2 className="h-4 w-4 text-muted-foreground/20" />
+                <div className="h-1.5 w-10 rounded bg-muted-foreground/15" />
               </div>
             </div>
             <div className="flex gap-1.5">
-              <div className="h-8 flex-1 rounded-md border border-border bg-muted/40" />
-              <div className="h-8 flex-1 rounded-md border border-border bg-muted/40" />
-              <div className="h-8 flex-1 rounded-md border border-border bg-muted/40" />
+              <div className="h-7 flex-1 rounded-md border border-border bg-muted/40 flex items-center justify-center">
+                <span className="text-[8px] text-muted-foreground/30">Cancel</span>
+              </div>
+              <div className="h-7 flex-1 rounded-md bg-muted-foreground/15 flex items-center justify-center">
+                <span className="text-[8px] text-muted-foreground/40">Submit Refund</span>
+              </div>
             </div>
           </div>
         </div>
       ),
     },
     process: [
-      "Extracting UI components & user flows",
-      "Inferring business rules from layout",
-      "Detecting implicit API dependencies",
-      "Mapping to verifiable requirements",
+      "Extracting UI flow & state transitions",
+      "Inferring API contracts from interactions",
+      "Mapping to existing backlog stories",
+      "Detecting missing validation & error states",
     ],
     output: {
       label: "Design-to-Requirement Intelligence",
       items: [
         { icon: FileCheck, text: "Functional Requirements (8 extracted)" },
-        { icon: Cpu, text: "Backend Implications (3 flagged)" },
+        { icon: Cpu, text: "Backend Dependencies (3 flagged)" },
         { icon: Zap, text: "API Contracts (2 endpoints inferred)" },
-        { icon: AlertTriangle, text: "UX Edge Cases (5 detected)" },
+        { icon: AlertTriangle, text: "Missing States (5 detected)" },
         { icon: Wand2, text: "Copilot Prompt (design-aligned)" },
       ],
-      tags: ["Design-Verified", "Implementation-Ready"],
+      tags: ["Design-Verified", "SDLC-Linked"],
     },
   },
   {
@@ -135,26 +160,37 @@ const TRANSFORMATIONS: Transformation[] = [
     color: "validation",
     number: "03",
     input: {
-      label: "Code Input",
+      label: "Code → Verification",
       icon: Code,
       content: (
         <div className="rounded-xl border border-border bg-muted/30 p-5">
+          <div className="mb-3 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/50">
+            <span className="inline-flex h-5 items-center rounded-md border border-border bg-muted/50 px-2 font-mono">PR #847</span>
+            <span>•</span>
+            <span>feat/refund-workflow</span>
+          </div>
           <pre className="overflow-x-auto font-mono text-[11px] leading-relaxed text-foreground/80 sm:text-xs">
             <code>{`app.post('/refund', async (req, res) => {
   const { paymentId } = req.body;
-  // Missing: input validation
-  // Missing: error handling
+  // TODO: input validation
+  // TODO: error handling
   await stripe.refunds.create({
     payment_intent: paymentId
   });
   res.sendStatus(200);
 });`}</code>
           </pre>
+          <div className="mt-2 flex items-center gap-2 text-[9px] text-muted-foreground/50">
+            <span className="text-validation">+47</span>
+            <span className="text-destructive">-3</span>
+            <span>•</span>
+            <span>Linked to STORY-1024</span>
+          </div>
         </div>
       ),
     },
     process: [
-      "Reverse-engineering intent from code",
+      "Linking PR to story acceptance criteria",
       "AST structural + LLM semantic analysis",
       "Detecting scope creep & coverage gaps",
       "Generating missing tests & copilot prompts",
