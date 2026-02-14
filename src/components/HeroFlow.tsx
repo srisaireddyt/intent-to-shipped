@@ -57,26 +57,27 @@ const TRANSFORMATIONS: Transformation[] = [
       content: (
         <div className="rounded-xl border border-border bg-muted/30 p-5">
           <p className="font-mono text-xs leading-relaxed text-foreground/80 sm:text-sm">
-            "Add Stripe payment integration with refund support and webhook validation."
+            "As a customer, I want to request a refund for a failed payment so that I can recover my funds within 48 hours."
           </p>
         </div>
       ),
     },
     process: [
-      "Parsing natural language intent",
-      "Structuring into requirements",
-      "Generating edge cases & tests",
-      "Validating completeness",
+      "StoryCraft AI parsing business intent",
+      "Structuring into verifiable requirements",
+      "Generating acceptance criteria & edge cases",
+      "Cross-referencing backlog & sprint context",
     ],
     output: {
-      label: "Structured Execution Artifact",
+      label: "Verified Requirement Artifact",
       items: [
-        { icon: BookOpen, text: "User Story with clear scope" },
+        { icon: BookOpen, text: "User Story with scope & intent" },
         { icon: ListChecks, text: "Acceptance Criteria (7 defined)" },
         { icon: AlertTriangle, text: "Edge Cases (4 identified)" },
         { icon: TestTube2, text: "Test Scenarios (12 generated)" },
+        { icon: Wand2, text: "Copilot Prompt (implementation-ready)" },
       ],
-      tags: ["Structured", "Validated", "Complete"],
+      tags: ["Intent-Verified", "Sprint-Aware", "Actionable"],
     },
   },
   {
@@ -88,9 +89,9 @@ const TRANSFORMATIONS: Transformation[] = [
       icon: Image,
       content: (
         <div className="rounded-xl border border-border bg-muted/30 p-5">
-          {/* Fake wireframe */}
+          {/* Fake wireframe — refund flow */}
           <div className="flex flex-col gap-2">
-            <div className="h-3 w-24 rounded bg-muted-foreground/15" />
+            <div className="h-3 w-28 rounded bg-muted-foreground/15" />
             <div className="flex gap-2">
               <div className="h-20 w-1/2 rounded-lg border border-border bg-muted/50 flex items-center justify-center">
                 <Layers className="h-6 w-6 text-muted-foreground/30" />
@@ -112,19 +113,21 @@ const TRANSFORMATIONS: Transformation[] = [
       ),
     },
     process: [
-      "Analyzing visual layout & hierarchy",
-      "Extracting UI components & patterns",
-      "Inferring business logic from design",
-      "Mapping functional requirements",
+      "Extracting UI components & user flows",
+      "Inferring business rules from layout",
+      "Detecting implicit API dependencies",
+      "Mapping to verifiable requirements",
     ],
     output: {
-      label: "Executable Requirement Extraction",
+      label: "Design-to-Requirement Intelligence",
       items: [
         { icon: FileCheck, text: "Functional Requirements (8 extracted)" },
         { icon: Cpu, text: "Backend Implications (3 flagged)" },
-        { icon: Zap, text: "API Considerations (2 endpoints)" },
+        { icon: Zap, text: "API Contracts (2 endpoints inferred)" },
         { icon: AlertTriangle, text: "UX Edge Cases (5 detected)" },
+        { icon: Wand2, text: "Copilot Prompt (design-aligned)" },
       ],
+      tags: ["Design-Verified", "Implementation-Ready"],
     },
   },
   {
@@ -152,19 +155,20 @@ const TRANSFORMATIONS: Transformation[] = [
     },
     process: [
       "Reverse-engineering intent from code",
-      "Validating against acceptance criteria",
-      "Detecting coverage gaps & risks",
-      "Generating missing test cases",
+      "AST structural + LLM semantic analysis",
+      "Detecting scope creep & coverage gaps",
+      "Generating missing tests & copilot prompts",
     ],
     output: {
-      label: "Code Alignment & Test Generation",
+      label: "Code Verification & Intelligence",
       items: [
         { icon: TestTube2, text: "Unit Tests (6 generated)" },
         { icon: Layers, text: "Integration Tests (3 generated)" },
-        { icon: Search, text: "Improvement Suggestions (4 found)" },
+        { icon: Search, text: "Scope Creep Flags (2 detected)" },
+        { icon: Wand2, text: "Copilot Prompt (fix & complete)" },
       ],
       metrics: [
-        { label: "Alignment Score", value: "82%", status: "warn" },
+        { label: "Intent Alignment", value: "82%", status: "warn" },
         { label: "Missing Criteria", value: "2", status: "error" },
         { label: "Risk Flags", value: "1", status: "warn" },
       ],
@@ -175,26 +179,26 @@ const TRANSFORMATIONS: Transformation[] = [
 /* ── Code Pairing Data ── */
 const CODE_PAIRED_PROCESS = [
   "Mapping code to story acceptance criteria",
-  "Scoring implementation completeness",
-  "Generating paired test scripts",
-  "Creating AI copilot prompts from story",
+  "Scoring intent-to-implementation alignment",
+  "Generating story-paired test scripts",
+  "Creating AI copilot prompts from story context",
 ];
 
 const CODE_PAIRED_OUTPUT = {
-  label: "Story-Paired Intelligence",
+  label: "Story-Paired Verification",
   items: [
-    { icon: GitCompare, text: "Code Relevance Score: 91%" },
+    { icon: GitCompare, text: "Intent Alignment Score: 91%" },
     { icon: Target, text: "Criteria Coverage: 5/7 matched" },
     { icon: TestTube2, text: "Paired Unit Tests (9 generated)" },
     { icon: Layers, text: "Paired Integration Tests (5 generated)" },
-    { icon: Wand2, text: "Copilot Prompt (auto-generated)" },
+    { icon: Wand2, text: "Copilot Prompt (story-aligned fix)" },
   ] as OutputItem[],
   metrics: [
-    { label: "Relevance", value: "91%", status: "ok" as const },
+    { label: "Alignment", value: "91%", status: "ok" as const },
     { label: "Matched", value: "5/7", status: "warn" as const },
     { label: "Gaps", value: "2", status: "error" as const },
   ] as Metric[],
-  tags: ["Story-Paired", "Verified", "Actionable"],
+  tags: ["Story-Paired", "Intent-Verified", "Actionable"],
 };
 
 /* ── Single Transformation Card (no outer header — tabs handle context) ── */
@@ -642,11 +646,11 @@ const HeroFlow = () => {
         >
           <p className="mx-auto max-w-2xl text-sm text-muted-foreground sm:text-base md:text-lg">
             Traditional tools{" "}
-            <span className="font-semibold text-foreground">track tasks</span>. Silverile{" "}
+            <span className="font-semibold text-foreground">track what you build</span>. Silverile{" "}
             <span className="text-gradient-hero font-bold">
-              understands intent, validates execution, and strengthens delivery
-            </span>{" "}
-            across your SDLC.
+              verifies that what you ship matches what you intended
+            </span>
+            — closing the gap between requirements and reality.
           </p>
         </motion.div>
       </div>
