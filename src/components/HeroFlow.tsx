@@ -505,9 +505,49 @@ const TransformationSection = ({
   );
 };
 
+/* ── Step Indicator ── */
+const StepIndicator = ({
+  steps,
+  active,
+  onSelect,
+}: {
+  steps: Transformation[];
+  active: number;
+  onSelect: (i: number) => void;
+}) => (
+  <div className="flex items-center justify-center gap-2">
+    {steps.map((s, i) => {
+      const Icon = s.input.icon;
+      const isActive = i === active;
+      return (
+        <button
+          key={s.id}
+          onClick={() => onSelect(i)}
+          className="group flex items-center gap-2 rounded-full border px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-all"
+          style={{
+            borderColor: isActive ? `hsl(var(--${s.color}) / 0.5)` : "hsl(var(--border))",
+            background: isActive ? `hsl(var(--${s.color}) / 0.1)` : "transparent",
+            color: isActive ? `hsl(var(--${s.color}))` : "hsl(var(--muted-foreground))",
+          }}
+        >
+          <Icon className="h-3.5 w-3.5" />
+          <span className="hidden sm:inline">{s.input.label}</span>
+          <span className="sm:hidden">{s.number}</span>
+        </button>
+      );
+    })}
+  </div>
+);
+
 /* ── Main Hero ── */
 const HeroFlow = () => {
   const [storyPaired, setStoryPaired] = useState(false);
+  const [activeStep, setActiveStep] = useState(0);
+
+  const currentT = TRANSFORMATIONS[activeStep];
+
+  const goNext = () => setActiveStep((p) => Math.min(p + 1, TRANSFORMATIONS.length - 1));
+  const goPrev = () => setActiveStep((p) => Math.max(p - 1, 0));
 
   return (
     <section className="relative overflow-hidden pt-20 pb-16 lg:pt-24">
@@ -521,7 +561,7 @@ const HeroFlow = () => {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7 }}
-          className="mb-16 text-center lg:mb-20"
+          className="mb-12 text-center lg:mb-16"
         >
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-secondary/50 px-4 py-1.5 text-xs font-medium text-muted-foreground">
             <Brain className="h-3.5 w-3.5 text-primary" />
@@ -537,17 +577,65 @@ const HeroFlow = () => {
           </p>
         </motion.div>
 
-        {/* Transformation Sections */}
+        {/* Step Tabs */}
+        <div className="mb-8">
+          <StepIndicator steps={TRANSFORMATIONS} active={activeStep} onSelect={setActiveStep} />
+        </div>
+
+        {/* Single Card at a time */}
         <div className="mx-auto max-w-5xl">
-          {TRANSFORMATIONS.map((t, i) => (
-            <TransformationSection
-              key={t.id}
-              t={t}
-              index={i}
-              storyPaired={t.id === "code" ? storyPaired : undefined}
-              onTogglePairing={t.id === "code" ? () => setStoryPaired((p) => !p) : undefined}
-            />
-          ))}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentT.id}
+              initial={{ opacity: 0, y: 30, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -20, scale: 0.98 }}
+              transition={{ duration: 0.4, ease: "easeInOut" }}
+            >
+              <TransformationSection
+                t={currentT}
+                index={activeStep}
+                storyPaired={currentT.id === "code" ? storyPaired : undefined}
+                onTogglePairing={currentT.id === "code" ? () => setStoryPaired((p) => !p) : undefined}
+              />
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Navigation Arrows */}
+          <div className="mt-8 flex items-center justify-between">
+            <button
+              onClick={goPrev}
+              disabled={activeStep === 0}
+              className="flex items-center gap-2 rounded-xl border border-border px-5 py-2.5 text-sm font-medium text-muted-foreground transition-all hover:border-primary/30 hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed"
+            >
+              <ArrowRight className="h-4 w-4 rotate-180" />
+              Previous
+            </button>
+
+            <div className="flex items-center gap-1.5">
+              {TRANSFORMATIONS.map((_, i) => (
+                <div
+                  key={i}
+                  className="h-1.5 rounded-full transition-all duration-300"
+                  style={{
+                    width: i === activeStep ? "24px" : "8px",
+                    background: i === activeStep
+                      ? `hsl(var(--${TRANSFORMATIONS[i].color}))`
+                      : "hsl(var(--muted-foreground) / 0.2)",
+                  }}
+                />
+              ))}
+            </div>
+
+            <button
+              onClick={goNext}
+              disabled={activeStep === TRANSFORMATIONS.length - 1}
+              className="flex items-center gap-2 rounded-xl border border-border px-5 py-2.5 text-sm font-medium text-muted-foreground transition-all hover:border-primary/30 hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed"
+            >
+              Next
+              <ArrowRight className="h-4 w-4" />
+            </button>
+          </div>
         </div>
 
         {/* Bottom Statement */}
