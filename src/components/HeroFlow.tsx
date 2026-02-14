@@ -521,7 +521,7 @@ const StepTabs = ({
                   ? `hsl(var(--${s.color}) / 0.4)`
                   : "hsl(var(--border))",
                 background: isActive
-                  ? `hsl(var(--${s.color}) / 0.12)`
+                  ? `hsl(var(--${s.color}) / 0.08)`
                   : "transparent",
                 color: isActive
                   ? `hsl(var(--${s.color}))`
@@ -534,8 +534,8 @@ const StepTabs = ({
               {isActive && (
                 <motion.div
                   layoutId="step-glow"
-                  className="absolute -inset-1 rounded-full opacity-20"
-                  style={{ background: `hsl(var(--${s.color}))`, filter: "blur(8px)" }}
+                  className="absolute -inset-1 rounded-full opacity-10"
+                  style={{ background: `hsl(var(--${s.color}))`, filter: "blur(12px)" }}
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 />
               )}
