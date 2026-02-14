@@ -6,75 +6,6 @@
 
 @layer base {
   :root {
-    --background: 220 20% 7%;
-    --foreground: 215 20% 92%;
-
-    --card: 220 18% 11%;
-    --card-foreground: 215 20% 92%;
-
-    --popover: 220 18% 11%;
-    --popover-foreground: 215 20% 92%;
-
-    --primary: 213 55% 38%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 220 16% 16%;
-    --secondary-foreground: 215 18% 85%;
-
-    --muted: 220 14% 14%;
-    --muted-foreground: 215 12% 50%;
-
-    --accent: 213 40% 22%;
-    --accent-foreground: 213 70% 78%;
-
-    --destructive: 0 72% 55%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 220 14% 18%;
-    --input: 220 14% 18%;
-    --ring: 213 55% 38%;
-
-    --radius: 0.75rem;
-
-    /* Silverile brand tokens */
-    --intent: 213 55% 48%;
-    --intent-foreground: 213 80% 85%;
-    --intent-muted: 213 35% 16%;
-
-    --execution: 200 60% 44%;
-    --execution-foreground: 200 75% 85%;
-    --execution-muted: 200 30% 14%;
-
-    --validation: 152 50% 40%;
-    --validation-foreground: 152 65% 78%;
-    --validation-muted: 152 30% 13%;
-
-    --feedback: 35 70% 50%;
-    --feedback-foreground: 35 80% 85%;
-    --feedback-muted: 35 30% 14%;
-
-    --glow-intent: 213 65% 55%;
-    --glow-execution: 200 65% 52%;
-    --glow-validation: 152 55% 48%;
-    --glow-feedback: 35 75% 55%;
-
-    --gradient-hero: linear-gradient(135deg, hsl(213 40% 10%), hsl(220 20% 7%) 50%, hsl(200 30% 9%));
-    --gradient-intent: linear-gradient(135deg, hsl(213 55% 48%), hsl(225 50% 45%));
-    --gradient-execution: linear-gradient(135deg, hsl(200 60% 44%), hsl(215 55% 48%));
-    --gradient-validation: linear-gradient(135deg, hsl(152 50% 40%), hsl(165 45% 38%));
-    --gradient-feedback: linear-gradient(135deg, hsl(35 70% 50%), hsl(25 65% 46%));
-
-    --sidebar-background: 220 18% 11%;
-    --sidebar-foreground: 215 18% 85%;
-    --sidebar-primary: 213 55% 38%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 213 40% 22%;
-    --sidebar-accent-foreground: 213 70% 78%;
-    --sidebar-border: 220 14% 18%;
-    --sidebar-ring: 213 55% 38%;
-  }
-
-  .light {
     --background: 0 0% 98%;
     --foreground: 215 25% 16%;
 
@@ -102,6 +33,8 @@
     --border: 215 13% 87%;
     --input: 215 13% 87%;
     --ring: 213 55% 33%;
+
+    --radius: 0.75rem;
 
     /* Silverile brand tokens – light */
     --intent: 213 55% 33%;
@@ -139,6 +72,73 @@
     --sidebar-accent-foreground: 213 55% 28%;
     --sidebar-border: 215 13% 87%;
     --sidebar-ring: 213 55% 33%;
+  }
+
+  .dark {
+    --background: 220 20% 7%;
+    --foreground: 215 20% 92%;
+
+    --card: 220 18% 11%;
+    --card-foreground: 215 20% 92%;
+
+    --popover: 220 18% 11%;
+    --popover-foreground: 215 20% 92%;
+
+    --primary: 213 55% 38%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 16% 16%;
+    --secondary-foreground: 215 18% 85%;
+
+    --muted: 220 14% 14%;
+    --muted-foreground: 215 12% 50%;
+
+    --accent: 213 40% 22%;
+    --accent-foreground: 213 70% 78%;
+
+    --destructive: 0 72% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 14% 18%;
+    --input: 220 14% 18%;
+    --ring: 213 55% 38%;
+
+    /* Silverile brand tokens – dark */
+    --intent: 213 55% 48%;
+    --intent-foreground: 213 80% 85%;
+    --intent-muted: 213 35% 16%;
+
+    --execution: 200 60% 44%;
+    --execution-foreground: 200 75% 85%;
+    --execution-muted: 200 30% 14%;
+
+    --validation: 152 50% 40%;
+    --validation-foreground: 152 65% 78%;
+    --validation-muted: 152 30% 13%;
+
+    --feedback: 35 70% 50%;
+    --feedback-foreground: 35 80% 85%;
+    --feedback-muted: 35 30% 14%;
+
+    --glow-intent: 213 65% 55%;
+    --glow-execution: 200 65% 52%;
+    --glow-validation: 152 55% 48%;
+    --glow-feedback: 35 75% 55%;
+
+    --gradient-hero: linear-gradient(135deg, hsl(213 40% 10%), hsl(220 20% 7%) 50%, hsl(200 30% 9%));
+    --gradient-intent: linear-gradient(135deg, hsl(213 55% 48%), hsl(225 50% 45%));
+    --gradient-execution: linear-gradient(135deg, hsl(200 60% 44%), hsl(215 55% 48%));
+    --gradient-validation: linear-gradient(135deg, hsl(152 50% 40%), hsl(165 45% 38%));
+    --gradient-feedback: linear-gradient(135deg, hsl(35 70% 50%), hsl(25 65% 46%));
+
+    --sidebar-background: 220 18% 11%;
+    --sidebar-foreground: 215 18% 85%;
+    --sidebar-primary: 213 55% 38%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 213 40% 22%;
+    --sidebar-accent-foreground: 213 70% 78%;
+    --sidebar-border: 220 14% 18%;
+    --sidebar-ring: 213 55% 38%;
   }
 }
 
