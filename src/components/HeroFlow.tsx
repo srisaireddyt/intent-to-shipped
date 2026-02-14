@@ -1,11 +1,12 @@
-import { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { useRef, useState } from "react";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useTheme } from "./ThemeProvider";
 import {
   FileText, Image, Code, Brain, CheckCircle2, ArrowDown,
   BookOpen, ListChecks, AlertTriangle, TestTube2,
   FileCheck, Layers, Zap, Cpu, Search,
-  Sparkles, Shield, ChevronRight
+  Sparkles, Shield, ChevronRight, GitCompare, Wand2,
+  ToggleRight, Plus, ArrowRight, Target
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -171,11 +172,52 @@ const TRANSFORMATIONS: Transformation[] = [
   },
 ];
 
+/* ── Code Pairing Data ── */
+const CODE_PAIRED_PROCESS = [
+  "Mapping code to story acceptance criteria",
+  "Scoring implementation completeness",
+  "Generating paired test scripts",
+  "Creating AI copilot prompts from story",
+];
+
+const CODE_PAIRED_OUTPUT = {
+  label: "Story-Paired Intelligence",
+  items: [
+    { icon: GitCompare, text: "Code Relevance Score: 91%" },
+    { icon: Target, text: "Criteria Coverage: 5/7 matched" },
+    { icon: TestTube2, text: "Paired Unit Tests (9 generated)" },
+    { icon: Layers, text: "Paired Integration Tests (5 generated)" },
+    { icon: Wand2, text: "Copilot Prompt (auto-generated)" },
+  ] as OutputItem[],
+  metrics: [
+    { label: "Relevance", value: "91%", status: "ok" as const },
+    { label: "Matched", value: "5/7", status: "warn" as const },
+    { label: "Gaps", value: "2", status: "error" as const },
+  ] as Metric[],
+  tags: ["Story-Paired", "Verified", "Actionable"],
+};
+
 /* ── Single Transformation Section ── */
-const TransformationSection = ({ t, index }: { t: Transformation; index: number }) => {
+const TransformationSection = ({
+  t,
+  index,
+  storyPaired,
+  onTogglePairing,
+}: {
+  t: Transformation;
+  index: number;
+  storyPaired?: boolean;
+  onTogglePairing?: () => void;
+}) => {
   const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
   const InputIcon = t.input.icon;
+
+  // Compute active data based on pairing toggle
+  const isPaired = t.id === "code" && storyPaired;
+  const activeColor = isPaired ? "intent" : t.color;
+  const activeProcess = isPaired ? CODE_PAIRED_PROCESS : t.process;
+  const activeOutput = isPaired ? CODE_PAIRED_OUTPUT : t.output;
 
   return (
     <div ref={ref} className="relative">
@@ -230,6 +272,63 @@ const TransformationSection = ({ t, index }: { t: Transformation; index: number 
               What you provide
             </div>
             {t.input.content}
+
+            {/* Story Pairing Toggle (code section only) */}
+            {t.id === "code" && onTogglePairing && (
+              <motion.button
+                onClick={onTogglePairing}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.4 }}
+                className="mt-4 flex w-full items-center gap-2.5 rounded-xl border p-3 text-left transition-colors"
+                style={{
+                  borderColor: storyPaired
+                    ? "hsl(var(--intent) / 0.4)"
+                    : "hsl(var(--border))",
+                  background: storyPaired
+                    ? "hsl(var(--intent) / 0.08)"
+                    : "transparent",
+                }}
+              >
+                <div
+                  className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-colors"
+                  style={{
+                    background: storyPaired
+                      ? "hsl(var(--intent) / 0.2)"
+                      : "hsl(var(--muted))",
+                  }}
+                >
+                  {storyPaired ? (
+                    <CheckCircle2 className="h-4 w-4" style={{ color: "hsl(var(--intent))" }} />
+                  ) : (
+                    <Plus className="h-4 w-4 text-muted-foreground" />
+                  )}
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-1.5">
+                    <BookOpen className="h-3 w-3" style={{ color: storyPaired ? "hsl(var(--intent))" : undefined }} />
+                    <span
+                      className="text-[11px] font-bold uppercase tracking-wide"
+                      style={{ color: storyPaired ? "hsl(var(--intent))" : undefined }}
+                    >
+                      {storyPaired ? "Paired with Structured Story" : "Pair with Structured Story"}
+                    </span>
+                  </div>
+                  <span className="text-[10px] text-muted-foreground">
+                    {storyPaired
+                      ? "Code is validated against story acceptance criteria"
+                      : "Toggle to see code + story pairing intelligence"}
+                  </span>
+                </div>
+                <ArrowRight
+                  className="h-3.5 w-3.5 shrink-0 transition-transform"
+                  style={{
+                    color: storyPaired ? "hsl(var(--intent))" : "hsl(var(--muted-foreground))",
+                    transform: storyPaired ? "rotate(90deg)" : "rotate(0deg)",
+                  }}
+                />
+              </motion.button>
+            )}
           </motion.div>
 
           {/* PROCESS (center) */}
@@ -243,42 +342,51 @@ const TransformationSection = ({ t, index }: { t: Transformation; index: number 
             <div
               className="absolute inset-0 opacity-[0.04]"
               style={{
-                background: `radial-gradient(circle at center, hsl(var(--${t.color})), transparent 70%)`,
+                background: `radial-gradient(circle at center, hsl(var(--${activeColor})), transparent 70%)`,
               }}
             />
 
             <div
               className="relative mb-3 flex h-10 w-10 items-center justify-center rounded-xl"
-              style={{ background: `hsl(var(--${t.color}) / 0.12)` }}
+              style={{ background: `hsl(var(--${activeColor}) / 0.12)` }}
             >
-              <Sparkles className="h-5 w-5" style={{ color: `hsl(var(--${t.color}))` }} />
+              <Sparkles className="h-5 w-5" style={{ color: `hsl(var(--${activeColor}))` }} />
             </div>
 
             <span className="relative mb-3 text-center text-[8px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60">
-              Silverile
+              {isPaired ? "Story + Code" : "Silverile"}
               <br />
               Intelligence
             </span>
 
-            <div className="relative flex flex-col gap-1.5">
-              {t.process.map((step, si) => (
-                <motion.div
-                  key={step}
-                  initial={{ opacity: 0, x: -8 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ duration: 0.4, delay: 0.5 + si * 0.1 }}
-                  className="flex items-center gap-2"
-                >
-                  <ChevronRight
-                    className="h-3 w-3 shrink-0"
-                    style={{ color: `hsl(var(--${t.color}) / 0.5)` }}
-                  />
-                  <span className="text-[10px] leading-tight text-muted-foreground/80 sm:text-[11px]">
-                    {step}
-                  </span>
-                </motion.div>
-              ))}
-            </div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={isPaired ? "paired" : "solo"}
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -6 }}
+                transition={{ duration: 0.3 }}
+                className="relative flex flex-col gap-1.5"
+              >
+                {activeProcess.map((step, si) => (
+                  <motion.div
+                    key={step}
+                    initial={{ opacity: 0, x: -8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: si * 0.06 }}
+                    className="flex items-center gap-2"
+                  >
+                    <ChevronRight
+                      className="h-3 w-3 shrink-0"
+                      style={{ color: `hsl(var(--${activeColor}) / 0.5)` }}
+                    />
+                    <span className="text-[10px] leading-tight text-muted-foreground/80 sm:text-[11px]">
+                      {step}
+                    </span>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </AnimatePresence>
           </motion.div>
 
           {/* OUTPUT */}
@@ -292,79 +400,89 @@ const TransformationSection = ({ t, index }: { t: Transformation; index: number 
               What Silverile produces
             </div>
 
-            <div className="rounded-xl border p-4" style={{ borderColor: `hsl(var(--${t.color}) / 0.25)` }}>
-              <div className="mb-3 flex items-center gap-2">
-                <Shield className="h-3.5 w-3.5" style={{ color: `hsl(var(--${t.color}))` }} />
-                <span
-                  className="text-[11px] font-bold uppercase tracking-[0.08em] sm:text-xs"
-                  style={{ color: `hsl(var(--${t.color}))` }}
-                >
-                  {t.output.label}
-                </span>
-              </div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={isPaired ? "paired-out" : "solo-out"}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.3 }}
+                className="rounded-xl border p-4"
+                style={{ borderColor: `hsl(var(--${activeColor}) / 0.25)` }}
+              >
+                <div className="mb-3 flex items-center gap-2">
+                  <Shield className="h-3.5 w-3.5" style={{ color: `hsl(var(--${activeColor}))` }} />
+                  <span
+                    className="text-[11px] font-bold uppercase tracking-[0.08em] sm:text-xs"
+                    style={{ color: `hsl(var(--${activeColor}))` }}
+                  >
+                    {activeOutput.label}
+                  </span>
+                </div>
 
-              {/* Metrics */}
-              {t.output.metrics && (
-                <div className="mb-3 grid grid-cols-3 gap-1.5">
-                  {t.output.metrics.map((m) => (
-                    <div
-                      key={m.label}
-                      className="rounded-lg border border-border bg-muted/30 px-2 py-2 text-center"
-                    >
+                {/* Metrics */}
+                {activeOutput.metrics && (
+                  <div className="mb-3 grid grid-cols-3 gap-1.5">
+                    {activeOutput.metrics.map((m) => (
                       <div
-                        className="text-base font-bold sm:text-lg"
-                        style={{ color: `hsl(${STATUS_COLORS[m.status]})` }}
+                        key={m.label}
+                        className="rounded-lg border border-border bg-muted/30 px-2 py-2 text-center"
                       >
-                        {m.value}
+                        <div
+                          className="text-base font-bold sm:text-lg"
+                          style={{ color: `hsl(${STATUS_COLORS[m.status]})` }}
+                        >
+                          {m.value}
+                        </div>
+                        <div className="text-[9px] text-muted-foreground">{m.label}</div>
                       </div>
-                      <div className="text-[9px] text-muted-foreground">{m.label}</div>
-                    </div>
-                  ))}
-                </div>
-              )}
+                    ))}
+                  </div>
+                )}
 
-              {/* Items */}
-              <div className="flex flex-col gap-2">
-                {t.output.items.map((item, ii) => {
-                  const OIcon = item.icon;
-                  return (
-                    <motion.div
-                      key={item.text}
-                      initial={{ opacity: 0, x: 10 }}
-                      animate={isInView ? { opacity: 1, x: 0 } : {}}
-                      transition={{ duration: 0.3, delay: 0.7 + ii * 0.08 }}
-                      className="flex items-center gap-2 rounded-lg px-2 py-1.5"
-                      style={{ background: `hsl(var(--${t.color}) / 0.06)` }}
-                    >
-                      <OIcon
-                        className="h-3.5 w-3.5 shrink-0"
-                        style={{ color: `hsl(var(--${t.color}) / 0.7)` }}
-                      />
-                      <span className="text-[11px] text-muted-foreground sm:text-xs">{item.text}</span>
-                    </motion.div>
-                  );
-                })}
-              </div>
-
-              {/* Tags */}
-              {t.output.tags && (
-                <div className="mt-3 flex flex-wrap gap-1.5">
-                  {t.output.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-semibold"
-                      style={{
-                        background: "hsl(var(--validation) / 0.1)",
-                        color: "hsl(var(--validation))",
-                      }}
-                    >
-                      <CheckCircle2 className="h-3 w-3" />
-                      {tag}
-                    </span>
-                  ))}
+                {/* Items */}
+                <div className="flex flex-col gap-2">
+                  {activeOutput.items.map((item, ii) => {
+                    const OIcon = item.icon;
+                    return (
+                      <motion.div
+                        key={item.text}
+                        initial={{ opacity: 0, x: 10 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.25, delay: ii * 0.05 }}
+                        className="flex items-center gap-2 rounded-lg px-2 py-1.5"
+                        style={{ background: `hsl(var(--${activeColor}) / 0.06)` }}
+                      >
+                        <OIcon
+                          className="h-3.5 w-3.5 shrink-0"
+                          style={{ color: `hsl(var(--${activeColor}) / 0.7)` }}
+                        />
+                        <span className="text-[11px] text-muted-foreground sm:text-xs">{item.text}</span>
+                      </motion.div>
+                    );
+                  })}
                 </div>
-              )}
-            </div>
+
+                {/* Tags */}
+                {activeOutput.tags && (
+                  <div className="mt-3 flex flex-wrap gap-1.5">
+                    {activeOutput.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-semibold"
+                        style={{
+                          background: `hsl(var(--${activeColor}) / 0.1)`,
+                          color: `hsl(var(--${activeColor}))`,
+                        }}
+                      >
+                        <CheckCircle2 className="h-3 w-3" />
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </motion.div>
+            </AnimatePresence>
           </motion.div>
         </div>
       </motion.div>
@@ -389,6 +507,8 @@ const TransformationSection = ({ t, index }: { t: Transformation; index: number 
 
 /* ── Main Hero ── */
 const HeroFlow = () => {
+  const [storyPaired, setStoryPaired] = useState(false);
+
   return (
     <section className="relative overflow-hidden pt-20 pb-16 lg:pt-24">
       {/* Background */}
@@ -420,7 +540,13 @@ const HeroFlow = () => {
         {/* Transformation Sections */}
         <div className="mx-auto max-w-5xl">
           {TRANSFORMATIONS.map((t, i) => (
-            <TransformationSection key={t.id} t={t} index={i} />
+            <TransformationSection
+              key={t.id}
+              t={t}
+              index={i}
+              storyPaired={t.id === "code" ? storyPaired : undefined}
+              onTogglePairing={t.id === "code" ? () => setStoryPaired((p) => !p) : undefined}
+            />
           ))}
         </div>
 
