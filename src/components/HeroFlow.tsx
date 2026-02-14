@@ -565,8 +565,8 @@ const HeroFlow = () => {
             SDLC Intelligence Platform
           </div>
           <h1 className="mx-auto max-w-4xl text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
-            <span className="text-foreground">From Intent to </span>
-            <span className="text-gradient-hero">Verified Execution</span>
+            <span className="text-gradient-hero">Silverile</span>
+            <span className="text-foreground">, Your Co Project Manager.</span>
           </h1>
           <p className="mx-auto mt-5 max-w-xl text-sm text-muted-foreground sm:text-base md:text-lg">
             Text. Design. Code.{" "}
