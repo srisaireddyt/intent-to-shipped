@@ -523,6 +523,9 @@ const StepTabs = ({
                 background: isActive
                   ? `hsl(var(--${s.color}) / 0.08)`
                   : "transparent",
+                boxShadow: isActive
+                  ? `0 0 20px -4px hsl(var(--${s.color}) / 0.25)`
+                  : "none",
                 color: isActive
                   ? `hsl(var(--${s.color}))`
                   : isPast
@@ -530,18 +533,9 @@ const StepTabs = ({
                   : "hsl(var(--muted-foreground) / 0.6)",
               }}
             >
-              {/* Glow ring on active */}
-              {isActive && (
-                <motion.div
-                  layoutId="step-glow"
-                  className="absolute -inset-1 rounded-full opacity-10"
-                  style={{ background: `hsl(var(--${s.color}))`, filter: "blur(12px)" }}
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                />
-              )}
-              <span className="relative font-mono text-[10px] opacity-60">{s.number}</span>
-              <Icon className="relative h-3.5 w-3.5" />
-              <span className="relative hidden sm:inline">{s.input.label.replace(" Input", "")}</span>
+              <span className="font-mono text-[10px] opacity-60">{s.number}</span>
+              <Icon className="h-3.5 w-3.5" />
+              <span className="hidden sm:inline">{s.input.label.replace(" Input", "")}</span>
             </button>
             {/* Connector line */}
             {i < steps.length - 1 && (
