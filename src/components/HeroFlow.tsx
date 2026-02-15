@@ -330,7 +330,7 @@ const TransformationCard = ({ t }: { t: Transformation }) => {
           </div>
 
           <span className="relative mb-3 text-center text-[8px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60">
-            Silverile Intelligence
+            StoryCraft AI
           </span>
 
           <div className="relative flex flex-col gap-1.5">
