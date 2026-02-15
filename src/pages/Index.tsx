@@ -33,14 +33,14 @@ const Index = () => {
               <span className="font-semibold text-foreground">understands intent, validates execution, and strengthens delivery</span>{" "}
               across your SDLC.
             </p>
-            <div className="mt-8 flex items-center justify-center gap-3">
-              <button className="flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground transition-all hover:bg-primary/90">
-                Get Started <ArrowRight className="h-4 w-4" />
-              </button>
-              <button className="rounded-xl border border-border px-6 py-3 text-sm font-medium text-muted-foreground transition-all hover:border-primary/30 hover:text-foreground">
-                See Demo
-              </button>
-            </div>
+            
+
+
+
+
+
+
+
           </motion.div>
         </div>
       </section>
