@@ -75,7 +75,7 @@ const TRANSFORMATIONS: Transformation[] = [
     },
     process: [
       "StoryCraft AI parsing business intent",
-      "Cross-referencing sprint backlog & velocity",
+      "Test Cases & Documentation Generation",
       "Generating acceptance criteria & edge cases",
       "Linking dependencies across epics",
     ],
