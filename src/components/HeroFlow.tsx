@@ -1,12 +1,11 @@
-import { useRef, useState } from "react";
-import { motion, useInView, AnimatePresence } from "framer-motion";
-import { useTheme } from "./ThemeProvider";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
-  FileText, Image, Code, Brain, CheckCircle2, ArrowDown,
+  FileText, Image, Code, Brain, CheckCircle2,
   BookOpen, ListChecks, AlertTriangle, TestTube2,
   FileCheck, Layers, Zap, Cpu, Search,
   Sparkles, Shield, ChevronRight, GitCompare, Wand2,
-  ToggleRight, Plus, ArrowRight, Target
+  ArrowRight, Target
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -26,6 +25,7 @@ interface Transformation {
   id: string;
   color: string;
   number: string;
+  tabLabel: string;
   input: {
     label: string;
     icon: LucideIcon;
@@ -51,8 +51,9 @@ const TRANSFORMATIONS: Transformation[] = [
     id: "text",
     color: "intent",
     number: "01",
+    tabLabel: "Text to Story",
     input: {
-      label: "Requirement → Story",
+      label: "Text to Story",
       icon: FileText,
       content: (
         <div className="rounded-xl border border-border bg-muted/30 p-5">
@@ -94,8 +95,9 @@ const TRANSFORMATIONS: Transformation[] = [
     id: "image",
     color: "execution",
     number: "02",
+    tabLabel: "UI / Image to Story",
     input: {
-      label: "Design → Requirements",
+      label: "UI / Image to Story",
       icon: Image,
       content: (
         <div className="rounded-xl border border-border bg-muted/30 p-5">
@@ -104,7 +106,6 @@ const TRANSFORMATIONS: Transformation[] = [
             <span>•</span>
             <span>Refund Flow Screen</span>
           </div>
-          {/* Wireframe: refund flow UI */}
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-2">
               <div className="h-2.5 w-3 rounded-sm bg-muted-foreground/20" />
@@ -159,8 +160,9 @@ const TRANSFORMATIONS: Transformation[] = [
     id: "code",
     color: "validation",
     number: "03",
+    tabLabel: "Code to Story",
     input: {
-      label: "Code → Verification",
+      label: "Code to Story",
       icon: Code,
       content: (
         <div className="rounded-xl border border-border bg-muted/30 p-5">
@@ -190,78 +192,100 @@ const TRANSFORMATIONS: Transformation[] = [
       ),
     },
     process: [
-      "Linking PR to story acceptance criteria",
-      "AST structural + LLM semantic analysis",
-      "Detecting scope creep & coverage gaps",
-      "Generating missing tests & copilot prompts",
+      "Reverse-engineering business intent from code",
+      "Generating structured user stories from PRs",
+      "Extracting acceptance criteria from behavior",
+      "Building copilot prompts for fix & complete",
     ],
     output: {
-      label: "Code Verification & Intelligence",
+      label: "Code-to-Story Intelligence",
       items: [
+        { icon: BookOpen, text: "User Story (auto-generated from code)" },
+        { icon: ListChecks, text: "Acceptance Criteria (5 inferred)" },
         { icon: TestTube2, text: "Unit Tests (6 generated)" },
         { icon: Layers, text: "Integration Tests (3 generated)" },
-        { icon: Search, text: "Scope Creep Flags (2 detected)" },
         { icon: Wand2, text: "Copilot Prompt (fix & complete)" },
       ],
-      metrics: [
-        { label: "Intent Alignment", value: "82%", status: "warn" },
-        { label: "Missing Criteria", value: "2", status: "error" },
-        { label: "Risk Flags", value: "1", status: "warn" },
+      tags: ["Code-Derived", "Story-Ready"],
+    },
+  },
+  {
+    id: "relevance",
+    color: "intent",
+    number: "04",
+    tabLabel: "Code Relevance",
+    input: {
+      label: "Code Relevance",
+      icon: GitCompare,
+      content: (
+        <div className="rounded-xl border border-border bg-muted/30 p-5">
+          <div className="mb-3 flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/50">
+            <span className="inline-flex h-5 items-center rounded-md border border-border bg-muted/50 px-2 font-mono">PR #847</span>
+            <span className="mx-1">↔</span>
+            <span className="inline-flex h-5 items-center rounded-md border border-intent/30 bg-intent-muted px-2 font-mono" style={{ color: "hsl(var(--intent))" }}>STORY-1024</span>
+          </div>
+          <div className="mb-3 rounded-lg border border-border bg-muted/40 p-3">
+            <pre className="overflow-x-auto font-mono text-[10px] leading-relaxed text-foreground/70 sm:text-[11px]">
+              <code>{`app.post('/refund', async (req, res) => {
+  const { paymentId } = req.body;
+  await stripe.refunds.create({
+    payment_intent: paymentId
+  });
+  res.sendStatus(200);
+});`}</code>
+            </pre>
+          </div>
+          <div className="rounded-lg border p-3" style={{ borderColor: "hsl(var(--intent) / 0.3)", background: "hsl(var(--intent) / 0.06)" }}>
+            <div className="mb-1 text-[9px] font-bold uppercase tracking-wider" style={{ color: "hsl(var(--intent))" }}>Structured Story</div>
+            <p className="text-[10px] text-muted-foreground leading-relaxed">
+              "As a customer, I can initiate a refund with auto-validation, 48hr SLA, and email + webhook notifications."
+            </p>
+            <div className="mt-2 flex gap-1.5">
+              <span className="rounded-md px-1.5 py-0.5 text-[8px] font-semibold" style={{ background: "hsl(var(--intent) / 0.12)", color: "hsl(var(--intent))" }}>7 Criteria</span>
+              <span className="rounded-md px-1.5 py-0.5 text-[8px] font-semibold" style={{ background: "hsl(var(--intent) / 0.12)", color: "hsl(var(--intent))" }}>4 Edge Cases</span>
+            </div>
+          </div>
+        </div>
+      ),
+    },
+    process: [
+      "Mapping code to story acceptance criteria",
+      "Scoring intent-to-implementation alignment",
+      "AST structural + LLM semantic analysis",
+      "Generating story-paired test scripts",
+    ],
+    output: {
+      label: "Story-Paired Verification",
+      items: [
+        { icon: GitCompare, text: "Intent Alignment Score: 91%" },
+        { icon: Target, text: "Criteria Coverage: 5/7 matched" },
+        { icon: Search, text: "Scope Creep Flags (2 detected)" },
+        { icon: TestTube2, text: "Paired Unit Tests (9 generated)" },
+        { icon: Wand2, text: "Copilot Prompt (story-aligned fix)" },
       ],
+      metrics: [
+        { label: "Alignment", value: "91%", status: "ok" },
+        { label: "Matched", value: "5/7", status: "warn" },
+        { label: "Gaps", value: "2", status: "error" },
+      ],
+      tags: ["Story-Paired", "Intent-Verified", "Actionable"],
     },
   },
 ];
 
-/* ── Code Pairing Data ── */
-const CODE_PAIRED_PROCESS = [
-  "Mapping code to story acceptance criteria",
-  "Scoring intent-to-implementation alignment",
-  "Generating story-paired test scripts",
-  "Creating AI copilot prompts from story context",
-];
-
-const CODE_PAIRED_OUTPUT = {
-  label: "Story-Paired Verification",
-  items: [
-    { icon: GitCompare, text: "Intent Alignment Score: 91%" },
-    { icon: Target, text: "Criteria Coverage: 5/7 matched" },
-    { icon: TestTube2, text: "Paired Unit Tests (9 generated)" },
-    { icon: Layers, text: "Paired Integration Tests (5 generated)" },
-    { icon: Wand2, text: "Copilot Prompt (story-aligned fix)" },
-  ] as OutputItem[],
-  metrics: [
-    { label: "Alignment", value: "91%", status: "ok" as const },
-    { label: "Matched", value: "5/7", status: "warn" as const },
-    { label: "Gaps", value: "2", status: "error" as const },
-  ] as Metric[],
-  tags: ["Story-Paired", "Intent-Verified", "Actionable"],
-};
-
-/* ── Single Transformation Card (no outer header — tabs handle context) ── */
-const TransformationCard = ({
-  t,
-  storyPaired,
-  onTogglePairing,
-}: {
-  t: Transformation;
-  storyPaired?: boolean;
-  onTogglePairing?: () => void;
-}) => {
-  const isPaired = t.id === "code" && storyPaired;
-  const activeColor = isPaired ? "intent" : t.color;
-  const activeProcess = isPaired ? CODE_PAIRED_PROCESS : t.process;
-  const activeOutput = isPaired ? CODE_PAIRED_OUTPUT : t.output;
+/* ── Single Transformation Card ── */
+const TransformationCard = ({ t }: { t: Transformation }) => {
+  const activeColor = t.color;
 
   return (
     <div
       className="overflow-hidden rounded-2xl border border-border bg-card/70 backdrop-blur-sm"
       style={{ boxShadow: `0 0 80px -20px hsl(var(--${activeColor}) / 0.18)` }}
     >
-      {/* Top accent bar */}
       <div className="h-1" style={{ background: `hsl(var(--${activeColor}))` }} />
 
       <div className="grid lg:grid-cols-[1fr_auto_1fr]">
-        {/* ── INPUT ── */}
+        {/* INPUT */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -280,62 +304,10 @@ const TransformationCard = ({
             </span>
           </div>
           <p className="mb-4 text-[11px] text-muted-foreground">What you provide</p>
-
           {t.input.content}
-
-          {/* Story Pairing Toggle (code section only) */}
-          {t.id === "code" && onTogglePairing && (
-            <motion.button
-              onClick={onTogglePairing}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.3 }}
-              className="mt-4 flex w-full items-center gap-2.5 rounded-xl border p-3 text-left transition-all"
-              style={{
-                borderColor: storyPaired ? "hsl(var(--intent) / 0.4)" : "hsl(var(--border))",
-                background: storyPaired ? "hsl(var(--intent) / 0.08)" : "transparent",
-              }}
-            >
-              <div
-                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg transition-colors"
-                style={{
-                  background: storyPaired ? "hsl(var(--intent) / 0.2)" : "hsl(var(--muted))",
-                }}
-              >
-                {storyPaired ? (
-                  <CheckCircle2 className="h-4 w-4" style={{ color: "hsl(var(--intent))" }} />
-                ) : (
-                  <Plus className="h-4 w-4 text-muted-foreground" />
-                )}
-              </div>
-              <div className="flex-1">
-                <div className="flex items-center gap-1.5">
-                  <BookOpen className="h-3 w-3" style={{ color: storyPaired ? "hsl(var(--intent))" : undefined }} />
-                  <span
-                    className="text-[11px] font-bold uppercase tracking-wide"
-                    style={{ color: storyPaired ? "hsl(var(--intent))" : undefined }}
-                  >
-                    {storyPaired ? "Paired with Structured Story" : "Pair with Structured Story"}
-                  </span>
-                </div>
-                <span className="text-[10px] text-muted-foreground">
-                  {storyPaired
-                    ? "Code is validated against story acceptance criteria"
-                    : "Toggle to see code + story pairing intelligence"}
-                </span>
-              </div>
-              <ArrowRight
-                className="h-3.5 w-3.5 shrink-0 transition-transform"
-                style={{
-                  color: storyPaired ? "hsl(var(--intent))" : "hsl(var(--muted-foreground))",
-                  transform: storyPaired ? "rotate(90deg)" : "rotate(0deg)",
-                }}
-              />
-            </motion.button>
-          )}
         </motion.div>
 
-        {/* ── PROCESS (center) ── */}
+        {/* PROCESS */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -346,8 +318,6 @@ const TransformationCard = ({
             className="absolute inset-0 opacity-[0.05]"
             style={{ background: `radial-gradient(circle at center, hsl(var(--${activeColor})), transparent 70%)` }}
           />
-
-          {/* Arrow from input */}
           <div className="absolute left-0 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 lg:block">
             <ChevronRight className="h-4 w-4 text-muted-foreground/30" />
           </div>
@@ -360,40 +330,30 @@ const TransformationCard = ({
           </div>
 
           <span className="relative mb-3 text-center text-[8px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60">
-            {isPaired ? "Story + Code" : "Silverile"} Intelligence
+            Silverile Intelligence
           </span>
 
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={isPaired ? "paired" : "solo"}
-              initial={{ opacity: 0, y: 6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.25 }}
-              className="relative flex flex-col gap-1.5"
-            >
-              {activeProcess.map((step, si) => (
-                <motion.div
-                  key={step}
-                  initial={{ opacity: 0, x: -8 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.25, delay: si * 0.06 }}
-                  className="flex items-center gap-2"
-                >
-                  <ChevronRight className="h-3 w-3 shrink-0" style={{ color: `hsl(var(--${activeColor}) / 0.5)` }} />
-                  <span className="text-[10px] leading-tight text-muted-foreground/80 sm:text-[11px]">{step}</span>
-                </motion.div>
-              ))}
-            </motion.div>
-          </AnimatePresence>
+          <div className="relative flex flex-col gap-1.5">
+            {t.process.map((step, si) => (
+              <motion.div
+                key={step}
+                initial={{ opacity: 0, x: -8 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.25, delay: si * 0.06 }}
+                className="flex items-center gap-2"
+              >
+                <ChevronRight className="h-3 w-3 shrink-0" style={{ color: `hsl(var(--${activeColor}) / 0.5)` }} />
+                <span className="text-[10px] leading-tight text-muted-foreground/80 sm:text-[11px]">{step}</span>
+              </motion.div>
+            ))}
+          </div>
 
-          {/* Arrow to output */}
           <div className="absolute right-0 top-1/2 hidden translate-x-1/2 -translate-y-1/2 lg:block">
             <ChevronRight className="h-4 w-4 text-muted-foreground/30" />
           </div>
         </motion.div>
 
-        {/* ── OUTPUT ── */}
+        {/* OUTPUT */}
         <motion.div
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
@@ -413,86 +373,79 @@ const TransformationCard = ({
           </div>
           <p className="mb-4 text-[11px] text-muted-foreground">What Silverile produces</p>
 
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={isPaired ? "paired-out" : "solo-out"}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.25 }}
-              className="rounded-xl border p-4"
-              style={{ borderColor: `hsl(var(--${activeColor}) / 0.25)` }}
-            >
-              <div className="mb-3 flex items-center gap-2">
-                <span
-                  className="text-[11px] font-bold uppercase tracking-[0.08em] sm:text-xs"
-                  style={{ color: `hsl(var(--${activeColor}))` }}
-                >
-                  {activeOutput.label}
-                </span>
-              </div>
+          <div
+            className="rounded-xl border p-4"
+            style={{ borderColor: `hsl(var(--${activeColor}) / 0.25)` }}
+          >
+            <div className="mb-3 flex items-center gap-2">
+              <span
+                className="text-[11px] font-bold uppercase tracking-[0.08em] sm:text-xs"
+                style={{ color: `hsl(var(--${activeColor}))` }}
+              >
+                {t.output.label}
+              </span>
+            </div>
 
-              {/* Metrics */}
-              {activeOutput.metrics && (
-                <div className="mb-3 grid grid-cols-3 gap-1.5">
-                  {activeOutput.metrics.map((m) => (
-                    <div key={m.label} className="rounded-lg border border-border bg-muted/30 px-2 py-2 text-center">
-                      <div className="text-base font-bold sm:text-lg" style={{ color: `hsl(${STATUS_COLORS[m.status]})` }}>
-                        {m.value}
-                      </div>
-                      <div className="text-[9px] text-muted-foreground">{m.label}</div>
+            {/* Metrics */}
+            {t.output.metrics && (
+              <div className="mb-3 grid grid-cols-3 gap-1.5">
+                {t.output.metrics.map((m) => (
+                  <div key={m.label} className="rounded-lg border border-border bg-muted/30 px-2 py-2 text-center">
+                    <div className="text-base font-bold sm:text-lg" style={{ color: `hsl(${STATUS_COLORS[m.status]})` }}>
+                      {m.value}
                     </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Items */}
-              <div className="flex flex-col gap-2">
-                {activeOutput.items.map((item, ii) => {
-                  const OIcon = item.icon;
-                  return (
-                    <motion.div
-                      key={item.text}
-                      initial={{ opacity: 0, x: 10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.2, delay: ii * 0.04 }}
-                      className="flex items-center gap-2 rounded-lg px-2 py-1.5"
-                      style={{ background: `hsl(var(--${activeColor}) / 0.06)` }}
-                    >
-                      <OIcon className="h-3.5 w-3.5 shrink-0" style={{ color: `hsl(var(--${activeColor}) / 0.7)` }} />
-                      <span className="text-[11px] text-muted-foreground sm:text-xs">{item.text}</span>
-                    </motion.div>
-                  );
-                })}
+                    <div className="text-[9px] text-muted-foreground">{m.label}</div>
+                  </div>
+                ))}
               </div>
+            )}
 
-              {/* Tags */}
-              {activeOutput.tags && (
-                <div className="mt-3 flex flex-wrap gap-1.5">
-                  {activeOutput.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-semibold"
-                      style={{
-                        background: `hsl(var(--${activeColor}) / 0.1)`,
-                        color: `hsl(var(--${activeColor}))`,
-                      }}
-                    >
-                      <CheckCircle2 className="h-3 w-3" />
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              )}
-            </motion.div>
-          </AnimatePresence>
+            {/* Items */}
+            <div className="flex flex-col gap-2">
+              {t.output.items.map((item, ii) => {
+                const OIcon = item.icon;
+                return (
+                  <motion.div
+                    key={item.text}
+                    initial={{ opacity: 0, x: 10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.2, delay: ii * 0.04 }}
+                    className="flex items-center gap-2 rounded-lg px-2 py-1.5"
+                    style={{ background: `hsl(var(--${activeColor}) / 0.06)` }}
+                  >
+                    <OIcon className="h-3.5 w-3.5 shrink-0" style={{ color: `hsl(var(--${activeColor}) / 0.7)` }} />
+                    <span className="text-[11px] text-muted-foreground sm:text-xs">{item.text}</span>
+                  </motion.div>
+                );
+              })}
+            </div>
+
+            {/* Tags */}
+            {t.output.tags && (
+              <div className="mt-3 flex flex-wrap gap-1.5">
+                {t.output.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-semibold"
+                    style={{
+                      background: `hsl(var(--${activeColor}) / 0.1)`,
+                      color: `hsl(var(--${activeColor}))`,
+                    }}
+                  >
+                    <CheckCircle2 className="h-3 w-3" />
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
         </motion.div>
       </div>
     </div>
   );
 };
 
-/* ── Step Tabs with connected progress line ── */
+/* ── Step Tabs ── */
 const StepTabs = ({
   steps,
   active,
@@ -503,49 +456,39 @@ const StepTabs = ({
   onSelect: (i: number) => void;
 }) => (
   <div className="flex flex-col items-center gap-4">
-    {/* Connected step indicators */}
-    <div className="flex items-center gap-0">
+    <div className="flex flex-wrap items-center justify-center gap-2">
       {steps.map((s, i) => {
         const Icon = s.input.icon;
         const isActive = i === active;
         const isPast = i < active;
         return (
-          <div key={s.id} className="flex items-center">
-            <button
-              onClick={() => onSelect(i)}
-              className="group relative flex items-center gap-2 rounded-full border-2 px-5 py-2.5 text-xs font-bold uppercase tracking-wider transition-all duration-300"
-              style={{
-                borderColor: isActive
-                  ? `hsl(var(--${s.color}))`
-                  : isPast
-                  ? `hsl(var(--${s.color}) / 0.4)`
-                  : "hsl(var(--border))",
-                background: isActive
-                  ? `hsl(var(--${s.color}) / 0.08)`
-                  : "transparent",
-                boxShadow: isActive
-                  ? `0 0 20px -4px hsl(var(--${s.color}) / 0.25)`
-                  : "none",
-                color: isActive
-                  ? `hsl(var(--${s.color}))`
-                  : isPast
-                  ? `hsl(var(--${s.color}) / 0.7)`
-                  : "hsl(var(--muted-foreground) / 0.6)",
-              }}
-            >
-              <span className="font-mono text-[10px] opacity-60">{s.number}</span>
-              <Icon className="h-3.5 w-3.5" />
-              <span className="hidden sm:inline">{s.input.label.replace(" Input", "")}</span>
-            </button>
-            {/* Connector line */}
-            {i < steps.length - 1 && (
-              <div className="mx-1 hidden h-px w-8 sm:block" style={{
-                background: i < active
-                  ? `hsl(var(--${steps[i + 1].color}) / 0.4)`
-                  : "hsl(var(--border) / 0.5)",
-              }} />
-            )}
-          </div>
+          <button
+            key={s.id}
+            onClick={() => onSelect(i)}
+            className="group relative flex items-center gap-2 rounded-full border-2 px-4 py-2 text-[10px] font-bold uppercase tracking-wider transition-all duration-300 sm:px-5 sm:py-2.5 sm:text-xs"
+            style={{
+              borderColor: isActive
+                ? `hsl(var(--${s.color}))`
+                : isPast
+                ? `hsl(var(--${s.color}) / 0.4)`
+                : "hsl(var(--border))",
+              background: isActive
+                ? `hsl(var(--${s.color}) / 0.08)`
+                : "transparent",
+              boxShadow: isActive
+                ? `0 0 20px -4px hsl(var(--${s.color}) / 0.25)`
+                : "none",
+              color: isActive
+                ? `hsl(var(--${s.color}))`
+                : isPast
+                ? `hsl(var(--${s.color}) / 0.7)`
+                : "hsl(var(--muted-foreground) / 0.6)",
+            }}
+          >
+            <span className="font-mono text-[10px] opacity-60">{s.number}</span>
+            <Icon className="h-3.5 w-3.5" />
+            <span className="hidden sm:inline">{s.tabLabel}</span>
+          </button>
         );
       })}
     </div>
@@ -568,22 +511,20 @@ const StepTabs = ({
 
 /* ── Main Hero ── */
 const HeroFlow = () => {
-  const [storyPaired, setStoryPaired] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
-
   const currentT = TRANSFORMATIONS[activeStep];
 
   const goNext = () => setActiveStep((p) => Math.min(p + 1, TRANSFORMATIONS.length - 1));
   const goPrev = () => setActiveStep((p) => Math.max(p - 1, 0));
 
   return (
-    <section className="relative overflow-hidden pt-20 pb-16 lg:pt-24">
+    <section className="relative overflow-hidden py-16 lg:py-20">
       {/* Background */}
       <div className="absolute inset-0 bg-grid opacity-10" />
       <div className="absolute inset-0" style={{ background: "var(--gradient-hero)" }} />
 
       <div className="container relative z-10 mx-auto px-4 sm:px-6">
-        {/* Headline */}
+        {/* Section header */}
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
@@ -592,13 +533,14 @@ const HeroFlow = () => {
         >
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-secondary/50 px-4 py-1.5 text-xs font-medium text-muted-foreground">
             <Brain className="h-3.5 w-3.5 text-primary" />
-            SDLC Intelligence Platform
+            Intelligence Engine
           </div>
-          <h1 className="mx-auto max-w-4xl text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
-            <span className="text-gradient-hero">Silverile</span>
-            <span className="text-foreground">, Your Co Project Manager.</span>
-          </h1>
-          <p className="mx-auto mt-5 max-w-xl text-sm text-muted-foreground sm:text-base md:text-lg">
+          <h2 className="mx-auto max-w-4xl text-2xl font-extrabold leading-tight tracking-tight sm:text-3xl md:text-4xl lg:text-5xl">
+            <span className="text-foreground">From </span>
+            <span className="text-gradient-hero">Any Input</span>
+            <span className="text-foreground"> to Verified Output</span>
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl text-sm text-muted-foreground sm:text-base">
             Text. Design. Code.{" "}
             <span className="font-semibold text-foreground">Silverile understands it all.</span>
           </p>
@@ -614,7 +556,7 @@ const HeroFlow = () => {
           <StepTabs steps={TRANSFORMATIONS} active={activeStep} onSelect={setActiveStep} />
         </motion.div>
 
-        {/* Single Card */}
+        {/* Card */}
         <div className="mx-auto max-w-5xl">
           <AnimatePresence mode="wait">
             <motion.div
@@ -624,11 +566,7 @@ const HeroFlow = () => {
               exit={{ opacity: 0, y: -20, scale: 0.97 }}
               transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
             >
-              <TransformationCard
-                t={currentT}
-                storyPaired={currentT.id === "code" ? storyPaired : undefined}
-                onTogglePairing={currentT.id === "code" ? () => setStoryPaired((p) => !p) : undefined}
-              />
+              <TransformationCard t={currentT} />
             </motion.div>
           </AnimatePresence>
 
