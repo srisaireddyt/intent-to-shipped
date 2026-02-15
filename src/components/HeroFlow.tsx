@@ -77,7 +77,6 @@ const TRANSFORMATIONS: Transformation[] = [
       "StoryCraft AI parsing business intent",
       "Test Cases & Documentation Generation",
       "Generating acceptance criteria & edge cases",
-      "Linking dependencies across epics",
     ],
     output: {
       label: "Verified Requirement Artifact",
