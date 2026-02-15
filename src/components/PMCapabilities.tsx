@@ -1,5 +1,5 @@
-import { motion, useInView, AnimatePresence } from "framer-motion";
-import { useRef, useState } from "react";
+import { motion, useInView } from "framer-motion";
+import { useRef, useState, useCallback } from "react";
 import {
   Wand2,
   AlertTriangle,
@@ -107,104 +107,171 @@ const CapabilityCard = ({
   index: number;
   isInView: boolean;
 }) => {
-  const [hovered, setHovered] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [rotateX, setRotateX] = useState(0);
+  const [rotateY, setRotateY] = useState(0);
+  const cardRef = useRef<HTMLDivElement>(null);
   const Icon = cap.icon;
+
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    setRotateX(((y - centerY) / centerY) * -12);
+    setRotateY(((x - centerX) / centerX) * 12);
+  }, []);
+
+  const handleMouseEnter = () => setIsHovered(true);
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setRotateX(0);
+    setRotateY(0);
+  };
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 32 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, delay: index * 0.08 }}
-      className="group relative cursor-pointer overflow-hidden rounded-2xl border border-border bg-card/80 backdrop-blur-sm transition-all duration-300"
-      style={{ minHeight: 220 }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      className="group"
+      style={{ perspective: "1200px" }}
     >
-      {/* Default State */}
-      <AnimatePresence>
-        {!hovered && (
-          <motion.div
-            key="default"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="flex h-full flex-col items-center justify-center p-6 text-center"
-          >
-            <div
-              className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl"
-              style={{ background: `hsl(var(--${cap.color}) / 0.12)` }}
-            >
-              <Icon className="h-6 w-6" style={{ color: `hsl(var(--${cap.color}))` }} />
-            </div>
-            <h3 className="text-base font-bold text-foreground">{cap.title}</h3>
-            <p
-              className="mt-1 text-[11px] font-semibold uppercase tracking-wider"
-              style={{ color: `hsl(var(--${cap.color}) / 0.7)` }}
-            >
-              {cap.subtitle}
-            </p>
-            <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
-              {cap.tagline}
-            </p>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <div
+        ref={cardRef}
+        onMouseMove={handleMouseMove}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        className="relative h-[320px] cursor-pointer overflow-hidden rounded-2xl border border-border bg-card transition-shadow duration-500"
+        style={{
+          transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
+          transition: isHovered
+            ? "transform 0.1s ease-out, box-shadow 0.4s ease"
+            : "transform 0.5s ease-out, box-shadow 0.4s ease",
+          transformStyle: "preserve-3d",
+          boxShadow: isHovered
+            ? `0 20px 60px -15px hsl(var(--${cap.color}) / 0.35), 0 0 0 1px hsl(var(--${cap.color}) / 0.2)`
+            : "0 4px 20px -8px hsl(var(--foreground) / 0.08)",
+        }}
+      >
+        {/* Glow overlay on hover */}
+        <div
+          className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500"
+          style={{
+            opacity: isHovered ? 1 : 0,
+            background: `radial-gradient(circle at 50% 0%, hsl(var(--${cap.color}) / 0.12) 0%, transparent 70%)`,
+          }}
+        />
 
-      {/* Hover State */}
-      <AnimatePresence>
-        {hovered && (
-          <motion.div
-            key="hovered"
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
-            transition={{ duration: 0.25 }}
-            className="absolute inset-0 flex flex-col justify-between p-5"
+        {/* Shimmer line at top */}
+        <div
+          className="absolute left-0 right-0 top-0 h-[2px] origin-left scale-x-0 transition-transform duration-500"
+          style={{
+            transform: isHovered ? "scaleX(1)" : "scaleX(0)",
+            background: `linear-gradient(90deg, transparent, hsl(var(--${cap.color})), transparent)`,
+          }}
+        />
+
+        {/* ---- DEFAULT FACE ---- */}
+        <div
+          className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center transition-all duration-500"
+          style={{
+            opacity: isHovered ? 0 : 1,
+            transform: isHovered ? "translateZ(30px) scale(0.92)" : "translateZ(0) scale(1)",
+          }}
+        >
+          <div
+            className="mb-5 flex h-16 w-16 items-center justify-center rounded-2xl transition-transform duration-500"
             style={{
-              background: `linear-gradient(135deg, hsl(var(--${cap.color}) / 0.08), hsl(var(--${cap.color}) / 0.03))`,
-              borderColor: `hsl(var(--${cap.color}) / 0.3)`,
-              boxShadow: `0 0 30px -8px hsl(var(--${cap.color}) / 0.2)`,
+              background: `hsl(var(--${cap.color}) / 0.1)`,
+              transform: isHovered ? "scale(0.8)" : "scale(1)",
             }}
           >
-            {/* Header */}
-            <div className="flex items-center gap-2.5">
-              <Icon className="h-4 w-4 shrink-0" style={{ color: `hsl(var(--${cap.color}))` }} />
-              <span className="text-sm font-bold text-foreground">{cap.title}</span>
+            <Icon className="h-7 w-7" style={{ color: `hsl(var(--${cap.color}))` }} />
+          </div>
+          <h3 className="text-lg font-bold text-foreground">{cap.title}</h3>
+          <p
+            className="mt-1.5 text-[11px] font-semibold uppercase tracking-[0.15em]"
+            style={{ color: `hsl(var(--${cap.color}) / 0.7)` }}
+          >
+            {cap.subtitle}
+          </p>
+          <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{cap.tagline}</p>
+        </div>
+
+        {/* ---- HOVER FACE ---- */}
+        <div
+          className="absolute inset-0 flex flex-col justify-between p-6 transition-all duration-500"
+          style={{
+            opacity: isHovered ? 1 : 0,
+            transform: isHovered ? "translateZ(0) scale(1)" : "translateZ(-20px) scale(1.05)",
+          }}
+        >
+          {/* Header */}
+          <div className="flex items-center gap-3">
+            <div
+              className="flex h-9 w-9 items-center justify-center rounded-xl"
+              style={{ background: `hsl(var(--${cap.color}) / 0.15)` }}
+            >
+              <Icon className="h-4 w-4" style={{ color: `hsl(var(--${cap.color}))` }} />
             </div>
-
-            {/* Bullets */}
-            <ul className="mt-3 flex flex-col gap-1.5">
-              {cap.bullets.map((b) => (
-                <li key={b} className="flex items-start gap-2 text-[11px] text-muted-foreground sm:text-xs">
-                  <Zap
-                    className="mt-0.5 h-3 w-3 shrink-0"
-                    style={{ color: `hsl(var(--${cap.color}) / 0.6)` }}
-                  />
-                  {b}
-                </li>
-              ))}
-            </ul>
-
-            {/* Differentiator */}
-            <div className="mt-3 rounded-lg border border-border/50 bg-background/60 p-2.5">
-              <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">
-                <ArrowRight className="h-2.5 w-2.5" />
-                Why Silverile
-              </div>
-              <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground line-through decoration-destructive/40">
-                {cap.differentiator}
+            <div>
+              <h3 className="text-sm font-bold text-foreground">{cap.title}</h3>
+              <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
+                {cap.subtitle}
               </p>
-              <p
-                className="mt-0.5 text-[11px] font-semibold leading-relaxed"
-                style={{ color: `hsl(var(--${cap.color}))` }}
+            </div>
+          </div>
+
+          {/* Bullets */}
+          <ul className="mt-3 flex flex-col gap-2">
+            {cap.bullets.map((b, i) => (
+              <li
+                key={b}
+                className="flex items-start gap-2.5 text-xs leading-relaxed text-muted-foreground"
+                style={{
+                  opacity: isHovered ? 1 : 0,
+                  transform: isHovered ? "translateX(0)" : "translateX(-8px)",
+                  transition: `all 0.4s ease ${0.15 + i * 0.08}s`,
+                }}
               >
-                {cap.silverile}
-              </p>
+                <Zap
+                  className="mt-0.5 h-3.5 w-3.5 shrink-0"
+                  style={{ color: `hsl(var(--${cap.color}))` }}
+                />
+                {b}
+              </li>
+            ))}
+          </ul>
+
+          {/* Why Silverile */}
+          <div
+            className="mt-auto rounded-xl border border-border/60 p-3"
+            style={{
+              background: `hsl(var(--${cap.color}) / 0.05)`,
+              opacity: isHovered ? 1 : 0,
+              transform: isHovered ? "translateY(0)" : "translateY(12px)",
+              transition: "all 0.5s ease 0.25s",
+            }}
+          >
+            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/70">
+              <ArrowRight className="h-2.5 w-2.5" />
+              Why Silverile
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <p className="mt-1.5 text-[11px] leading-relaxed text-muted-foreground/60 line-through decoration-destructive/40">
+              {cap.differentiator}
+            </p>
+            <p
+              className="mt-1 text-[11px] font-semibold leading-relaxed"
+              style={{ color: `hsl(var(--${cap.color}))` }}
+            >
+              {cap.silverile}
+            </p>
+          </div>
+        </div>
+      </div>
     </motion.div>
   );
 };
@@ -235,12 +302,12 @@ const PMCapabilities = () => {
             <span className="text-foreground">, Not Just Tracks</span>
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-sm text-muted-foreground sm:text-base">
-            Six intelligent agents working continuously. Hover to see the difference.
+            Six intelligent agents working continuously. Hover to explore.
           </p>
         </motion.div>
 
         {/* Cards Grid */}
-        <div className="mx-auto grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mx-auto grid max-w-5xl gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {CAPABILITIES.map((cap, i) => (
             <CapabilityCard key={cap.title} cap={cap} index={i} isInView={isInView} />
           ))}
