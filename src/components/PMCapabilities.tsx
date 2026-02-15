@@ -8,105 +8,105 @@ import {
   Bug,
   Globe,
   Zap,
-  ArrowRight,
-} from "lucide-react";
+  ArrowRight } from
+"lucide-react";
 
 const CAPABILITIES = [
-  {
-    icon: Wand2,
-    title: "StoryCraft AI",
-    subtitle: "Story Generation",
-    color: "intent",
-    tagline: "From idea to actionable story in seconds",
-    bullets: [
-      "Auto-generate user stories from minimal input",
-      "Test cases & acceptance criteria instantly",
-      "Text + image input modes",
-    ],
-    differentiator: "Others require manual story writing",
-    silverile: "Silverile generates complete, validated stories autonomously",
-  },
-  {
-    icon: AlertTriangle,
-    title: "Risk Detection",
-    subtitle: "Proactive Alerting",
-    color: "feedback",
-    tagline: "Know before it breaks",
-    bullets: [
-      "Sprint risk & completion probability",
-      "Stalled story detection",
-      "Team health & velocity tracking",
-    ],
-    differentiator: "Others alert after deadlines miss",
-    silverile: "Silverile predicts risks before they escalate",
-  },
-  {
-    icon: BarChart3,
-    title: "Smart Dashboards",
-    subtitle: "Predictive Analytics",
-    color: "execution",
-    tagline: "Insights that drive action, not just reports",
-    bullets: [
-      "Real-time KPI & velocity tracking",
-      "Sprint completion forecasting",
-      "Action recommendations",
-    ],
-    differentiator: "Others show static charts",
-    silverile: "Silverile recommends what to do next",
-  },
-  {
-    icon: Workflow,
-    title: "Workflow AI",
-    subtitle: "Autonomous Management",
-    color: "validation",
-    tagline: "Your sprint runs itself",
-    bullets: [
-      "Smart Kanban with status automation",
-      "Assignment & workload optimization",
-      "Sprint capacity planning",
-    ],
-    differentiator: "Others need manual drag-and-drop",
-    silverile: "Silverile auto-assigns and rebalances workload",
-  },
-  {
-    icon: Bug,
-    title: "Defect Intelligence",
-    subtitle: "Quality Assurance",
-    color: "destructive",
-    tagline: "Catch patterns, not just bugs",
-    bullets: [
-      "Auto severity classification",
-      "Root cause & pattern analysis",
-      "Test coverage insights",
-    ],
-    differentiator: "Others log bugs passively",
-    silverile: "Silverile finds root causes and predicts regressions",
-  },
-  {
-    icon: Globe,
-    title: "Multi-Industry",
-    subtitle: "Adaptable Platform",
-    color: "primary",
-    tagline: "Built for your domain, not just software",
-    bullets: [
-      "Industry-specific workflows",
-      "Customizable team structures",
-      "Small teams to enterprise scale",
-    ],
-    differentiator: "Others are one-size-fits-all",
-    silverile: "Silverile adapts workflows to your industry context",
-  },
-];
+{
+  icon: Wand2,
+  title: "StoryCraft AI",
+  subtitle: "Story Generation",
+  color: "intent",
+  tagline: "From idea to actionable story in seconds",
+  bullets: [
+  "Auto-generate user stories from minimal input",
+  "Test cases & acceptance criteria instantly",
+  "Text + image input modes"],
+
+  differentiator: "Others require manual story writing",
+  silverile: "Silverile generates complete, validated stories autonomously"
+},
+{
+  icon: AlertTriangle,
+  title: "Risk Detection",
+  subtitle: "Proactive Alerting",
+  color: "feedback",
+  tagline: "Know before it breaks",
+  bullets: [
+  "Sprint risk & completion probability",
+  "Stalled story detection",
+  "Team health & velocity tracking"],
+
+  differentiator: "Others alert after deadlines miss",
+  silverile: "Silverile predicts risks before they escalate"
+},
+{
+  icon: BarChart3,
+  title: "Smart Dashboards",
+  subtitle: "Predictive Analytics",
+  color: "execution",
+  tagline: "Insights that drive action, not just reports",
+  bullets: [
+  "Real-time KPI & velocity tracking",
+  "Sprint completion forecasting",
+  "Action recommendations"],
+
+  differentiator: "Others show static charts",
+  silverile: "Silverile recommends what to do next"
+},
+{
+  icon: Workflow,
+  title: "Workflow AI",
+  subtitle: "Autonomous Management",
+  color: "validation",
+  tagline: "Your sprint runs itself",
+  bullets: [
+  "Smart Kanban with status automation",
+  "Assignment & workload optimization",
+  "Sprint capacity planning"],
+
+  differentiator: "Others need manual drag-and-drop",
+  silverile: "Silverile auto-assigns and rebalances workload"
+},
+{
+  icon: Bug,
+  title: "Defect Intelligence",
+  subtitle: "Quality Assurance",
+  color: "destructive",
+  tagline: "Catch patterns, not just bugs",
+  bullets: [
+  "Auto severity classification",
+  "Root cause & pattern analysis",
+  "Test coverage insights"],
+
+  differentiator: "Others log bugs passively",
+  silverile: "Silverile finds root causes and predicts regressions"
+},
+{
+  icon: Globe,
+  title: "Multi-Industry",
+  subtitle: "Adaptable Platform",
+  color: "primary",
+  tagline: "Built for your domain, not just software",
+  bullets: [
+  "Industry-specific workflows",
+  "Customizable team structures",
+  "Small teams to enterprise scale"],
+
+  differentiator: "Others are one-size-fits-all",
+  silverile: "Silverile adapts workflows to your industry context"
+}];
+
 
 const CapabilityCard = ({
   cap,
   index,
-  isInView,
-}: {
-  cap: (typeof CAPABILITIES)[0];
-  index: number;
-  isInView: boolean;
-}) => {
+  isInView
+
+
+
+
+}: {cap: (typeof CAPABILITIES)[0];index: number;isInView: boolean;}) => {
   const [isHovered, setIsHovered] = useState(false);
   const [rotateX, setRotateX] = useState(0);
   const [rotateY, setRotateY] = useState(0);
@@ -120,8 +120,8 @@ const CapabilityCard = ({
     const y = e.clientY - rect.top;
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
-    setRotateX(((y - centerY) / centerY) * -12);
-    setRotateY(((x - centerX) / centerX) * 12);
+    setRotateX((y - centerY) / centerY * -12);
+    setRotateY((x - centerX) / centerX * 12);
   }, []);
 
   const handleMouseEnter = () => setIsHovered(true);
@@ -137,8 +137,8 @@ const CapabilityCard = ({
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay: index * 0.1 }}
       className="group"
-      style={{ perspective: "1200px" }}
-    >
+      style={{ perspective: "1200px" }}>
+
       <div
         ref={cardRef}
         onMouseMove={handleMouseMove}
@@ -147,133 +147,133 @@ const CapabilityCard = ({
         className="relative h-[320px] cursor-pointer overflow-hidden rounded-2xl border border-border bg-card transition-shadow duration-500"
         style={{
           transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
-          transition: isHovered
-            ? "transform 0.1s ease-out, box-shadow 0.4s ease"
-            : "transform 0.5s ease-out, box-shadow 0.4s ease",
+          transition: isHovered ?
+          "transform 0.1s ease-out, box-shadow 0.4s ease" :
+          "transform 0.5s ease-out, box-shadow 0.4s ease",
           transformStyle: "preserve-3d",
-          boxShadow: isHovered
-            ? `0 20px 60px -15px hsl(var(--${cap.color}) / 0.35), 0 0 0 1px hsl(var(--${cap.color}) / 0.2)`
-            : "0 4px 20px -8px hsl(var(--foreground) / 0.08)",
-        }}
-      >
+          boxShadow: isHovered ?
+          `0 20px 60px -15px hsl(var(--${cap.color}) / 0.35), 0 0 0 1px hsl(var(--${cap.color}) / 0.2)` :
+          "0 4px 20px -8px hsl(var(--foreground) / 0.08)"
+        }}>
+
         {/* Glow overlay on hover */}
         <div
           className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500"
           style={{
             opacity: isHovered ? 1 : 0,
-            background: `radial-gradient(circle at 50% 0%, hsl(var(--${cap.color}) / 0.12) 0%, transparent 70%)`,
-          }}
-        />
+            background: `radial-gradient(circle at 50% 0%, hsl(var(--${cap.color}) / 0.12) 0%, transparent 70%)`
+          }} />
+
 
         {/* Shimmer line at top */}
         <div
           className="absolute left-0 right-0 top-0 h-[2px] origin-left scale-x-0 transition-transform duration-500"
           style={{
             transform: isHovered ? "scaleX(1)" : "scaleX(0)",
-            background: `linear-gradient(90deg, transparent, hsl(var(--${cap.color})), transparent)`,
-          }}
-        />
+            background: `linear-gradient(90deg, transparent, hsl(var(--${cap.color})), transparent)`
+          }} />
+
 
         {/* ---- DEFAULT FACE ---- */}
         <div
           className="absolute inset-0 flex flex-col items-center justify-center p-8 text-center transition-all duration-500"
           style={{
             opacity: isHovered ? 0 : 1,
-            transform: isHovered ? "translateZ(30px) scale(0.92)" : "translateZ(0) scale(1)",
-          }}
-        >
+            transform: isHovered ? "translateZ(30px) scale(0.92)" : "translateZ(0) scale(1)"
+          }}>
+
           <div
             className="mb-5 flex h-16 w-16 items-center justify-center rounded-2xl transition-transform duration-500"
             style={{
               background: `hsl(var(--${cap.color}) / 0.1)`,
-              transform: isHovered ? "scale(0.8)" : "scale(1)",
-            }}
-          >
+              transform: isHovered ? "scale(0.8)" : "scale(1)"
+            }}>
+
             <Icon className="h-7 w-7" style={{ color: `hsl(var(--${cap.color}))` }} />
           </div>
           <h3 className="text-lg font-bold text-foreground">{cap.title}</h3>
           <p
             className="mt-1.5 text-[11px] font-semibold uppercase tracking-[0.15em]"
-            style={{ color: `hsl(var(--${cap.color}) / 0.7)` }}
-          >
+            style={{ color: `hsl(var(--${cap.color}) / 0.7)` }}>
+
             {cap.subtitle}
           </p>
           <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{cap.tagline}</p>
         </div>
 
         {/* ---- HOVER FACE ---- */}
-        <div
-          className="absolute inset-0 flex flex-col justify-between p-6 transition-all duration-500"
-          style={{
-            opacity: isHovered ? 1 : 0,
-            transform: isHovered ? "translateZ(0) scale(1)" : "translateZ(-20px) scale(1.05)",
-          }}
-        >
-          {/* Header */}
-          <div className="flex items-center gap-3">
-            <div
-              className="flex h-9 w-9 items-center justify-center rounded-xl"
-              style={{ background: `hsl(var(--${cap.color}) / 0.15)` }}
-            >
-              <Icon className="h-4 w-4" style={{ color: `hsl(var(--${cap.color}))` }} />
-            </div>
-            <div>
-              <h3 className="text-sm font-bold text-foreground">{cap.title}</h3>
-              <p className="text-[10px] uppercase tracking-wider text-muted-foreground">
-                {cap.subtitle}
-              </p>
-            </div>
-          </div>
+        
 
-          {/* Bullets */}
-          <ul className="mt-3 flex flex-col gap-2">
-            {cap.bullets.map((b, i) => (
-              <li
-                key={b}
-                className="flex items-start gap-2.5 text-xs leading-relaxed text-muted-foreground"
-                style={{
-                  opacity: isHovered ? 1 : 0,
-                  transform: isHovered ? "translateX(0)" : "translateX(-8px)",
-                  transition: `all 0.4s ease ${0.15 + i * 0.08}s`,
-                }}
-              >
-                <Zap
-                  className="mt-0.5 h-3.5 w-3.5 shrink-0"
-                  style={{ color: `hsl(var(--${cap.color}))` }}
-                />
-                {b}
-              </li>
-            ))}
-          </ul>
 
-          {/* Why Silverile */}
-          <div
-            className="mt-auto rounded-xl border border-border/60 p-3"
-            style={{
-              background: `hsl(var(--${cap.color}) / 0.05)`,
-              opacity: isHovered ? 1 : 0,
-              transform: isHovered ? "translateY(0)" : "translateY(12px)",
-              transition: "all 0.5s ease 0.25s",
-            }}
-          >
-            <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground/70">
-              <ArrowRight className="h-2.5 w-2.5" />
-              Why Silverile
-            </div>
-            <p className="mt-1.5 text-[11px] leading-relaxed text-muted-foreground/60 line-through decoration-destructive/40">
-              {cap.differentiator}
-            </p>
-            <p
-              className="mt-1 text-[11px] font-semibold leading-relaxed"
-              style={{ color: `hsl(var(--${cap.color}))` }}
-            >
-              {cap.silverile}
-            </p>
-          </div>
-        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       </div>
-    </motion.div>
-  );
+    </motion.div>);
+
 };
 
 const PMCapabilities = () => {
@@ -290,8 +290,8 @@ const PMCapabilities = () => {
           initial={{ opacity: 0, y: 24 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="mb-14 text-center lg:mb-16"
-        >
+          className="mb-14 text-center lg:mb-16">
+
           <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-secondary/50 px-4 py-1.5 text-xs font-medium text-muted-foreground">
             <Workflow className="h-3.5 w-3.5 text-primary" />
             Agentic Project Manager
@@ -308,9 +308,9 @@ const PMCapabilities = () => {
 
         {/* Cards Grid */}
         <div className="mx-auto grid max-w-5xl gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {CAPABILITIES.map((cap, i) => (
-            <CapabilityCard key={cap.title} cap={cap} index={i} isInView={isInView} />
-          ))}
+          {CAPABILITIES.map((cap, i) =>
+          <CapabilityCard key={cap.title} cap={cap} index={i} isInView={isInView} />
+          )}
         </div>
 
         {/* Differentiator strip */}
@@ -318,25 +318,25 @@ const PMCapabilities = () => {
           initial={{ opacity: 0, y: 16 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.5, delay: 0.5 }}
-          className="mx-auto mt-12 flex max-w-3xl flex-wrap items-center justify-center gap-x-6 gap-y-3"
-        >
+          className="mx-auto mt-12 flex max-w-3xl flex-wrap items-center justify-center gap-x-6 gap-y-3">
+
           {[
-            { label: "Proactive Intelligence", color: "intent" },
-            { label: "Context-Aware Automation", color: "execution" },
-            { label: "Seamless Integration", color: "validation" },
-          ].map((d) => (
-            <div key={d.label} className="flex items-center gap-2">
+          { label: "Proactive Intelligence", color: "intent" },
+          { label: "Context-Aware Automation", color: "execution" },
+          { label: "Seamless Integration", color: "validation" }].
+          map((d) =>
+          <div key={d.label} className="flex items-center gap-2">
               <div
-                className="h-2 w-2 rounded-full"
-                style={{ background: `hsl(var(--${d.color}))` }}
-              />
+              className="h-2 w-2 rounded-full"
+              style={{ background: `hsl(var(--${d.color}))` }} />
+
               <span className="text-xs font-semibold text-muted-foreground">{d.label}</span>
             </div>
-          ))}
+          )}
         </motion.div>
       </div>
-    </section>
-  );
+    </section>);
+
 };
 
 export default PMCapabilities;
