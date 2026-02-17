@@ -14,17 +14,18 @@ import {
 const CAPABILITIES = [
   {
     icon: Wand2,
-    title: "StoryCraft AI",
-    subtitle: "Story Generation",
+    title: "StoryCraft-AI",
+    subtitle: "Intent → Structured Work in Seconds",
     color: "intent",
-    tagline: "From idea to actionable story in seconds",
+    tagline: "Turn rough ideas into structured, acceptance-ready user stories",
     bullets: [
-      "Auto-generate user stories from minimal input",
-      "Test cases & acceptance criteria instantly",
-      "Text + image input modes",
+      "Schema-validated output (not AI fluff)",
+      "Acceptance criteria included",
+      "Test-case ready",
+      "Human-in-the-loop verification",
     ],
-    differentiator: "Others require manual story writing",
-    silverile: "Silverile generates complete, validated stories autonomously",
+    differentiator: "Why it matters",
+    silverile: "Reduces story drafting time by 80% while improving clarity across teams.",
   },
   {
     icon: AlertTriangle,
@@ -160,7 +161,8 @@ const CapabilityCard = ({
               <Icon className="h-4 w-4 shrink-0" style={{ color: `hsl(var(--${cap.color}))` }} />
               <span className="text-sm font-bold text-foreground">{cap.title}</span>
             </div>
-            <ul className="mt-3 flex flex-col gap-1.5">
+            <p className="text-[11px] leading-relaxed text-muted-foreground">{cap.tagline}</p>
+            <ul className="flex flex-col gap-1.5">
               {cap.bullets.map((b) => (
                 <li key={b} className="flex items-start gap-2 text-[11px] text-muted-foreground sm:text-xs">
                   <Zap
@@ -171,16 +173,13 @@ const CapabilityCard = ({
                 </li>
               ))}
             </ul>
-            <div className="mt-3 rounded-lg border border-border/50 bg-background/60 p-2.5">
+            <div className="mt-auto rounded-lg border border-border/50 bg-background/60 p-2.5">
               <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">
                 <ArrowRight className="h-2.5 w-2.5" />
-                Why Silverile
-              </div>
-              <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground line-through decoration-destructive/40">
                 {cap.differentiator}
-              </p>
+              </div>
               <p
-                className="mt-0.5 text-[11px] font-semibold leading-relaxed"
+                className="mt-1 text-[11px] font-semibold leading-relaxed"
                 style={{ color: `hsl(var(--${cap.color}))` }}
               >
                 {cap.silverile}
