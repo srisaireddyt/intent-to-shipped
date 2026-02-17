@@ -206,7 +206,7 @@ const PMCapabilities = () => {
       <div className="container relative z-10 mx-auto px-4 sm:px-6">
 
         {/* Cards Grid */}
-        <div className="mx-auto grid max-w-5xl gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        <div className="mx-auto grid max-w-7xl gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           {CAPABILITIES.map((cap, i) => (
             <CapabilityCard key={cap.title} cap={cap} index={i} isInView={isInView} />
           ))}
