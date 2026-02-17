@@ -75,16 +75,17 @@ const CAPABILITIES = [
   {
     icon: Bug,
     title: "Defect Intelligence",
-    subtitle: "Quality Assurance",
+    subtitle: "Quality Patterns, Not Just Bug Lists",
     color: "destructive",
-    tagline: "Catch patterns, not just bugs",
+    tagline: "Move from reactive bug tracking to systemic quality analysis.",
     bullets: [
-      "Auto severity classification",
-      "Root cause & pattern analysis",
-      "Test coverage insights",
+      "Detect recurring defect clusters",
+      "Link bugs to story patterns",
+      "Identify risky modules",
+      "Predict regression risk",
     ],
-    differentiator: "Others log bugs passively",
-    silverile: "Silverile finds root causes and predicts regressions",
+    differentiator: "Why it matters",
+    silverile: "Improves quality before production — not after escalation.",
   },
 ];
 
