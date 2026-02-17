@@ -296,14 +296,14 @@ const PMCapabilities = () => {
             <Workflow className="h-3.5 w-3.5 text-primary" />
             Agentic Project Manager
           </div>
+          <h2 className="mx-auto max-w-3xl text-2xl font-extrabold leading-tight tracking-tight sm:text-3xl md:text-4xl lg:text-5xl">
+            <span className="text-foreground">AI That </span>
+            <span className="text-gradient-hero">Manages</span>
+            <span className="text-foreground">, Not Just Tracks</span>
+          </h2>
           
 
 
-
-
-          <p className="mx-auto mt-4 max-w-xl text-sm text-muted-foreground sm:text-base">
-            Six intelligent agents working continuously. Hover to explore.
-          </p>
         </motion.div>
 
         {/* Cards Grid */}
