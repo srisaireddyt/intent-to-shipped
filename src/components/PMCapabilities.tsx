@@ -196,31 +196,57 @@ const CapabilityCard = ({
 const PMCapabilities = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  // Track how many cards have been revealed so far (0 = none, 5 = all)
+  const [revealedCount, setRevealedCount] = useState(0);
+  const isPaused = useRef(false);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const scheduleNext = (current: number) => {
+    const totalCards = CAPABILITIES.length;
+    if (current < totalCards) {
+      // Reveal next card after 2s
+      timeoutRef.current = setTimeout(() => {
+        if (isPaused.current) return;
+        const next = current + 1;
+        setRevealedCount(next);
+        scheduleNext(next);
+      }, 2000);
+    } else {
+      // All cards revealed — hold for 5s, then reset
+      timeoutRef.current = setTimeout(() => {
+        if (isPaused.current) return;
+        setRevealedCount(0);
+        // Small gap before restarting
+        timeoutRef.current = setTimeout(() => {
+          if (isPaused.current) return;
+          setRevealedCount(1);
+          scheduleNext(1);
+        }, 500);
+      }, 5000);
+    }
+  };
 
   useEffect(() => {
     if (!isInView) return;
-    // Each card: 2s revealed, then 0.5s gap before next
-    const totalCards = CAPABILITIES.length;
-    const revealDuration = 2000;
-    const gapDuration = 500;
-    const cycleDuration = totalCards * (revealDuration + gapDuration);
-
-    let timer: ReturnType<typeof setInterval>;
-    let startTime = Date.now();
-
-    const tick = () => {
-      const elapsed = (Date.now() - startTime) % cycleDuration;
-      const cardIndex = Math.floor(elapsed / (revealDuration + gapDuration));
-      const withinCard = elapsed % (revealDuration + gapDuration);
-      setActiveIndex(withinCard < revealDuration ? cardIndex : null);
+    // Kick off: reveal first card
+    setRevealedCount(1);
+    scheduleNext(1);
+    return () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-
-    timer = setInterval(tick, 100);
-    tick();
-
-    return () => clearInterval(timer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isInView]);
+
+  const handleHover = () => {
+    isPaused.current = true;
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+  };
+
+  const handleUnhover = () => {
+    isPaused.current = false;
+    // Resume from current state
+    scheduleNext(revealedCount);
+  };
 
   return (
     <section ref={ref} className="relative overflow-hidden py-10 lg:py-14">
@@ -229,9 +255,13 @@ const PMCapabilities = () => {
       <div className="container relative z-10 mx-auto px-4 sm:px-6">
 
         {/* Cards Grid */}
-        <div className="mx-auto grid max-w-7xl gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+        <div
+          className="mx-auto grid max-w-7xl gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5"
+          onMouseEnter={handleHover}
+          onMouseLeave={handleUnhover}
+        >
           {CAPABILITIES.map((cap, i) => (
-            <CapabilityCard key={cap.title} cap={cap} index={i} isInView={isInView} isRevealed={activeIndex === i} />
+            <CapabilityCard key={cap.title} cap={cap} index={i} isInView={isInView} isRevealed={i < revealedCount} />
           ))}
         </div>
 
