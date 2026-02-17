@@ -4,6 +4,7 @@ import HeroFlow from "@/components/HeroFlow";
 import SafeLightCoding from "@/components/SafeLightCoding";
 import MontyViews from "@/components/MontyViews";
 import MeetMonty from "@/components/MeetMonty";
+import Pricing from "@/components/Pricing";
 import { motion } from "framer-motion";
 import { Brain, ArrowRight } from "lucide-react";
 
@@ -46,6 +47,9 @@ const Index = () => {
 
       {/* Meet Monty */}
       <MeetMonty />
+
+      {/* Pricing */}
+      <Pricing />
 
       {/* Monty's Views */}
       <MontyViews />
