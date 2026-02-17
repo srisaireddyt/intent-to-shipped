@@ -1,5 +1,5 @@
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import {
   Wand2,
   AlertTriangle,
@@ -88,12 +88,13 @@ const CapabilityCard = ({
   cap,
   index,
   isInView,
+  isRevealed,
 }: {
   cap: (typeof CAPABILITIES)[0];
   index: number;
   isInView: boolean;
+  isRevealed: boolean;
 }) => {
-  const [hovered, setHovered] = useState(false);
   const Icon = cap.icon;
 
   return (
@@ -101,14 +102,16 @@ const CapabilityCard = ({
       initial={{ opacity: 0, y: 24 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay: index * 0.08 }}
-      className="group relative cursor-pointer overflow-hidden rounded-2xl border border-border bg-card/80 backdrop-blur-sm transition-all duration-300"
-      style={{ minHeight: 280 }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      className="group relative overflow-hidden rounded-2xl border border-border bg-card/80 backdrop-blur-sm transition-all duration-300"
+      style={{
+        minHeight: 280,
+        borderColor: isRevealed ? `hsl(var(--${cap.color}) / 0.5)` : undefined,
+        boxShadow: isRevealed ? `0 0 30px -8px hsl(var(--${cap.color}) / 0.25)` : "none",
+      }}
     >
       {/* Default State */}
       <AnimatePresence>
-        {!hovered && (
+        {!isRevealed && (
           <motion.div
             key="default"
             initial={{ opacity: 0 }}
@@ -137,11 +140,11 @@ const CapabilityCard = ({
         )}
       </AnimatePresence>
 
-      {/* Hover State */}
+      {/* Revealed State */}
       <AnimatePresence>
-        {hovered && (
+        {isRevealed && (
           <motion.div
-            key="hovered"
+            key="revealed"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
@@ -153,13 +156,10 @@ const CapabilityCard = ({
               boxShadow: `0 0 30px -8px hsl(var(--${cap.color}) / 0.2)`,
             }}
           >
-            {/* Header */}
             <div className="flex items-center gap-2.5">
               <Icon className="h-4 w-4 shrink-0" style={{ color: `hsl(var(--${cap.color}))` }} />
               <span className="text-sm font-bold text-foreground">{cap.title}</span>
             </div>
-
-            {/* Bullets */}
             <ul className="mt-3 flex flex-col gap-1.5">
               {cap.bullets.map((b) => (
                 <li key={b} className="flex items-start gap-2 text-[11px] text-muted-foreground sm:text-xs">
@@ -171,8 +171,6 @@ const CapabilityCard = ({
                 </li>
               ))}
             </ul>
-
-            {/* Differentiator */}
             <div className="mt-3 rounded-lg border border-border/50 bg-background/60 p-2.5">
               <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/60">
                 <ArrowRight className="h-2.5 w-2.5" />
@@ -198,6 +196,31 @@ const CapabilityCard = ({
 const PMCapabilities = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!isInView) return;
+    // Each card: 2s revealed, then 0.5s gap before next
+    const totalCards = CAPABILITIES.length;
+    const revealDuration = 2000;
+    const gapDuration = 500;
+    const cycleDuration = totalCards * (revealDuration + gapDuration);
+
+    let timer: ReturnType<typeof setInterval>;
+    let startTime = Date.now();
+
+    const tick = () => {
+      const elapsed = (Date.now() - startTime) % cycleDuration;
+      const cardIndex = Math.floor(elapsed / (revealDuration + gapDuration));
+      const withinCard = elapsed % (revealDuration + gapDuration);
+      setActiveIndex(withinCard < revealDuration ? cardIndex : null);
+    };
+
+    timer = setInterval(tick, 100);
+    tick();
+
+    return () => clearInterval(timer);
+  }, [isInView]);
 
   return (
     <section ref={ref} className="relative overflow-hidden py-10 lg:py-14">
@@ -208,7 +231,7 @@ const PMCapabilities = () => {
         {/* Cards Grid */}
         <div className="mx-auto grid max-w-7xl gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           {CAPABILITIES.map((cap, i) => (
-            <CapabilityCard key={cap.title} cap={cap} index={i} isInView={isInView} />
+            <CapabilityCard key={cap.title} cap={cap} index={i} isInView={isInView} isRevealed={activeIndex === i} />
           ))}
         </div>
 
