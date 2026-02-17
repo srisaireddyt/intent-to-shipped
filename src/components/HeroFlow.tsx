@@ -312,22 +312,61 @@ const TransformationCard = ({ t }: { t: Transformation }) => {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="relative flex flex-col items-center justify-center border-y border-border/40 px-6 py-6 lg:w-[260px] lg:border-x lg:border-y-0 lg:py-8"
+          className="relative flex flex-col items-center justify-center border-y border-border/40 px-6 py-8 lg:w-[200px] lg:border-x lg:border-y-0 lg:py-10"
         >
+          {/* Radial glow background */}
           <div
-            className="absolute inset-0 opacity-[0.05]"
-            style={{ background: `radial-gradient(circle at center, hsl(var(--${activeColor})), transparent 70%)` }}
+            className="absolute inset-0"
+            style={{ background: `radial-gradient(circle at center, hsl(var(--${activeColor}) / 0.08), transparent 70%)` }}
           />
-          <div className="absolute left-0 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 lg:block">
-            <ChevronRight className="h-4 w-4 text-muted-foreground/30" />
+
+          {/* Animated orbital ring */}
+          <div className="relative mb-5 flex h-20 w-20 items-center justify-center">
+            <motion.div
+              className="absolute inset-0 rounded-full border"
+              style={{ borderColor: `hsl(var(--${activeColor}) / 0.2)` }}
+              animate={{ rotate: 360 }}
+              transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+            />
+            <motion.div
+              className="absolute inset-2 rounded-full border border-dashed"
+              style={{ borderColor: `hsl(var(--${activeColor}) / 0.12)` }}
+              animate={{ rotate: -360 }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+            />
+            {/* Orbiting dots */}
+            {[0, 120, 240].map((deg) => (
+              <motion.div
+                key={deg}
+                className="absolute h-1.5 w-1.5 rounded-full"
+                style={{
+                  background: `hsl(var(--${activeColor}))`,
+                  top: `calc(50% + ${Math.sin((deg * Math.PI) / 180) * 36}px - 3px)`,
+                  left: `calc(50% + ${Math.cos((deg * Math.PI) / 180) * 36}px - 3px)`,
+                }}
+                animate={{ opacity: [0.3, 1, 0.3], scale: [0.8, 1.2, 0.8] }}
+                transition={{ duration: 2, repeat: Infinity, delay: deg / 360 }}
+              />
+            ))}
+            {/* Center icon */}
+            <Sparkles className="h-5 w-5" style={{ color: `hsl(var(--${activeColor}))` }} />
           </div>
 
+          {/* Label */}
           <span className="relative text-center text-sm font-extrabold tracking-[0.08em] text-foreground">
             StoryCraft-AI
           </span>
 
+          {/* Flow arrows */}
+          <div className="absolute left-0 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 lg:block">
+            <motion.div animate={{ x: [0, 3, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
+              <ChevronRight className="h-4 w-4" style={{ color: `hsl(var(--${activeColor}) / 0.4)` }} />
+            </motion.div>
+          </div>
           <div className="absolute right-0 top-1/2 hidden translate-x-1/2 -translate-y-1/2 lg:block">
-            <ChevronRight className="h-4 w-4 text-muted-foreground/30" />
+            <motion.div animate={{ x: [0, 3, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
+              <ChevronRight className="h-4 w-4" style={{ color: `hsl(var(--${activeColor}) / 0.4)` }} />
+            </motion.div>
           </div>
         </motion.div>
 
