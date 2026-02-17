@@ -322,31 +322,9 @@ const TransformationCard = ({ t }: { t: Transformation }) => {
             <ChevronRight className="h-4 w-4 text-muted-foreground/30" />
           </div>
 
-          <div
-            className="relative mb-3 flex h-12 w-12 items-center justify-center rounded-xl"
-            style={{ background: `hsl(var(--${activeColor}) / 0.12)` }}
-          >
-            <Sparkles className="h-5.5 w-5.5" style={{ color: `hsl(var(--${activeColor}))` }} />
-          </div>
-
-          <span className="relative mb-4 text-center text-xs font-extrabold uppercase tracking-[0.2em] text-foreground">
+          <span className="relative text-center text-sm font-extrabold tracking-[0.08em] text-foreground">
             StoryCraft-AI
           </span>
-
-          <div className="relative flex flex-col gap-1.5">
-            {t.process.map((step, si) => (
-              <motion.div
-                key={step}
-                initial={{ opacity: 0, x: -8 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.25, delay: si * 0.06 }}
-                className="flex items-center gap-2"
-              >
-                <ChevronRight className="h-3 w-3 shrink-0" style={{ color: `hsl(var(--${activeColor}) / 0.5)` }} />
-                <span className="text-[10px] leading-tight text-muted-foreground/80 sm:text-[11px]">{step}</span>
-              </motion.div>
-            ))}
-          </div>
 
           <div className="absolute right-0 top-1/2 hidden translate-x-1/2 -translate-y-1/2 lg:block">
             <ChevronRight className="h-4 w-4 text-muted-foreground/30" />
