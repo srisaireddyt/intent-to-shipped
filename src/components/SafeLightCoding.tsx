@@ -1,5 +1,5 @@
-import { motion, useInView } from "framer-motion";
-import { useRef, useState, useCallback } from "react";
+import { motion, useInView, AnimatePresence } from "framer-motion";
+import { useRef, useState } from "react";
 import {
   Lightbulb,
   EyeOff,
@@ -12,37 +12,37 @@ const PRINCIPLES = [
   {
     icon: Lightbulb,
     title: "Intent First",
-    short: "Clarifies before acting",
+    short: "Understand, then act",
     detail:
-      "AI is optimized for understanding what the developer means, not for shipping code quickly. If intent is unclear, it surfaces ambiguity — never guesses.",
+      "We optimize for meaning, not speed. Unclear intent? We ask — never assume.",
   },
   {
     icon: EyeOff,
     title: "Read-Only Default",
-    short: "Zero auto-execution",
+    short: "Suggest, never commit",
     detail:
-      "AI suggestions are non-destructive and non-committal unless a human explicitly promotes them. Code review ✓ Auto-merge ✗",
+      "Every AI output is a proposal. Nothing ships until a human says go.",
   },
   {
     icon: ShieldCheck,
     title: "Deterministic Guards",
-    short: "Rules, not guesses",
+    short: "Validated, not vibes",
     detail:
-      "Every AI output is bounded by schemas, contracts, and validation rules. If it can't be validated, it can't be trusted.",
+      "Schemas and contracts gate every output. If it can't be proven, it doesn't pass.",
   },
   {
     icon: HelpCircle,
     title: "Explicit Ambiguity",
-    short: "Uncertainty disclosed",
+    short: "Uncertainty is data",
     detail:
-      "Ambiguity is first-class output. What's known, unclear, and not inferred are all surfaced transparently.",
+      'We don\'t hide doubt — we surface it. "I\'m not sure" is a valid AI answer.',
   },
   {
     icon: Users,
-    title: "Human Accountability",
-    short: "AI suggests, you decide",
+    title: "Human Ownership",
+    short: "You decide, always",
     detail:
-      "AI assists thinking, but design decisions, business logic, risk, and outcomes always stay with the human.",
+      "AI accelerates thinking. Decisions, risk, and accountability stay human.",
   },
 ];
 
@@ -62,73 +62,63 @@ const PrincipleCard = ({
   index: number;
   isInView: boolean;
 }) => {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [mouse, setMouse] = useState({ x: 0, y: 0 });
-  const [isInside, setIsInside] = useState(false);
+  const [hovered, setHovered] = useState(false);
   const Icon = principle.icon;
-
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    setMouse({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top,
-    });
-  }, []);
 
   return (
     <motion.div
-      ref={cardRef}
       initial={{ opacity: 0, y: 24 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay: index * 0.08 }}
-      className="group relative flex flex-col items-center overflow-hidden rounded-2xl border border-border bg-card/80 px-5 py-8 text-center backdrop-blur-sm cursor-pointer"
-      style={{ minHeight: 260 }}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsInside(true)}
-      onMouseLeave={() => setIsInside(false)}
+      className="group relative cursor-pointer overflow-hidden rounded-2xl border border-border bg-card/80 backdrop-blur-sm"
+      style={{ minHeight: 240 }}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
-      {/* Always-visible layer: icon + title + short */}
-      <div className="relative z-10 flex flex-col items-center">
-        <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-accent/60">
-          <Icon className="h-5 w-5 text-primary" />
-        </div>
-        <h3 className="text-sm font-bold text-foreground">{principle.title}</h3>
-        <p className="mt-1.5 text-xs text-muted-foreground">{principle.short}</p>
-      </div>
+      {/* Default face */}
+      <AnimatePresence>
+        {!hovered && (
+          <motion.div
+            key="front"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="flex h-full flex-col items-center justify-center p-6 text-center"
+          >
+            <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-accent/60">
+              <Icon className="h-6 w-6 text-primary" />
+            </div>
+            <h3 className="text-base font-bold text-foreground">{principle.title}</h3>
+            <p className="mt-2 text-sm text-muted-foreground">{principle.short}</p>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {/* Hidden detail layer — revealed by flashlight */}
-      <div
-        className="absolute inset-0 z-20 flex items-center justify-center rounded-2xl px-6 py-6"
-        style={{
-          background: "hsl(var(--intent))",
-          opacity: isInside ? 1 : 0,
-          transition: "opacity 0.15s",
-          WebkitMaskImage: isInside
-            ? `radial-gradient(circle 130px at ${mouse.x}px ${mouse.y}px, black 35%, transparent 100%)`
-            : "none",
-          maskImage: isInside
-            ? `radial-gradient(circle 130px at ${mouse.x}px ${mouse.y}px, black 35%, transparent 100%)`
-            : "none",
-        }}
-      >
-        {/* Bright glow at cursor */}
-        <div
-          className="pointer-events-none absolute rounded-full"
-          style={{
-            width: 260,
-            height: 260,
-            left: mouse.x - 130,
-            top: mouse.y - 130,
-            background: "radial-gradient(circle, hsla(0, 0%, 100%, 0.15) 0%, transparent 60%)",
-            filter: "blur(6px)",
-          }}
-        />
-
-        <p className="relative text-sm font-semibold leading-relaxed" style={{ color: "hsl(0 0% 100%)" }}>
-          {principle.detail}
-        </p>
-      </div>
+      {/* Hover face — detail */}
+      <AnimatePresence>
+        {hovered && (
+          <motion.div
+            key="back"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 8 }}
+            transition={{ duration: 0.2 }}
+            className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl p-6 text-center"
+            style={{
+              background: "hsl(var(--intent))",
+            }}
+          >
+            <Icon className="mb-4 h-5 w-5" style={{ color: "hsl(0 0% 100% / 0.6)" }} />
+            <p
+              className="text-base font-semibold leading-relaxed"
+              style={{ color: "hsl(0 0% 100%)" }}
+            >
+              {principle.detail}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 };
