@@ -46,7 +46,7 @@ const MeetMonty = () => {
               boxShadow: "0 8px 60px -16px hsl(var(--intent) / 0.15)",
             }}
           >
-            <div className="grid lg:grid-cols-[1fr_300px]">
+            <div className="grid lg:grid-cols-[1fr_380px]">
               {/* Left — Text content */}
               <div className="relative z-10 p-8 sm:p-10 lg:p-14">
                 <motion.span
@@ -95,27 +95,27 @@ const MeetMonty = () => {
                 </motion.div>
               </div>
 
-              {/* Right — Monty peeking from behind the right edge */}
-              <div className="relative hidden lg:block overflow-visible">
+              {/* Right — Monty filling the right side */}
+              <div className="relative hidden lg:flex items-center justify-center overflow-visible min-h-[320px]">
                 <motion.div
                   initial={{ x: 60, opacity: 0 }}
                   animate={isInView ? { x: 0, opacity: 1 } : {}}
                   transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-                  className="absolute -right-8 -bottom-4 z-20"
+                  className="relative z-20"
                 >
                   <motion.img
                     animate={{ y: [0, -6, 0] }}
                     transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                     src={montyWave}
                     alt="Monty waving hello"
-                    className="h-[340px] w-auto object-contain drop-shadow-2xl"
+                    className="h-[380px] w-auto object-contain drop-shadow-2xl"
                   />
                 </motion.div>
                 {/* Glow behind Monty */}
                 <div
                   className="absolute inset-0 pointer-events-none"
                   style={{
-                    background: "radial-gradient(ellipse at 90% 70%, hsl(var(--intent) / 0.1), transparent 50%)",
+                    background: "radial-gradient(ellipse at 50% 50%, hsl(var(--intent) / 0.1), transparent 60%)",
                   }}
                 />
               </div>
