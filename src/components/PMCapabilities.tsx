@@ -292,18 +292,18 @@ const PMCapabilities = () => {
           transition={{ duration: 0.6 }}
           className="mb-14 text-center lg:mb-16">
 
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-secondary/50 px-4 py-1.5 text-xs font-medium text-muted-foreground">
-            <Workflow className="h-3.5 w-3.5 text-primary" />
-            Agentic Project Manager
-          </div>
+          
+
+
+
           <h2 className="mx-auto max-w-3xl text-2xl font-extrabold leading-tight tracking-tight sm:text-3xl md:text-4xl lg:text-5xl">
             <span className="text-foreground">AI That </span>
             <span className="text-gradient-hero">Manages</span>
             <span className="text-foreground">, Not Just Tracks</span>
           </h2>
-          
-
-
+          <p className="mx-auto mt-4 max-w-xl text-sm text-muted-foreground sm:text-base">
+            Six intelligent agents working continuously. Hover to explore.
+          </p>
         </motion.div>
 
         {/* Cards Grid */}
