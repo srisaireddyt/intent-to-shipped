@@ -1,3 +1,5 @@
+import SilerileLogo from "./SilerileLogo";
+
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
@@ -35,15 +37,8 @@ const Footer = () => {
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           {/* Brand */}
           <div>
-            <div className="flex items-center gap-1.5 mb-4">
-              <div className="flex gap-0.5">
-                <div className="h-5 w-1.5 rounded-full bg-primary" />
-                <div className="h-7 w-1.5 rounded-full bg-primary/70" />
-                <div className="h-4 w-1.5 rounded-full bg-primary/40" />
-              </div>
-              <span className="text-lg font-bold tracking-tight text-foreground">
-                SILVERILE
-              </span>
+            <div className="mb-4">
+              <SilerileLogo className="h-8 w-auto" />
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
               (Ag)ile for All, Time gAIned.<br />

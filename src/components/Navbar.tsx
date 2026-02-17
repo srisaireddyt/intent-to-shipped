@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Sun, Moon } from "lucide-react";
 import { useTheme } from "./ThemeProvider";
+import SilerileLogo from "./SilerileLogo";
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
@@ -14,16 +15,7 @@ const Navbar = () => {
     >
       <div className="container mx-auto flex h-16 items-center justify-between px-6">
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5">
-            <div className="flex gap-0.5">
-              <div className="h-5 w-1.5 rounded-full bg-primary" />
-              <div className="h-7 w-1.5 rounded-full bg-primary/70" />
-              <div className="h-4 w-1.5 rounded-full bg-primary/40" />
-            </div>
-            <span className="text-xl font-bold tracking-tight text-foreground">
-              SILVERILE
-            </span>
-          </div>
+          <SilerileLogo className="h-8 w-auto" />
         </div>
 
         <div className="hidden items-center gap-8 md:flex">
