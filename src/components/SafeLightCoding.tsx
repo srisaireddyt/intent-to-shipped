@@ -1,5 +1,5 @@
-import { motion, useInView, AnimatePresence } from "framer-motion";
-import { useRef, useState } from "react";
+import { motion, useInView } from "framer-motion";
+import { useRef, useState, useCallback } from "react";
 import {
   Lightbulb,
   EyeOff,
@@ -62,63 +62,70 @@ const PrincipleCard = ({
   index: number;
   isInView: boolean;
 }) => {
-  const [hovered, setHovered] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [isHovering, setIsHovering] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
   const Icon = principle.icon;
+
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    setMousePos({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  }, []);
 
   return (
     <motion.div
+      ref={cardRef}
       initial={{ opacity: 0, y: 24 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay: index * 0.08 }}
-      className="group relative cursor-pointer overflow-hidden rounded-2xl border border-border bg-card/80 backdrop-blur-sm"
-      style={{ minHeight: 240 }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      className="group relative cursor-pointer overflow-hidden rounded-2xl border border-border"
+      style={{ minHeight: 260 }}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
     >
-      {/* Default face */}
-      <AnimatePresence>
-        {!hovered && (
-          <motion.div
-            key="front"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="flex h-full flex-col items-center justify-center p-6 text-center"
-          >
-            <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-accent/60">
-              <Icon className="h-6 w-6 text-primary" />
-            </div>
-            <h3 className="text-base font-bold text-foreground">{principle.title}</h3>
-            <p className="mt-2 text-sm text-muted-foreground">{principle.short}</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Base layer — visible by default */}
+      <div className="flex h-full flex-col items-center justify-center p-6 text-center bg-card/80 backdrop-blur-sm">
+        <div className="mb-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-accent/60">
+          <Icon className="h-6 w-6 text-primary" />
+        </div>
+        <h3 className="text-lg font-bold text-foreground">{principle.title}</h3>
+        <p className="mt-2 text-sm text-muted-foreground">{principle.short}</p>
+      </div>
 
-      {/* Hover face — detail */}
-      <AnimatePresence>
-        {hovered && (
-          <motion.div
-            key="back"
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 8 }}
-            transition={{ duration: 0.2 }}
-            className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl p-6 text-center"
-            style={{
-              background: "hsl(var(--intent))",
-            }}
-          >
-            <Icon className="mb-4 h-5 w-5" style={{ color: "hsl(0 0% 100% / 0.6)" }} />
-            <p
-              className="text-base font-semibold leading-relaxed"
-              style={{ color: "hsl(0 0% 100%)" }}
-            >
-              {principle.detail}
-            </p>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Flashlight-revealed layer */}
+      <div
+        className="absolute inset-0 flex flex-col items-center justify-center rounded-2xl p-6 text-center transition-opacity duration-300"
+        style={{
+          background: "hsl(var(--intent))",
+          opacity: isHovering ? 1 : 0,
+          WebkitMaskImage: isHovering
+            ? `radial-gradient(circle 140px at ${mousePos.x}px ${mousePos.y}px, black 0%, black 40%, transparent 100%)`
+            : "none",
+          maskImage: isHovering
+            ? `radial-gradient(circle 140px at ${mousePos.x}px ${mousePos.y}px, black 0%, black 40%, transparent 100%)`
+            : "none",
+        }}
+      >
+        <Icon className="mb-4 h-6 w-6 text-primary-foreground/70" />
+        <p className="text-base font-bold leading-relaxed text-primary-foreground">
+          {principle.detail}
+        </p>
+      </div>
+
+      {/* Cursor glow effect */}
+      {isHovering && (
+        <div
+          className="pointer-events-none absolute inset-0 rounded-2xl transition-opacity duration-200"
+          style={{
+            background: `radial-gradient(circle 200px at ${mousePos.x}px ${mousePos.y}px, hsl(var(--intent) / 0.2), transparent 70%)`,
+          }}
+        />
+      )}
     </motion.div>
   );
 };
