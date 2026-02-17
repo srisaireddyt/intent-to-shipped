@@ -138,9 +138,6 @@ const CapabilityCard = ({
             >
               {cap.subtitle}
             </p>
-            <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
-              {cap.tagline}
-            </p>
           </motion.div>
         )}
       </AnimatePresence>
