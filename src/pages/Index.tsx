@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import PMCapabilities from "@/components/PMCapabilities";
 import HeroFlow from "@/components/HeroFlow";
 import SafeLightCoding from "@/components/SafeLightCoding";
+import MontyViews from "@/components/MontyViews";
 import { motion } from "framer-motion";
 import { Brain, ArrowRight } from "lucide-react";
 
@@ -41,6 +42,9 @@ const Index = () => {
 
       {/* Philosophy */}
       <SafeLightCoding />
+
+      {/* Monty's Views */}
+      <MontyViews />
     </div>
   );
 };
