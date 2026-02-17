@@ -109,7 +109,7 @@ const CapabilityCard = ({
       transition={{ duration: 0.5, delay: index * 0.08 }}
       className="group relative overflow-hidden rounded-2xl border border-border bg-card/80 backdrop-blur-sm transition-all duration-300"
       style={{
-        minHeight: 280,
+        minHeight: 340,
         borderColor: isRevealed ? `hsl(var(--${cap.color}) / 0.5)` : undefined,
         boxShadow: isRevealed ? `0 0 30px -8px hsl(var(--${cap.color}) / 0.25)` : "none",
       }}
