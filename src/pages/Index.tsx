@@ -24,7 +24,7 @@ const Index = () => {
               <Brain className="h-3.5 w-3.5 text-primary" />
               SDLC Intelligence Platform
             </div>
-            <h1 className="mx-auto max-w-4xl whitespace-nowrap text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
+            <h1 className="text-center text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
               <span className="text-gradient-hero">Silverile</span>
               <span className="text-foreground">, Your Co-Project Manager.</span>
             </h1>
