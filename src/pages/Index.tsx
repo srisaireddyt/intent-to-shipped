@@ -31,8 +31,8 @@ const Index = () => {
               alt="Silverile.AI"
               className="h-16 w-auto sm:h-20 md:h-24 lg:h-28 xl:h-32"
             />
-            <h2 className="mt-3 text-lg font-bold tracking-wide text-foreground sm:text-xl md:text-2xl lg:text-3xl">
-              Your Agentic Co-Project Manager
+            <h2 className="mt-4 text-base font-light tracking-[0.2em] uppercase text-muted-foreground sm:text-lg md:text-xl lg:text-2xl">
+              Your <span className="font-semibold text-foreground">"Agentic Co-Project Manager"</span>
             </h2>
           </motion.div>
         </div>
