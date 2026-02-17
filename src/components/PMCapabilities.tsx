@@ -102,7 +102,7 @@ const CapabilityCard = ({
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay: index * 0.08 }}
       className="group relative cursor-pointer overflow-hidden rounded-2xl border border-border bg-card/80 backdrop-blur-sm transition-all duration-300"
-      style={{ minHeight: 220 }}
+      style={{ minHeight: 280 }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -226,7 +226,7 @@ const PMCapabilities = () => {
         </motion.div>
 
         {/* Cards Grid */}
-        <div className="mx-auto grid max-w-6xl gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
+        <div className="mx-auto grid max-w-5xl gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
           {CAPABILITIES.map((cap, i) => (
             <CapabilityCard key={cap.title} cap={cap} index={i} isInView={isInView} />
           ))}
