@@ -3,11 +3,27 @@ import { useRef } from "react";
 import { Sparkles, Zap, Brain, Shield } from "lucide-react";
 import montyWave from "@/assets/monty-wave.png";
 
-const TRAITS = [
-  { icon: Brain, label: "AI-Powered Intelligence" },
-  { icon: Zap, label: "Real-Time Insights" },
-  { icon: Shield, label: "Intent Verification" },
-  { icon: Sparkles, label: "Story Generation" },
+const CAPABILITIES = [
+  {
+    icon: Brain,
+    title: "StoryCraft AI",
+    desc: "Transforms ideas into structured user stories with acceptance criteria and test cases.",
+  },
+  {
+    icon: Zap,
+    title: "Real-Time Orchestration",
+    desc: "Coordinates sprints, assignments, and workflows autonomously across your team.",
+  },
+  {
+    icon: Shield,
+    title: "Intent Verification",
+    desc: "Validates that shipped code matches the original business intent and acceptance criteria.",
+  },
+  {
+    icon: Sparkles,
+    title: "Predictive Insights",
+    desc: "Surfaces risks, bottlenecks, and delivery predictions before they impact your project.",
+  },
 ];
 
 const MeetMonty = () => {
@@ -15,26 +31,29 @@ const MeetMonty = () => {
   const isInView = useInView(ref, { once: true, margin: "-60px" });
 
   return (
-    <section ref={ref} className="relative overflow-hidden py-16 lg:py-24">
+    <section ref={ref} className="relative overflow-hidden py-20 lg:py-28">
+      <div className="absolute inset-0 bg-grid opacity-[0.04]" />
+
       <div className="container relative z-10 mx-auto px-4 sm:px-6">
         <div className="mx-auto max-w-6xl">
+          {/* Main card */}
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.6 }}
-            className="relative overflow-hidden rounded-3xl border border-border bg-card/80 backdrop-blur-sm"
+            className="relative rounded-3xl border border-border bg-card/80 backdrop-blur-sm"
             style={{
               boxShadow: "0 8px 60px -16px hsl(var(--intent) / 0.15)",
             }}
           >
-            <div className="grid lg:grid-cols-[1fr_auto]">
+            <div className="grid lg:grid-cols-[1fr_300px]">
               {/* Left — Text content */}
-              <div className="relative z-10 flex flex-col justify-center p-8 sm:p-10 lg:p-14">
+              <div className="relative z-10 p-8 sm:p-10 lg:p-14">
                 <motion.span
-                  initial={{ opacity: 0, x: -12 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : {}}
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.5, delay: 0.1 }}
-                  className="mb-3 inline-block w-fit rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.15em] text-primary"
+                  className="mb-3 inline-block rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.15em] text-primary"
                 >
                   Meet Your AI Companion
                 </motion.span>
@@ -53,67 +72,90 @@ const MeetMonty = () => {
                   initial={{ opacity: 0, y: 12 }}
                   animate={isInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.5, delay: 0.25 }}
-                  className="mt-4 max-w-lg text-base leading-relaxed text-muted-foreground md:text-lg"
+                  className="mt-4 max-w-xl text-base leading-relaxed text-muted-foreground md:text-lg"
                 >
-                  Monty is your intelligent orchestration interface — the friendly face behind Silverile's powerful engine. 
-                  From crafting user stories to validating code against intent, Monty coordinates your entire SDLC workflow 
-                  so you can focus on building what matters.
+                  Monty is the intelligent orchestration interface that powers Silverile — the friendly face 
+                  coordinating your entire SDLC. From idea to shipped code, Monty ensures nothing falls 
+                  through the cracks.
                 </motion.p>
 
-                {/* Trait pills */}
+                {/* Speech bubble */}
                 <motion.div
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.5, delay: 0.35 }}
-                  className="mt-6 flex flex-wrap gap-2"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                  transition={{ duration: 0.4, delay: 0.5 }}
+                  className="relative mt-6 inline-block max-w-md rounded-2xl border border-primary/15 bg-primary/5 px-5 py-3.5"
                 >
-                  {TRAITS.map((trait) => (
-                    <div
-                      key={trait.label}
-                      className="flex items-center gap-1.5 rounded-lg border border-border bg-muted/50 px-3 py-1.5"
-                    >
-                      <trait.icon className="h-3.5 w-3.5 text-primary" />
-                      <span className="text-xs font-medium text-foreground/80">{trait.label}</span>
-                    </div>
-                  ))}
+                  <p className="text-sm font-medium italic text-foreground/80">
+                    "I'll help you turn ambiguity into clarity, intent into implementation, and ideas into 
+                    shipped software — all while keeping your team aligned."
+                  </p>
+                  {/* Arrow pointing right toward Monty — desktop */}
+                  <div className="absolute -right-2 top-1/2 -translate-y-1/2 hidden h-4 w-4 rotate-45 border-r border-t border-primary/15 bg-primary/5 lg:block" />
                 </motion.div>
               </div>
 
-              {/* Right — Monty peeking from behind the card edge */}
-              <div className="relative hidden lg:block lg:w-[340px] xl:w-[400px]">
+              {/* Right — Monty peeking from behind the right edge */}
+              <div className="relative hidden lg:block overflow-visible">
                 <motion.div
-                  initial={{ x: 80, opacity: 0 }}
+                  initial={{ x: 60, opacity: 0 }}
                   animate={isInView ? { x: 0, opacity: 1 } : {}}
-                  transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
-                  className="absolute -right-6 bottom-0 top-0 flex items-end"
+                  transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+                  className="absolute -right-8 -bottom-4 z-20"
                 >
-                  <img
+                  <motion.img
+                    animate={{ y: [0, -6, 0] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                     src={montyWave}
                     alt="Monty waving hello"
-                    className="h-[110%] max-h-[420px] w-auto object-contain object-bottom drop-shadow-2xl"
+                    className="h-[340px] w-auto object-contain drop-shadow-2xl"
                   />
                 </motion.div>
-                {/* Soft glow behind Monty */}
+                {/* Glow behind Monty */}
                 <div
                   className="absolute inset-0 pointer-events-none"
                   style={{
-                    background: "radial-gradient(circle at 80% 60%, hsl(var(--intent) / 0.08), transparent 60%)",
+                    background: "radial-gradient(ellipse at 90% 70%, hsl(var(--intent) / 0.1), transparent 50%)",
                   }}
                 />
               </div>
-
-              {/* Mobile Monty — below text */}
-              <div className="relative flex justify-center lg:hidden overflow-hidden">
-                <motion.img
-                  initial={{ y: 40, opacity: 0 }}
-                  animate={isInView ? { y: 0, opacity: 1 } : {}}
-                  transition={{ duration: 0.6, delay: 0.3 }}
-                  src={montyWave}
-                  alt="Monty waving hello"
-                  className="h-56 w-auto object-contain drop-shadow-2xl"
-                />
-              </div>
             </div>
+
+            {/* Mobile Monty */}
+            <div className="relative flex justify-center lg:hidden overflow-hidden pb-4">
+              <motion.img
+                initial={{ y: 30, opacity: 0 }}
+                animate={isInView ? { y: 0, opacity: 1 } : {}}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                src={montyWave}
+                alt="Monty waving hello"
+                className="h-48 w-auto object-contain drop-shadow-2xl"
+              />
+            </div>
+          </motion.div>
+
+          {/* Monty's capabilities grid */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4"
+          >
+            {CAPABILITIES.map((cap, i) => (
+              <motion.div
+                key={cap.title}
+                initial={{ opacity: 0, y: 16 }}
+                animate={isInView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.4, delay: 0.5 + i * 0.08 }}
+                className="group rounded-2xl border border-border bg-card/60 p-5 backdrop-blur-sm transition-all duration-300 hover:shadow-lg hover:border-primary/20"
+              >
+                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 transition-colors group-hover:bg-primary/15">
+                  <cap.icon className="h-5 w-5 text-primary" />
+                </div>
+                <h3 className="text-sm font-bold text-foreground">{cap.title}</h3>
+                <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">{cap.desc}</p>
+              </motion.div>
+            ))}
           </motion.div>
         </div>
       </div>
