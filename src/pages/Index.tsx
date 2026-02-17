@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import PMCapabilities from "@/components/PMCapabilities";
 import HeroFlow from "@/components/HeroFlow";
+import SafeLightCoding from "@/components/SafeLightCoding";
 import { motion } from "framer-motion";
 import { Brain, ArrowRight } from "lucide-react";
 
@@ -37,6 +38,9 @@ const Index = () => {
 
       {/* Input → Output Intelligence */}
       <HeroFlow />
+
+      {/* Philosophy */}
+      <SafeLightCoding />
     </div>
   );
 };
