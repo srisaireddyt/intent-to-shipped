@@ -101,14 +101,14 @@ const PrincipleCard = ({
       <div
         className="absolute inset-0 z-20 flex items-center justify-center rounded-2xl px-6 py-6"
         style={{
-          background: "hsl(var(--foreground))",
+          background: "hsl(var(--intent))",
           opacity: isInside ? 1 : 0,
           transition: "opacity 0.15s",
           WebkitMaskImage: isInside
-            ? `radial-gradient(circle 120px at ${mouse.x}px ${mouse.y}px, black 40%, transparent 100%)`
+            ? `radial-gradient(circle 130px at ${mouse.x}px ${mouse.y}px, black 35%, transparent 100%)`
             : "none",
           maskImage: isInside
-            ? `radial-gradient(circle 120px at ${mouse.x}px ${mouse.y}px, black 40%, transparent 100%)`
+            ? `radial-gradient(circle 130px at ${mouse.x}px ${mouse.y}px, black 35%, transparent 100%)`
             : "none",
         }}
       >
@@ -116,16 +116,16 @@ const PrincipleCard = ({
         <div
           className="pointer-events-none absolute rounded-full"
           style={{
-            width: 240,
-            height: 240,
-            left: mouse.x - 120,
-            top: mouse.y - 120,
-            background: "radial-gradient(circle, hsl(var(--intent) / 0.3) 0%, transparent 60%)",
-            filter: "blur(4px)",
+            width: 260,
+            height: 260,
+            left: mouse.x - 130,
+            top: mouse.y - 130,
+            background: "radial-gradient(circle, hsla(0, 0%, 100%, 0.15) 0%, transparent 60%)",
+            filter: "blur(6px)",
           }}
         />
 
-        <p className="relative text-sm font-semibold leading-relaxed text-primary-foreground">
+        <p className="relative text-sm font-semibold leading-relaxed" style={{ color: "hsl(0 0% 100%)" }}>
           {principle.detail}
         </p>
       </div>
