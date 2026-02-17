@@ -265,27 +265,6 @@ const PMCapabilities = () => {
           ))}
         </div>
 
-        {/* Differentiator strip */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.5, delay: 0.5 }}
-          className="mx-auto mt-12 flex max-w-3xl flex-wrap items-center justify-center gap-x-6 gap-y-3"
-        >
-          {[
-            { label: "Proactive Intelligence", color: "intent" },
-            { label: "Context-Aware Automation", color: "execution" },
-            { label: "Seamless Integration", color: "validation" },
-          ].map((d) => (
-            <div key={d.label} className="flex items-center gap-2">
-              <div
-                className="h-2 w-2 rounded-full"
-                style={{ background: `hsl(var(--${d.color}))` }}
-              />
-              <span className="text-xs font-semibold text-muted-foreground">{d.label}</span>
-            </div>
-          ))}
-        </motion.div>
       </div>
     </section>
   );
