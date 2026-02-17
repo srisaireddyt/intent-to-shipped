@@ -3,6 +3,7 @@ import PMCapabilities from "@/components/PMCapabilities";
 import HeroFlow from "@/components/HeroFlow";
 import SafeLightCoding from "@/components/SafeLightCoding";
 import MontyViews from "@/components/MontyViews";
+import MeetMonty from "@/components/MeetMonty";
 import { motion } from "framer-motion";
 import { Brain, ArrowRight } from "lucide-react";
 
@@ -42,6 +43,9 @@ const Index = () => {
 
       {/* Philosophy */}
       <SafeLightCoding />
+
+      {/* Meet Monty */}
+      <MeetMonty />
 
       {/* Monty's Views */}
       <MontyViews />
