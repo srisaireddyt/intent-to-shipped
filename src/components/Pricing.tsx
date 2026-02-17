@@ -4,60 +4,63 @@ import { useInView } from "framer-motion";
 import { Check, Sparkles, Building2, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const tiers = [
+type Feature = { label: string; sub?: string[] };
+
+const tiers: {
+  name: string;
+  subtitle: string;
+  icon: typeof Zap;
+  color: string;
+  features: Feature[];
+  cta: string;
+  highlighted: boolean;
+}[] = [
   {
-    name: "Free",
-    price: "$0",
-    period: "forever",
-    description: "Get started with basic agentic features at no cost.",
+    name: "Silverile - Free plan",
+    subtitle: "(Ag)ile for All, Time gAIned",
     icon: Zap,
     color: "execution",
     features: [
-      "Basic agentic PM features",
-      "Up to 2 active projects",
-      "Community support",
-      "Core intent capture",
-      "Standard story generation",
+      { label: "Agentic Project management" },
+      { label: "StoryCraft-AI", sub: ["Generate Stories from Text", "Generate Stories from Images"] },
+      { label: "Monty's Views", sub: ["Organization View", "Scrum View", "Kanban View", "Timeline View"] },
+      { label: "Release Management" },
+      { label: "Time Management" },
+      { label: "Silverile Virtual Huddle" },
+      { label: "5,000 AI tokens per user per month" },
+      { label: "10 Projects" },
+      { label: "200 Stories per Project" },
     ],
-    cta: "Get Started Free",
+    cta: "Free for 10 Users",
     highlighted: false,
   },
   {
-    name: "Professional",
-    price: "$7",
-    period: "per user / month",
-    description: "Full AI capabilities, payments, and advanced workflows.",
+    name: "Silverile - Professional",
+    subtitle: "(Ag)ile for All, Time gAIned",
     icon: Sparkles,
     color: "intent",
     features: [
-      "Everything in Free",
-      "Unlimited projects",
-      "Full AI-powered capabilities",
-      "Payment integration",
-      "Priority support",
-      "Advanced story crafting",
-      "Custom validation rules",
+      { label: "Agentic Project management" },
+      { label: "StoryCraft-AI", sub: ["Generate Stories from Text", "Generate Stories from Images"] },
+      { label: "Monty's Views", sub: ["Agile View", "Organization View", "Scrum View", "Kanban View", "Timeline View"] },
+      { label: "Release Management" },
+      { label: "Time Management" },
+      { label: "Compendium - Your document repository" },
+      { label: "Silverile Virtual Huddle" },
+      { label: "20,000 AI tokens per user per month" },
+      { label: "Unlimited Projects" },
+      { label: "Unlimited Stories" },
     ],
-    cta: "Start Pro Trial",
+    cta: "$7.00 per User per Month",
     highlighted: true,
   },
   {
     name: "Enterprise",
-    price: "Custom",
-    period: "tailored to you",
-    description: "Custom solutions with advanced analytics and dedicated support.",
+    subtitle: "For more than 500 Users",
     icon: Building2,
     color: "validation",
-    features: [
-      "Everything in Professional",
-      "Advanced analytics & reporting",
-      "Dedicated account manager",
-      "Custom integrations",
-      "SLA guarantees",
-      "On-premise deployment options",
-      "Team training & onboarding",
-    ],
-    cta: "Contact Sales",
+    features: [],
+    cta: "Contact Us",
     highlighted: false,
   },
 ];
@@ -141,25 +144,32 @@ const Pricing = () => {
                     <tier.icon className={`h-5 w-5 ${colors.text}`} />
                   </div>
                   <h3 className="text-xl font-bold text-foreground">{tier.name}</h3>
-                  <p className="mt-1 text-sm text-muted-foreground">{tier.description}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">{tier.subtitle}</p>
                 </div>
 
-                {/* Price */}
-                <div className="mb-6">
-                  <span className="text-4xl font-extrabold tracking-tight text-foreground">
-                    {tier.price}
-                  </span>
-                  <span className="ml-2 text-sm text-muted-foreground">{tier.period}</span>
-                </div>
+                {/* Divider */}
+                <div className="mb-6 border-t border-border" />
 
                 {/* Features */}
                 <ul className="mb-8 flex-1 space-y-3">
                   {tier.features.map((f) => (
-                    <li key={f} className="flex items-start gap-2.5 text-sm text-foreground/80">
-                      <Check className={`mt-0.5 h-4 w-4 shrink-0 ${colors.text}`} />
-                      {f}
+                    <li key={f.label}>
+                      <div className="flex items-start gap-2.5 text-sm text-foreground/80">
+                        <Check className={`mt-0.5 h-4 w-4 shrink-0 ${colors.text}`} />
+                        <span className="font-medium">{f.label}</span>
+                      </div>
+                      {f.sub && (
+                        <ul className="ml-9 mt-1 space-y-1">
+                          {f.sub.map((s) => (
+                            <li key={s} className="text-xs text-muted-foreground">{s}</li>
+                          ))}
+                        </ul>
+                      )}
                     </li>
                   ))}
+                  {tier.features.length === 0 && (
+                    <li className="text-sm text-muted-foreground italic">Custom plan — contact for details</li>
+                  )}
                 </ul>
 
                 {/* CTA */}
