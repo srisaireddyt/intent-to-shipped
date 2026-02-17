@@ -146,9 +146,9 @@ const CapabilityCard = ({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
             transition={{ duration: 0.25 }}
-            className="absolute inset-0 flex flex-col justify-between p-5"
+            className="absolute inset-0 flex flex-col justify-start gap-3 overflow-y-auto p-4"
             style={{
-              background: `linear-gradient(135deg, hsl(var(--${cap.color}) / 0.08), hsl(var(--${cap.color}) / 0.03))`,
+              background: `linear-gradient(135deg, hsl(var(--${cap.color}) / 0.12), hsl(var(--${cap.color}) / 0.05))`,
               borderColor: `hsl(var(--${cap.color}) / 0.3)`,
               boxShadow: `0 0 30px -8px hsl(var(--${cap.color}) / 0.2)`,
             }}
@@ -200,30 +200,10 @@ const PMCapabilities = () => {
   const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section ref={ref} className="relative overflow-hidden py-20 lg:py-28">
+    <section ref={ref} className="relative overflow-hidden py-10 lg:py-14">
       <div className="absolute inset-0 bg-grid opacity-[0.06]" />
 
       <div className="container relative z-10 mx-auto px-4 sm:px-6">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="mb-14 text-center lg:mb-16"
-        >
-          <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-secondary/50 px-4 py-1.5 text-xs font-medium text-muted-foreground">
-            <Workflow className="h-3.5 w-3.5 text-primary" />
-            Agentic Project Manager
-          </div>
-          <h2 className="mx-auto max-w-3xl text-2xl font-extrabold leading-tight tracking-tight sm:text-3xl md:text-4xl lg:text-5xl">
-            <span className="text-foreground">AI That </span>
-            <span className="text-gradient-hero">Manages</span>
-            <span className="text-foreground">, Not Just Tracks</span>
-          </h2>
-          <p className="mx-auto mt-4 max-w-xl text-sm text-muted-foreground sm:text-base">
-            Six intelligent agents working continuously. Hover to see the difference.
-          </p>
-        </motion.div>
 
         {/* Cards Grid */}
         <div className="mx-auto grid max-w-5xl gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
