@@ -106,32 +106,37 @@ const TRANSFORMATIONS: Transformation[] = [
             <span>•</span>
             <span>Refund Flow Screen</span>
           </div>
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-2">
-              <div className="h-2.5 w-3 rounded-sm bg-muted-foreground/20" />
-              <div className="h-2.5 w-20 rounded bg-muted-foreground/12" />
-              <div className="ml-auto h-2.5 w-12 rounded bg-muted-foreground/12" />
+          <div className="flex flex-col gap-2.5">
+            {/* Top bar */}
+            <div className="flex items-center gap-2 rounded-md border border-border bg-muted/50 px-3 py-1.5">
+              <div className="h-2.5 w-3 rounded-sm bg-primary/30" />
+              <div className="h-2 w-20 rounded bg-foreground/15" />
+              <div className="ml-auto h-2 w-12 rounded bg-foreground/15" />
             </div>
+            {/* 3-step flow */}
             <div className="flex gap-2">
-              <div className="flex h-16 w-1/3 flex-col items-center justify-center rounded-lg border border-border bg-muted/50 gap-1">
-                <div className="h-5 w-5 rounded-full border border-muted-foreground/20" />
-                <div className="h-1.5 w-10 rounded bg-muted-foreground/15" />
+              <div className="flex h-20 w-1/3 flex-col items-center justify-center rounded-lg border border-primary/25 bg-primary/5 gap-1.5">
+                <div className="h-6 w-6 rounded-full border-2 border-primary/40 flex items-center justify-center">
+                  <span className="text-[8px] font-bold text-primary">1</span>
+                </div>
+                <span className="text-[9px] font-medium text-foreground/60">Select Order</span>
               </div>
-              <div className="flex h-16 w-1/3 flex-col items-center justify-center rounded-lg border border-border bg-muted/50 gap-1">
-                <Layers className="h-4 w-4 text-muted-foreground/20" />
-                <div className="h-1.5 w-10 rounded bg-muted-foreground/15" />
+              <div className="flex h-20 w-1/3 flex-col items-center justify-center rounded-lg border border-execution/25 bg-execution/5 gap-1.5">
+                <Layers className="h-5 w-5 text-execution/60" />
+                <span className="text-[9px] font-medium text-foreground/60">Choose Reason</span>
               </div>
-              <div className="flex h-16 w-1/3 flex-col items-center justify-center rounded-lg border border-border bg-muted/50 gap-1">
-                <CheckCircle2 className="h-4 w-4 text-muted-foreground/20" />
-                <div className="h-1.5 w-10 rounded bg-muted-foreground/15" />
+              <div className="flex h-20 w-1/3 flex-col items-center justify-center rounded-lg border border-validation/25 bg-validation/5 gap-1.5">
+                <CheckCircle2 className="h-5 w-5 text-validation/60" />
+                <span className="text-[9px] font-medium text-foreground/60">Confirm</span>
               </div>
             </div>
-            <div className="flex gap-1.5">
-              <div className="h-7 flex-1 rounded-md border border-border bg-muted/40 flex items-center justify-center">
-                <span className="text-[8px] text-muted-foreground/30">Cancel</span>
+            {/* Buttons */}
+            <div className="flex gap-2">
+              <div className="h-8 flex-1 rounded-md border border-border bg-muted/60 flex items-center justify-center">
+                <span className="text-[10px] font-medium text-muted-foreground">Cancel</span>
               </div>
-              <div className="h-7 flex-1 rounded-md bg-muted-foreground/15 flex items-center justify-center">
-                <span className="text-[8px] text-muted-foreground/40">Submit Refund</span>
+              <div className="h-8 flex-1 rounded-md bg-primary flex items-center justify-center">
+                <span className="text-[10px] font-semibold text-primary-foreground">Submit Refund</span>
               </div>
             </div>
           </div>
