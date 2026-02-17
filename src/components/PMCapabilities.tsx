@@ -230,9 +230,11 @@ const PMCapabilities = () => {
 
   useEffect(() => {
     if (!isInView) return;
-    // Kick off: reveal first card
-    setRevealedCount(1);
-    scheduleNext(1);
+    // Show all cards in default state for 2s before starting animation
+    timeoutRef.current = setTimeout(() => {
+      setRevealedCount(1);
+      scheduleNext(1);
+    }, 2000);
     return () => {
       if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
