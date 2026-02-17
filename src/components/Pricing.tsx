@@ -1,20 +1,24 @@
 import { motion } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useInView } from "framer-motion";
-import { Check, Sparkles, Building2, Zap } from "lucide-react";
+import { Check, Sparkles, Building2, Zap, Shield, Headphones, Settings, BarChart3 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 type Feature = { label: string; sub?: string[] };
 
-const tiers: {
+type BillingCycle = "monthly" | "yearly";
+
+interface TierData {
   name: string;
   subtitle: string;
   icon: typeof Zap;
   color: string;
   features: Feature[];
-  cta: string;
+  cta: Record<BillingCycle, string>;
   highlighted: boolean;
-}[] = [
+}
+
+const tiers: TierData[] = [
   {
     name: "Silverile - Free plan",
     subtitle: "(Ag)ile for All, Time gAIned",
@@ -31,7 +35,7 @@ const tiers: {
       { label: "10 Projects" },
       { label: "200 Stories per Project" },
     ],
-    cta: "Free for 10 Users",
+    cta: { monthly: "Free for 10 Users", yearly: "Free for 10 Users" },
     highlighted: false,
   },
   {
@@ -51,7 +55,7 @@ const tiers: {
       { label: "Unlimited Projects" },
       { label: "Unlimited Stories" },
     ],
-    cta: "$7.00 per User per Month",
+    cta: { monthly: "$7.00 per User per Month", yearly: "$75.00 per User per Year" },
     highlighted: true,
   },
   {
@@ -59,8 +63,17 @@ const tiers: {
     subtitle: "For more than 500 Users",
     icon: Building2,
     color: "validation",
-    features: [],
-    cta: "Contact Us",
+    features: [
+      { label: "Everything in Professional" },
+      { label: "Dedicated Account Manager" },
+      { label: "Custom Integrations & API Access" },
+      { label: "Advanced Analytics & Reporting" },
+      { label: "Priority 24/7 Support with SLA" },
+      { label: "SSO & Advanced Security" },
+      { label: "Custom AI token limits" },
+      { label: "On-premise deployment options" },
+    ],
+    cta: { monthly: "Contact Us", yearly: "Contact Us" },
     highlighted: false,
   },
 ];
@@ -89,6 +102,7 @@ const colorMap: Record<string, { border: string; bg: string; text: string; glow:
 const Pricing = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const [billing, setBilling] = useState<BillingCycle>("monthly");
 
   return (
     <section id="pricing" ref={ref} className="relative py-20 lg:py-28">
@@ -99,7 +113,7 @@ const Pricing = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6 }}
-          className="mx-auto mb-14 max-w-2xl text-center"
+          className="mx-auto mb-10 max-w-2xl text-center"
         >
           <span className="mb-3 inline-block rounded-full border border-border bg-secondary/50 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
             Pricing
@@ -112,6 +126,38 @@ const Pricing = () => {
           <p className="mt-4 text-base text-muted-foreground lg:text-lg">
             Choose the plan that fits your team. Scale as you grow.
           </p>
+        </motion.div>
+
+        {/* Billing toggle */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="mx-auto mb-12 flex items-center justify-center gap-1 rounded-full border border-border bg-secondary/50 p-1 w-fit"
+        >
+          <button
+            onClick={() => setBilling("monthly")}
+            className={`rounded-full px-5 py-2 text-sm font-medium transition-all duration-200 ${
+              billing === "monthly"
+                ? "bg-card text-foreground shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            Monthly
+          </button>
+          <button
+            onClick={() => setBilling("yearly")}
+            className={`rounded-full px-5 py-2 text-sm font-medium transition-all duration-200 ${
+              billing === "yearly"
+                ? "bg-card text-foreground shadow-sm"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            Annually
+            {billing !== "yearly" && (
+              <span className="ml-1.5 text-xs font-bold text-[hsl(var(--validation))]">Save ~11%</span>
+            )}
+          </button>
         </motion.div>
 
         {/* Tiers */}
@@ -167,9 +213,6 @@ const Pricing = () => {
                       )}
                     </li>
                   ))}
-                  {tier.features.length === 0 && (
-                    <li className="text-sm text-muted-foreground italic">Custom plan — contact for details</li>
-                  )}
                 </ul>
 
                 {/* CTA */}
@@ -182,7 +225,7 @@ const Pricing = () => {
                   variant={tier.highlighted ? "default" : "outline"}
                   size="lg"
                 >
-                  {tier.cta}
+                  {tier.cta[billing]}
                 </Button>
               </motion.div>
             );
