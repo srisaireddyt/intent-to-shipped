@@ -1,5 +1,5 @@
-import { motion, useInView, AnimatePresence } from "framer-motion";
-import { useRef, useState } from "react";
+import { motion, useInView } from "framer-motion";
+import { useRef, useState, useCallback } from "react";
 import {
   Lightbulb,
   EyeOff,
@@ -14,35 +14,35 @@ const PRINCIPLES = [
     title: "Intent First",
     short: "Clarifies before acting",
     detail:
-      "AI is optimized for understanding what the developer means, not for shipping code quickly. If intent is unclear, the correct behavior is to surface ambiguity — not to guess.",
+      "AI is optimized for understanding what the developer means, not for shipping code quickly. If intent is unclear, it surfaces ambiguity — never guesses.",
   },
   {
     icon: EyeOff,
     title: "Read-Only Default",
     short: "Zero auto-execution",
     detail:
-      "AI suggestions are non-destructive and non-committal unless a human explicitly promotes them. Code review ✓ Prompt generation ✓ Auto-merge ✗ Silent refactors ✗",
+      "AI suggestions are non-destructive and non-committal unless a human explicitly promotes them. Code review ✓ Auto-merge ✗",
   },
   {
     icon: ShieldCheck,
     title: "Deterministic Guards",
     short: "Rules, not guesses",
     detail:
-      "Every AI output is bounded by schemas, contracts, validation rules, and known context. If it can't be validated, it can't be trusted.",
+      "Every AI output is bounded by schemas, contracts, and validation rules. If it can't be validated, it can't be trusted.",
   },
   {
     icon: HelpCircle,
     title: "Explicit Ambiguity",
     short: "Uncertainty disclosed",
     detail:
-      "Ambiguity is treated as first-class output — not failure. What's known, what's unclear, and what was not inferred are all surfaced transparently.",
+      "Ambiguity is first-class output. What's known, unclear, and not inferred are all surfaced transparently.",
   },
   {
     icon: Users,
     title: "Human Accountability",
     short: "AI suggests, you decide",
     detail:
-      "AI may assist thinking, but responsibility for design decisions, business logic, risk, and outcomes always stays with the human.",
+      "AI assists thinking, but design decisions, business logic, risk, and outcomes always stay with the human.",
   },
 ];
 
@@ -62,92 +62,79 @@ const PrincipleCard = ({
   index: number;
   isInView: boolean;
 }) => {
-  const [hovered, setHovered] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [mouse, setMouse] = useState({ x: 0, y: 0 });
+  const [isInside, setIsInside] = useState(false);
   const Icon = principle.icon;
+
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    setMouse({
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    });
+  }, []);
 
   return (
     <motion.div
+      ref={cardRef}
       initial={{ opacity: 0, y: 24 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay: index * 0.08 }}
       className="group relative flex flex-col items-center overflow-hidden rounded-2xl border border-border bg-card/80 px-5 py-8 text-center backdrop-blur-sm cursor-pointer"
       style={{ minHeight: 260 }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsInside(true)}
+      onMouseLeave={() => setIsInside(false)}
     >
-      {/* Soft light — the "lamp" that reveals content */}
-      <motion.div
-        className="pointer-events-none absolute z-0"
-        style={{
-          width: 200,
-          height: 200,
-          top: "50%",
-          left: "50%",
-          x: "-50%",
-          y: "-50%",
-          borderRadius: "50%",
-          background:
-            "radial-gradient(circle, hsl(var(--intent) / 0.14) 0%, hsl(var(--intent) / 0.06) 40%, transparent 70%)",
-          filter: "blur(2px)",
-        }}
-        animate={{
-          scale: hovered ? 2.2 : 0.5,
-          opacity: hovered ? 1 : 0,
-        }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-      />
-
-      {/* Icon */}
-      <div className="relative z-10 mb-4">
-        <motion.div
-          className="flex h-12 w-12 items-center justify-center rounded-xl"
-          animate={{
-            backgroundColor: hovered
-              ? "hsl(var(--intent) / 0.15)"
-              : "hsl(var(--accent) / 0.6)",
-          }}
-          transition={{ duration: 0.4 }}
-        >
+      {/* Always-visible layer: icon + title + short */}
+      <div className="relative z-10 flex flex-col items-center">
+        <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-accent/60">
           <Icon className="h-5 w-5 text-primary" />
-        </motion.div>
+        </div>
+        <h3 className="text-sm font-bold text-foreground">{principle.title}</h3>
+        <p className="mt-1.5 text-xs text-muted-foreground">{principle.short}</p>
       </div>
 
-      {/* Title — always visible */}
-      <h3 className="relative z-10 text-sm font-bold text-foreground">{principle.title}</h3>
-
-      {/* Short label — fades out as light reveals detail */}
-      <motion.p
-        className="relative z-10 mt-1.5 text-xs text-muted-foreground"
-        animate={{ opacity: hovered ? 0 : 1, y: hovered ? -4 : 0 }}
-        transition={{ duration: 0.25 }}
-      >
-        {principle.short}
-      </motion.p>
-
-      {/* Detail — hidden in the dark, revealed by the soft light */}
-      <motion.div
-        className="relative z-10 mt-1"
-        animate={{
-          opacity: hovered ? 1 : 0,
-          y: hovered ? 0 : 12,
-        }}
-        transition={{ duration: 0.45, delay: hovered ? 0.1 : 0 }}
-      >
-        <p className="text-[11px] leading-relaxed text-foreground/70">
-          {principle.detail}
-        </p>
-      </motion.div>
-
-      {/* Bottom soft edge glow */}
-      <motion.div
-        className="pointer-events-none absolute bottom-0 left-0 right-0 z-0 h-16"
+      {/* Hidden detail layer — revealed by flashlight */}
+      <div
+        className="absolute inset-0 z-20 flex flex-col items-center justify-center rounded-2xl px-5 py-6 transition-opacity duration-200"
         style={{
-          background:
-            "linear-gradient(to top, hsl(var(--intent) / 0.06), transparent)",
+          background: "hsl(var(--card))",
+          opacity: isInside ? 1 : 0,
+          // Flashlight mask: radial circle follows the mouse
+          WebkitMaskImage: isInside
+            ? `radial-gradient(circle 90px at ${mouse.x}px ${mouse.y}px, black 0%, transparent 100%)`
+            : "none",
+          maskImage: isInside
+            ? `radial-gradient(circle 90px at ${mouse.x}px ${mouse.y}px, black 0%, transparent 100%)`
+            : "none",
         }}
-        animate={{ opacity: hovered ? 1 : 0 }}
-        transition={{ duration: 0.5 }}
-      />
+      >
+        {/* Soft glow behind the spotlight area */}
+        <div
+          className="pointer-events-none absolute rounded-full"
+          style={{
+            width: 180,
+            height: 180,
+            left: mouse.x - 90,
+            top: mouse.y - 90,
+            background: "radial-gradient(circle, hsl(var(--intent) / 0.12) 0%, transparent 70%)",
+            filter: "blur(10px)",
+          }}
+        />
+
+        <div className="relative flex flex-col items-center text-center">
+          <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl" style={{ background: "hsl(var(--intent) / 0.12)" }}>
+            <Icon className="h-5 w-5 text-primary" />
+          </div>
+          <h3 className="text-sm font-bold text-foreground">{principle.title}</h3>
+          <p className="mt-2 text-[11px] leading-relaxed text-foreground/70">
+            {principle.detail}
+          </p>
+        </div>
+      </div>
     </motion.div>
   );
 };
