@@ -27,14 +27,14 @@ const Navbar = () => {
         </div>
 
         <div className="hidden items-center gap-8 md:flex">
-          <a href="#platform" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
-            Platform
+          <a href="#" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
+            Home
           </a>
-          <a href="#intelligence" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
-            Intelligence
+          <a href="#pricing" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
+            Pricing
           </a>
-          <a href="#developers" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
-            Developers
+          <a href="#contact" className="text-sm text-muted-foreground transition-colors hover:text-foreground">
+            Contact Us
           </a>
         </div>
 
@@ -50,7 +50,7 @@ const Navbar = () => {
             Sign In
           </button>
           <button className="flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-all hover:bg-primary/90">
-            Get Started <ArrowRight className="h-3.5 w-3.5" />
+            Sign Up <ArrowRight className="h-3.5 w-3.5" />
           </button>
         </div>
       </div>
