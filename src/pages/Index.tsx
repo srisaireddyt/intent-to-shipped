@@ -5,6 +5,8 @@ import SafeLightCoding from "@/components/SafeLightCoding";
 import MontyViews from "@/components/MontyViews";
 import MeetMonty from "@/components/MeetMonty";
 import Pricing from "@/components/Pricing";
+import ContactSection from "@/components/ContactSection";
+import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
 import { Brain, ArrowRight } from "lucide-react";
 
@@ -51,8 +53,14 @@ const Index = () => {
       {/* Pricing */}
       <Pricing />
 
+      {/* Contact */}
+      <ContactSection />
+
       {/* Monty's Views */}
       <MontyViews />
+
+      {/* Footer */}
+      <Footer />
     </div>
   );
 };
