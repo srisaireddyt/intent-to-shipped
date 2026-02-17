@@ -97,35 +97,35 @@ const PrincipleCard = ({
         <p className="mt-1.5 text-xs text-muted-foreground">{principle.short}</p>
       </div>
 
-      {/* Hidden detail layer — revealed by flashlight. Only detail text, no duplicate title/icon */}
+      {/* Hidden detail layer — revealed by flashlight */}
       <div
-        className="absolute inset-0 z-20 flex items-center justify-center rounded-2xl px-5 py-6"
+        className="absolute inset-0 z-20 flex items-center justify-center rounded-2xl px-6 py-6"
         style={{
-          background: "hsl(var(--card))",
+          background: "hsl(var(--foreground))",
           opacity: isInside ? 1 : 0,
           transition: "opacity 0.15s",
           WebkitMaskImage: isInside
-            ? `radial-gradient(circle 100px at ${mouse.x}px ${mouse.y}px, black 30%, transparent 100%)`
+            ? `radial-gradient(circle 120px at ${mouse.x}px ${mouse.y}px, black 40%, transparent 100%)`
             : "none",
           maskImage: isInside
-            ? `radial-gradient(circle 100px at ${mouse.x}px ${mouse.y}px, black 30%, transparent 100%)`
+            ? `radial-gradient(circle 120px at ${mouse.x}px ${mouse.y}px, black 40%, transparent 100%)`
             : "none",
         }}
       >
-        {/* Soft glow */}
+        {/* Bright glow at cursor */}
         <div
           className="pointer-events-none absolute rounded-full"
           style={{
-            width: 200,
-            height: 200,
-            left: mouse.x - 100,
-            top: mouse.y - 100,
-            background: "radial-gradient(circle, hsl(var(--intent) / 0.15) 0%, transparent 65%)",
-            filter: "blur(6px)",
+            width: 240,
+            height: 240,
+            left: mouse.x - 120,
+            top: mouse.y - 120,
+            background: "radial-gradient(circle, hsl(var(--intent) / 0.3) 0%, transparent 60%)",
+            filter: "blur(4px)",
           }}
         />
 
-        <p className="relative text-[13px] font-medium leading-relaxed text-foreground">
+        <p className="relative text-sm font-semibold leading-relaxed text-primary-foreground">
           {principle.detail}
         </p>
       </div>
