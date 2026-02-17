@@ -165,7 +165,7 @@ const CapabilityCard = ({
               <Icon className="h-4 w-4 shrink-0" style={{ color: `hsl(var(--${cap.color}))` }} />
               <span className="text-sm font-bold text-foreground">{cap.title}</span>
             </div>
-            
+            <p className="text-[11px] leading-relaxed text-muted-foreground">{cap.tagline}</p>
             <ul className="flex flex-col gap-1.5">
               {cap.bullets.map((b) => (
                 <li key={b} className="flex items-start gap-2 text-[11px] text-muted-foreground sm:text-xs">
