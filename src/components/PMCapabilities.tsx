@@ -82,20 +82,6 @@ const CAPABILITIES = [
     differentiator: "Others log bugs passively",
     silverile: "Silverile finds root causes and predicts regressions",
   },
-  {
-    icon: Globe,
-    title: "Multi-Industry",
-    subtitle: "Adaptable Platform",
-    color: "primary",
-    tagline: "Built for your domain, not just software",
-    bullets: [
-      "Industry-specific workflows",
-      "Customizable team structures",
-      "Small teams to enterprise scale",
-    ],
-    differentiator: "Others are one-size-fits-all",
-    silverile: "Silverile adapts workflows to your industry context",
-  },
 ];
 
 const CapabilityCard = ({
@@ -240,7 +226,7 @@ const PMCapabilities = () => {
         </motion.div>
 
         {/* Cards Grid */}
-        <div className="mx-auto grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mx-auto grid max-w-6xl gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
           {CAPABILITIES.map((cap, i) => (
             <CapabilityCard key={cap.title} cap={cap} index={i} isInView={isInView} />
           ))}
