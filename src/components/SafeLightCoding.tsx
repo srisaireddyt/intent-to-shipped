@@ -97,43 +97,37 @@ const PrincipleCard = ({
         <p className="mt-1.5 text-xs text-muted-foreground">{principle.short}</p>
       </div>
 
-      {/* Hidden detail layer — revealed by flashlight */}
+      {/* Hidden detail layer — revealed by flashlight. Only detail text, no duplicate title/icon */}
       <div
-        className="absolute inset-0 z-20 flex flex-col items-center justify-center rounded-2xl px-5 py-6 transition-opacity duration-200"
+        className="absolute inset-0 z-20 flex items-center justify-center rounded-2xl px-5 py-6"
         style={{
           background: "hsl(var(--card))",
           opacity: isInside ? 1 : 0,
-          // Flashlight mask: radial circle follows the mouse
+          transition: "opacity 0.15s",
           WebkitMaskImage: isInside
-            ? `radial-gradient(circle 90px at ${mouse.x}px ${mouse.y}px, black 0%, transparent 100%)`
+            ? `radial-gradient(circle 100px at ${mouse.x}px ${mouse.y}px, black 30%, transparent 100%)`
             : "none",
           maskImage: isInside
-            ? `radial-gradient(circle 90px at ${mouse.x}px ${mouse.y}px, black 0%, transparent 100%)`
+            ? `radial-gradient(circle 100px at ${mouse.x}px ${mouse.y}px, black 30%, transparent 100%)`
             : "none",
         }}
       >
-        {/* Soft glow behind the spotlight area */}
+        {/* Soft glow */}
         <div
           className="pointer-events-none absolute rounded-full"
           style={{
-            width: 180,
-            height: 180,
-            left: mouse.x - 90,
-            top: mouse.y - 90,
-            background: "radial-gradient(circle, hsl(var(--intent) / 0.12) 0%, transparent 70%)",
-            filter: "blur(10px)",
+            width: 200,
+            height: 200,
+            left: mouse.x - 100,
+            top: mouse.y - 100,
+            background: "radial-gradient(circle, hsl(var(--intent) / 0.15) 0%, transparent 65%)",
+            filter: "blur(6px)",
           }}
         />
 
-        <div className="relative flex flex-col items-center text-center">
-          <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl" style={{ background: "hsl(var(--intent) / 0.12)" }}>
-            <Icon className="h-5 w-5 text-primary" />
-          </div>
-          <h3 className="text-sm font-bold text-foreground">{principle.title}</h3>
-          <p className="mt-2 text-[11px] leading-relaxed text-foreground/70">
-            {principle.detail}
-          </p>
-        </div>
+        <p className="relative text-[13px] font-medium leading-relaxed text-foreground">
+          {principle.detail}
+        </p>
       </div>
     </motion.div>
   );
