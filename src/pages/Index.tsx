@@ -50,14 +50,14 @@ const Index = () => {
       {/* Meet Monty */}
       <MeetMonty />
 
+      {/* Monty's Views */}
+      <MontyViews />
+
       {/* Pricing */}
       <Pricing />
 
       {/* Contact */}
       <ContactSection />
-
-      {/* Monty's Views */}
-      <MontyViews />
 
       {/* Footer */}
       <Footer />
