@@ -8,7 +8,7 @@ import Pricing from "@/components/Pricing";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
-import { Brain, ArrowRight } from "lucide-react";
+import silverileHeroLogo from "@/assets/silverile-logo-hero.png";
 
 const Index = () => {
   return (
@@ -24,16 +24,16 @@ const Index = () => {
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
-            className="text-center"
+            className="flex flex-col items-center text-center"
           >
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-secondary/50 px-4 py-1.5 text-xs font-medium text-muted-foreground">
-              <Brain className="h-3.5 w-3.5 text-primary" />
-              SDLC Intelligence Platform
-            </div>
-            <h1 className="text-center text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl">
-              <span className="text-gradient-hero">Silverile</span>
-              <span className="text-foreground">, Your Co-Project Manager.</span>
-            </h1>
+            <img
+              src={silverileHeroLogo}
+              alt="Silverile.AI"
+              className="h-16 w-auto sm:h-20 md:h-24 lg:h-28 xl:h-32"
+            />
+            <h2 className="mt-3 text-lg font-bold tracking-wide text-foreground sm:text-xl md:text-2xl lg:text-3xl">
+              Your Agentic Co-Project Manager
+            </h2>
           </motion.div>
         </div>
       </section>
