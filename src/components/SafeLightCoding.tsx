@@ -70,73 +70,84 @@ const PrincipleCard = ({
       initial={{ opacity: 0, y: 24 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay: index * 0.08 }}
-      className="group relative flex flex-col items-center justify-center overflow-hidden rounded-2xl border border-border bg-card/80 px-5 py-8 text-center backdrop-blur-sm cursor-pointer"
-      style={{ minHeight: 220 }}
+      className="group relative flex flex-col items-center overflow-hidden rounded-2xl border border-border bg-card/80 px-5 py-8 text-center backdrop-blur-sm cursor-pointer"
+      style={{ minHeight: 260 }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* Soft light glow on hover */}
+      {/* Soft light — the "lamp" that reveals content */}
       <motion.div
-        className="pointer-events-none absolute inset-0 rounded-2xl"
+        className="pointer-events-none absolute z-0"
+        style={{
+          width: 200,
+          height: 200,
+          top: "50%",
+          left: "50%",
+          x: "-50%",
+          y: "-50%",
+          borderRadius: "50%",
+          background:
+            "radial-gradient(circle, hsl(var(--intent) / 0.14) 0%, hsl(var(--intent) / 0.06) 40%, transparent 70%)",
+          filter: "blur(2px)",
+        }}
         animate={{
+          scale: hovered ? 2.2 : 0.5,
           opacity: hovered ? 1 : 0,
         }}
-        transition={{ duration: 0.5 }}
-        style={{
-          background:
-            "radial-gradient(circle at 50% 40%, hsl(var(--intent) / 0.1) 0%, transparent 70%)",
-        }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
       />
 
-      {/* Soft light circle behind icon */}
-      <div className="relative mb-4">
+      {/* Icon */}
+      <div className="relative z-10 mb-4">
         <motion.div
-          className="absolute -inset-3 rounded-full"
+          className="flex h-12 w-12 items-center justify-center rounded-xl"
           animate={{
-            opacity: hovered ? 1 : 0,
-            scale: hovered ? 1.3 : 0.8,
+            backgroundColor: hovered
+              ? "hsl(var(--intent) / 0.15)"
+              : "hsl(var(--accent) / 0.6)",
           }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          style={{
-            background:
-              "radial-gradient(circle, hsl(var(--intent) / 0.18) 0%, transparent 70%)",
-            filter: "blur(8px)",
-          }}
-        />
-        <div className="relative flex h-12 w-12 items-center justify-center rounded-xl bg-accent/60">
+          transition={{ duration: 0.4 }}
+        >
           <Icon className="h-5 w-5 text-primary" />
-        </div>
+        </motion.div>
       </div>
 
-      {/* Title */}
-      <h3 className="relative text-sm font-bold text-foreground">{principle.title}</h3>
+      {/* Title — always visible */}
+      <h3 className="relative z-10 text-sm font-bold text-foreground">{principle.title}</h3>
 
-      {/* Short text / Detail swap */}
-      <AnimatePresence mode="wait">
-        {!hovered ? (
-          <motion.p
-            key="short"
-            initial={{ opacity: 0, y: 4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
-            transition={{ duration: 0.25 }}
-            className="relative mt-2 text-xs text-muted-foreground"
-          >
-            {principle.short}
-          </motion.p>
-        ) : (
-          <motion.p
-            key="detail"
-            initial={{ opacity: 0, y: 6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
-            transition={{ duration: 0.3 }}
-            className="relative mt-2 text-[11px] leading-relaxed text-muted-foreground"
-          >
-            {principle.detail}
-          </motion.p>
-        )}
-      </AnimatePresence>
+      {/* Short label — fades out as light reveals detail */}
+      <motion.p
+        className="relative z-10 mt-1.5 text-xs text-muted-foreground"
+        animate={{ opacity: hovered ? 0 : 1, y: hovered ? -4 : 0 }}
+        transition={{ duration: 0.25 }}
+      >
+        {principle.short}
+      </motion.p>
+
+      {/* Detail — hidden in the dark, revealed by the soft light */}
+      <motion.div
+        className="relative z-10 mt-1"
+        animate={{
+          opacity: hovered ? 1 : 0,
+          y: hovered ? 0 : 12,
+        }}
+        transition={{ duration: 0.45, delay: hovered ? 0.1 : 0 }}
+      >
+        <p className="text-[11px] leading-relaxed text-foreground/70">
+          {principle.detail}
+        </p>
+      </motion.div>
+
+      {/* Bottom soft edge glow */}
+      <motion.div
+        className="pointer-events-none absolute bottom-0 left-0 right-0 z-0 h-16"
+        style={{
+          background:
+            "linear-gradient(to top, hsl(var(--intent) / 0.06), transparent)",
+        }}
+        animate={{ opacity: hovered ? 1 : 0 }}
+        transition={{ duration: 0.5 }}
+      />
     </motion.div>
   );
 };
