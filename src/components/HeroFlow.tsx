@@ -560,7 +560,9 @@ const HeroFlow = () => {
           <h2 className="mx-auto max-w-4xl text-2xl font-extrabold leading-tight tracking-tight sm:text-3xl md:text-4xl lg:text-5xl">
             <span className="text-foreground">Build what was </span>
             <span className="text-gradient-hero">intended</span>
-            <span className="text-foreground">. Verify what was built.</span>
+            <span className="text-foreground">. Verify what was </span>
+            <span className="text-gradient-hero">built</span>
+            <span className="text-foreground">.</span>
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-sm text-muted-foreground sm:text-base">
             Text. Design. Code.{" "}
