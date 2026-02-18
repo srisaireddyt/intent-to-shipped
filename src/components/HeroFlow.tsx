@@ -558,9 +558,12 @@ const HeroFlow = () => {
             Intelligence Engine
           </div>
           <h2 className="mx-auto max-w-4xl text-2xl font-extrabold leading-tight tracking-tight sm:text-3xl md:text-4xl lg:text-5xl">
-            <span className="text-foreground">Build what was </span>
+            <span className="text-gradient-hero">Build</span>
+            <span className="text-foreground"> what was </span>
             <span className="text-gradient-hero">intended</span>
-            <span className="text-foreground">. Verify what was </span>
+            <span className="text-foreground">. </span>
+            <span className="text-gradient-hero">Verify</span>
+            <span className="text-foreground"> what was </span>
             <span className="text-gradient-hero">built</span>
             <span className="text-foreground">.</span>
           </h2>
