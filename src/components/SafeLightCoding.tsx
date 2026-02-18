@@ -199,7 +199,7 @@ const SafeLightCoding = () => {
               "We believe AI should help humans write software more{" "}
               <span className="text-primary font-bold">deliberately</span>, not write it for them.
               The gap between intent and implementation is where quality dies — our job is to{" "}
-              <span className="text-primary font-bold">close that gap</span>."
+              <span className="text-primary font-bold">help you close that gap</span>."
             </p>
           </blockquote>
         </motion.div>
