@@ -557,7 +557,7 @@ const HeroFlow = () => {
             <Brain className="h-3.5 w-3.5 text-primary" />
             Intelligence Engine
           </div>
-          <h2 className="mx-auto max-w-4xl text-2xl font-extrabold leading-tight tracking-tight text-foreground sm:text-3xl md:text-4xl lg:text-5xl">
+          <h2 className="mx-auto whitespace-nowrap text-2xl font-extrabold leading-tight tracking-tight text-foreground sm:text-3xl md:text-4xl lg:text-[2.75rem] xl:text-5xl">
             <span className="inline-block rounded-xl border border-primary/30 bg-primary/10 px-3 py-1 font-black text-primary shadow-sm">Build</span> what was <span className="text-gradient-hero font-black">intended</span>. <span className="inline-block rounded-xl border border-primary/30 bg-primary/10 px-3 py-1 font-black text-primary shadow-sm">Verify</span> what was <span className="text-gradient-hero font-black">built</span>.
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-sm text-muted-foreground sm:text-base">
